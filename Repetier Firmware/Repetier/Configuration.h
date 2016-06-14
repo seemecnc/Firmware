@@ -90,9 +90,9 @@
 #define STEPS_PER_ROTATION 200
 #define MICRO_STEPS 16
 #if PRINTER == 4
-#define AXIS_STEPS_PER_MM 1600
+#define AXIS_STEPS_PER_MM 1600  // DropLit v2 step settings
 #else
-#define AXIS_STEPS_PER_MM ((float)(MICRO_STEPS * STEPS_PER_ROTATION) / PULLEY_CIRCUMFERENCE)
+#define AXIS_STEPS_PER_MM ((float)(MICRO_STEPS * STEPS_PER_ROTATION) / PULLEY_CIRCUMFERENCE)  // for deltas with 1.8 deg. steppers and 20 tooth GT2 pulleys
 #endif
 #define XAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
 #define YAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
@@ -249,7 +249,7 @@
 // ################ Endstop configuration #####################
 
 
-#if PRINTER == 4
+#if PRINTER == 4  // DropLit v2
 #define ENDSTOP_PULLUP_X_MIN true
 #define ENDSTOP_X_MIN_INVERTING false
 #define MIN_HARDWARE_ENDSTOP_X false
@@ -257,8 +257,8 @@
 #define ENDSTOP_Y_MIN_INVERTING false
 #define MIN_HARDWARE_ENDSTOP_Y false
 #define ENDSTOP_PULLUP_Z_MIN true
-#define ENDSTOP_Z_MIN_INVERTING true
-#define MIN_HARDWARE_ENDSTOP_Z true
+#define ENDSTOP_Z_MIN_INVERTING false
+#define MIN_HARDWARE_ENDSTOP_Z false
 #define ENDSTOP_PULLUP_X_MAX true
 #define ENDSTOP_X_MAX_INVERTING false
 #define MAX_HARDWARE_ENDSTOP_X true
@@ -266,10 +266,10 @@
 #define ENDSTOP_Y_MAX_INVERTING false
 #define MAX_HARDWARE_ENDSTOP_Y true
 #define ENDSTOP_PULLUP_Z_MAX true
-#define ENDSTOP_Z_MAX_INVERTING true
+#define ENDSTOP_Z_MAX_INVERTING false
 #define MAX_HARDWARE_ENDSTOP_Z true
 #define max_software_endstop_r false
-#else
+#else  // others such as Rostock, Orion and Eris
 #define ENDSTOP_PULLUP_X_MIN true
 #define ENDSTOP_X_MIN_INVERTING false
 #define MIN_HARDWARE_ENDSTOP_X false
@@ -297,15 +297,15 @@
 #define max_software_endstop_x true
 #define max_software_endstop_y true
 #define max_software_endstop_z true
-#define ENDSTOP_X_BACK_MOVE 10
-#define ENDSTOP_Y_BACK_MOVE 10
-#define ENDSTOP_Z_BACK_MOVE 10
-#define ENDSTOP_X_RETEST_REDUCTION_FACTOR 4
-#define ENDSTOP_Y_RETEST_REDUCTION_FACTOR 4
-#define ENDSTOP_Z_RETEST_REDUCTION_FACTOR 4
-#define ENDSTOP_X_BACK_ON_HOME 5
-#define ENDSTOP_Y_BACK_ON_HOME 5
-#define ENDSTOP_Z_BACK_ON_HOME 5
+#define ENDSTOP_X_BACK_MOVE 3
+#define ENDSTOP_Y_BACK_MOVE 3
+#define ENDSTOP_Z_BACK_MOVE 3
+#define ENDSTOP_X_RETEST_REDUCTION_FACTOR 2
+#define ENDSTOP_Y_RETEST_REDUCTION_FACTOR 2
+#define ENDSTOP_Z_RETEST_REDUCTION_FACTOR 2
+#define ENDSTOP_X_BACK_ON_HOME 1
+#define ENDSTOP_Y_BACK_ON_HOME 1
+#define ENDSTOP_Z_BACK_ON_HOME 1
 #define ALWAYS_CHECK_ENDSTOPS 1
 
 // ################# XYZ movements ###################
@@ -371,13 +371,21 @@
 #define END_EFFECTOR_HORIZONTAL_OFFSET 33
 #define CARRIAGE_HORIZONTAL_OFFSET 37.9
 
-#elif PRINTER == 3 || PRINTER == 4  //Eris and generic code for droplit
+#elif PRINTER == 3 // Eris Delta
 #define DELTA_DIAGONAL_ROD 134.9  // 134.58 early measurement
 #define DELTA_MAX_RADIUS 65  // max printable area allowed by firmware
 #define PRINTER_RADIUS 98.38  //PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET
 #define Z_MAX_LENGTH 175.0
 #define END_EFFECTOR_HORIZONTAL_OFFSET 23.38
 #define CARRIAGE_HORIZONTAL_OFFSET 10
+
+#elif PRINTER == 4 // DropLit
+#define DELTA_DIAGONAL_ROD 100  // 134.58 early measurement
+#define DELTA_MAX_RADIUS 100  // max printable area allowed by firmware
+#define PRINTER_RADIUS 100  //PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET
+#define Z_MAX_LENGTH 125.0
+#define END_EFFECTOR_HORIZONTAL_OFFSET 100
+#define CARRIAGE_HORIZONTAL_OFFSET 100
 #endif
 #define DELTA_ALPHA_A 210
 #define DELTA_ALPHA_B 330
@@ -434,9 +442,9 @@
 #define MAX_FEEDRATE_X 6
 #define MAX_FEEDRATE_Y 6
 #define MAX_FEEDRATE_Z 6
-#define HOMING_FEEDRATE_X 5
-#define HOMING_FEEDRATE_Y 5
-#define HOMING_FEEDRATE_Z 5
+#define HOMING_FEEDRATE_X 6
+#define HOMING_FEEDRATE_Y 6
+#define HOMING_FEEDRATE_Z 6
 #endif
 
 
@@ -706,6 +714,11 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define UI_PRINTER_NAME "ERIS Delta"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #endif
+#elif PRINTER == 4
+#define UI_PRINTER_NAME "DropLit"
+#define UI_PRINTER_COMPANY "SeeMeCNC"
+#endif
+
 #define UI_PAGES_DURATION 4000
 #define UI_ANIMATION 0
 #define UI_SPEEDDEPENDENT_POSITIONING 1
