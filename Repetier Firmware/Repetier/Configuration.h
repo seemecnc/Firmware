@@ -441,7 +441,7 @@
 
 // ################# Misc. settings ##################
 
-#if PRINTER == 4
+#if PRINTER == 4 // DropLit needs 115200 for raspi useage
 #define BAUDRATE 115200
 #else
 #define BAUDRATE 250000
