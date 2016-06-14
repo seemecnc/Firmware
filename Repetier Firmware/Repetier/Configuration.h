@@ -52,17 +52,24 @@
 #include "pins.h"
 
 // ################## EDIT THESE SETTINGS MANUALLY ################
-//  Microstepping mode of your RAMBO board
+//  Microstepping mode of your RAMBO board on Rostock and earlier Orions
 #define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
 // Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
 #define MOTOR_CURRENT {140,140,140,150,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
 //########   Mini Rambo etc... motor current settings    #########
 
 //  Motor PWM current for mini rambo is X+Y on the same first value, Z on the next, then Extruder(s) on the last value
+// The MINI Rambo is used on all ERIS, DropLit v2 and newer Orions built after may 2016
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_PWM
 #define MOTOR_CURRENT_PWM_RANGE 2000
 //#define DEFAULT_PWM_MOTOR_CURRENT  {30, 30, 130}  // X+Y, Z, E+
-#define MOTOR_CURRENT_PWM {20, 20, 175}
+#if PRINTER == 1  // Orion Delta
+#define MOTOR_CURRENT_PWM {60, 60, 130}
+#elif PRINTER == 3  // ERIS Delta
+#define MOTOR_CURRENT_PWM {20, 20, 130}
+#elif PRINTER == 4  // DropLit v2
+#define MOTOR_CURRENT_PWM {0, 50, 0}  // No need for X/Y or E motor currents
+#endif
 
 
 // ################ END MANUAL SETTINGS ##########################
@@ -254,10 +261,10 @@
 #define MIN_HARDWARE_ENDSTOP_Z true
 #define ENDSTOP_PULLUP_X_MAX true
 #define ENDSTOP_X_MAX_INVERTING false
-#define MAX_HARDWARE_ENDSTOP_X false
+#define MAX_HARDWARE_ENDSTOP_X true
 #define ENDSTOP_PULLUP_Y_MAX true
 #define ENDSTOP_Y_MAX_INVERTING false
-#define MAX_HARDWARE_ENDSTOP_Y false
+#define MAX_HARDWARE_ENDSTOP_Y true
 #define ENDSTOP_PULLUP_Z_MAX true
 #define ENDSTOP_Z_MAX_INVERTING true
 #define MAX_HARDWARE_ENDSTOP_Z true
@@ -364,7 +371,7 @@
 #define END_EFFECTOR_HORIZONTAL_OFFSET 33
 #define CARRIAGE_HORIZONTAL_OFFSET 37.9
 
-#elif PRINTER == 3 || PRINTER == 4  //Eris and BS code for droplit
+#elif PRINTER == 3 || PRINTER == 4  //Eris and generic code for droplit
 #define DELTA_DIAGONAL_ROD 134.9  // 134.58 early measurement
 #define DELTA_MAX_RADIUS 65  // max printable area allowed by firmware
 #define PRINTER_RADIUS 98.38  //PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET
@@ -390,6 +397,27 @@
 #define DELTA_FLOOR_SAFETY_MARGIN_MM 15
 //#define SOFTWARE_LEVELING
 
+#if PRINTER == 1  //  Orion Delta
+#define DELTASEGMENTS_PER_PRINTLINE 22
+#define STEPPER_INACTIVE_TIME 600L
+#define MAX_INACTIVE_TIME 900L
+#define MAX_FEEDRATE_X 250
+#define MAX_FEEDRATE_Y 250
+#define MAX_FEEDRATE_Z 250
+#define HOMING_FEEDRATE_X 80
+#define HOMING_FEEDRATE_Y 80
+#define HOMING_FEEDRATE_Z 80
+#elif PRINTER == 2  //  Rostock MAX
+#define DELTASEGMENTS_PER_PRINTLINE 22
+#define STEPPER_INACTIVE_TIME 600L
+#define MAX_INACTIVE_TIME 900L
+#define MAX_FEEDRATE_X 250
+#define MAX_FEEDRATE_Y 250
+#define MAX_FEEDRATE_Z 250
+#define HOMING_FEEDRATE_X 80
+#define HOMING_FEEDRATE_Y 80
+#define HOMING_FEEDRATE_Z 80
+#elif PRINTER == 3  //  ERIS Delta
 #define DELTASEGMENTS_PER_PRINTLINE 22
 #define STEPPER_INACTIVE_TIME 600L
 #define MAX_INACTIVE_TIME 900L
@@ -399,6 +427,19 @@
 #define HOMING_FEEDRATE_X 80
 #define HOMING_FEEDRATE_Y 80
 #define HOMING_FEEDRATE_Z 80
+#elif PRINTER == 4  // DropLit
+#define DELTASEGMENTS_PER_PRINTLINE 22
+#define STEPPER_INACTIVE_TIME 60
+#define MAX_INACTIVE_TIME 600
+#define MAX_FEEDRATE_X 6
+#define MAX_FEEDRATE_Y 6
+#define MAX_FEEDRATE_Z 6
+#define HOMING_FEEDRATE_X 5
+#define HOMING_FEEDRATE_Y 5
+#define HOMING_FEEDRATE_Z 5
+#endif
+
+
 #define HOMING_ORDER HOME_ORDER_ZXY
 #define ENABLE_BACKLASH_COMPENSATION 0
 #define X_BACKLASH 0
@@ -411,6 +452,26 @@
 #define ALLOW_QUADSTEPPING 1
 #define DOUBLE_STEP_DELAY 1 // time in microseconds
 #define MAX_HALFSTEP_INTERVAL 1999
+
+#if PRINTER == 1 //Orion Delta
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 1650
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1650
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1650
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 2800
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 2800
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 2800
+#define MAX_JERK 28
+#define MAX_ZJERK 28
+#elif PRINTER == 2  //Rostock MAX
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 1850
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1850
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1850
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 3000
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 3000
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 3000
+#define MAX_JERK 32
+#define MAX_ZJERK 32
+#elif PRINTER == 3 // ERIS Delta
 #define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 250
 #define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 250
 #define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 250
@@ -419,6 +480,18 @@
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 400
 #define MAX_JERK 12
 #define MAX_ZJERK 12
+#elif PRINTER == 4 // DropLit
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 1000
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1000
+#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1000
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 1000
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1000
+#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1000
+#define MAX_JERK 12
+#define MAX_ZJERK 12
+#endif
+
+
 #define PRINTLINE_CACHE_SIZE 16
 #define MOVE_CACHE_LOW 10
 #define LOW_TICKS_PER_MOVE 250000

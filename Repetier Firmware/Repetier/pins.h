@@ -1956,8 +1956,8 @@ S3(ext)=9
   #define E1_MS2_PIN 77
   #define ORIG_SDCARDDETECT 	    15
 
-  #define MOTOR_CURRENT_PWM_XY_PIN 46
-  #define MOTOR_CURRENT_PWM_Z_PIN 45
+  #define MOTOR_CURRENT_PWM_XY_PIN 45
+  #define MOTOR_CURRENT_PWM_Z_PIN 46
   #define MOTOR_CURRENT_PWM_E_PIN 44
   
  // moved current control to configuration.h file for ease of setup/tuning j.o.
