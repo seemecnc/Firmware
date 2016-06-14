@@ -713,7 +713,6 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #elif PRINTER == 3
 #define UI_PRINTER_NAME "ERIS Delta"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
-#endif
 #elif PRINTER == 4
 #define UI_PRINTER_NAME "DropLit"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
