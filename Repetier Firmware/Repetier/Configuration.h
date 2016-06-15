@@ -121,12 +121,38 @@
 #define EXT0_MAX_ACCELERATION 6500
 #define EXT0_HEAT_MANAGER 1
 #define EXT0_WATCHPERIOD 3
+
+/* ########### PID Settings for hotends  ########### */
+#if PRINTER == 1  // Orion Delta
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 205
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 60
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 31.36
 #define EXT0_PID_I 2.18
 #define EXT0_PID_D 112.9
 #define EXT0_PID_MAX 255
+#elif PRINTER == 2  // Rosotck MAX
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 205
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 31.36
+#define EXT0_PID_I 2.18
+#define EXT0_PID_D 112.9
+#define EXT0_PID_MAX 255
+#elif PRINTER == 3  // ERIS Delta
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 22.0
+#define EXT0_PID_I 0.45
+#define EXT0_PID_D 176.0
+#define EXT0_PID_MAX 200
+#elif PRINTER == 4  // DropLit v2 bogus values to compile fw
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 22.0
+#define EXT0_PID_I 0.45
+#define EXT0_PID_D 176.0
+#define EXT0_PID_MAX 200
+#endif
+
 #define EXT0_ADVANCE_K 0
 #define EXT0_ADVANCE_L 0
 #define EXT0_ADVANCE_BACKLASH_STEPS 0
@@ -297,15 +323,15 @@
 #define max_software_endstop_x true
 #define max_software_endstop_y true
 #define max_software_endstop_z true
-#define ENDSTOP_X_BACK_MOVE 3
-#define ENDSTOP_Y_BACK_MOVE 3
-#define ENDSTOP_Z_BACK_MOVE 3
+#define ENDSTOP_X_BACK_MOVE 5
+#define ENDSTOP_Y_BACK_MOVE 5
+#define ENDSTOP_Z_BACK_MOVE 5
 #define ENDSTOP_X_RETEST_REDUCTION_FACTOR 2
 #define ENDSTOP_Y_RETEST_REDUCTION_FACTOR 2
 #define ENDSTOP_Z_RETEST_REDUCTION_FACTOR 2
-#define ENDSTOP_X_BACK_ON_HOME 1
-#define ENDSTOP_Y_BACK_ON_HOME 1
-#define ENDSTOP_Z_BACK_ON_HOME 1
+#define ENDSTOP_X_BACK_ON_HOME 5
+#define ENDSTOP_Y_BACK_ON_HOME 5
+#define ENDSTOP_Z_BACK_ON_HOME 5
 #define ALWAYS_CHECK_ENDSTOPS 1
 
 // ################# XYZ movements ###################
