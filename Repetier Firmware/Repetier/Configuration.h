@@ -51,16 +51,23 @@
 
 #include "pins.h"
 
-// ################## EDIT THESE SETTINGS MANUALLY ################
-//  Microstepping mode of your RAMBO board on Rostock and earlier Orions
+
+//  Microstepping mode of your stepper drivers
 #define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
+#if MOTHERBOARD == 301  // RAMBo
+#define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
+#elif MOTHERBOARD == 302  // Mini RAMBo
+#define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_PWM
+#endif
+
+// ################## RAMBo Digipot Motor current control settings ################
 // Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
 #define MOTOR_CURRENT {140,140,140,150,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-//########   Mini Rambo etc... motor current settings    #########
 
+
+//################### Mini Rambo etc... motor current settings    #########
 //  Motor PWM current for mini rambo is X+Y on the same first value, Z on the next, then Extruder(s) on the last value
-// The MINI Rambo is used on all ERIS, DropLit v2 and newer Orions built after may 2016
-#define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_PWM
+// The MINI Rambo is used on all ERIS, DropLit v2 and newer Orions built after appx may 2016
 #define MOTOR_CURRENT_PWM_RANGE 2000
 //#define DEFAULT_PWM_MOTOR_CURRENT  {30, 30, 130}  // X+Y, Z, E+
 #if PRINTER == 1  // Orion Delta
@@ -381,21 +388,21 @@
 #define DELTA_SEGMENTS_PER_SECOND_MOVE 80 // Less accurate setting for other moves
 
 // Delta settings
-#if PRINTER == 1
-#define DELTA_DIAGONAL_ROD 178 // mm
+#if PRINTER == 1  // Orion
+#define DELTA_DIAGONAL_ROD 178.0  // ball cup arms
 #define DELTA_MAX_RADIUS 145.7
 #define PRINTER_RADIUS 145.7
-#define Z_MAX_LENGTH 234.66
-#define END_EFFECTOR_HORIZONTAL_OFFSET 33
-#define CARRIAGE_HORIZONTAL_OFFSET 37.9
+#define Z_MAX_LENGTH 230.0
+#define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
+#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
 
-#elif PRINTER == 2
-#define DELTA_DIAGONAL_ROD 269.0 // mm
-#define DELTA_MAX_RADIUS 198.25
-#define PRINTER_RADIUS 198.25
-#define Z_MAX_LENGTH 234.66
-#define END_EFFECTOR_HORIZONTAL_OFFSET 33
-#define CARRIAGE_HORIZONTAL_OFFSET 37.9
+#elif PRINTER == 2  // Rostock MAX
+#define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
+#define DELTA_MAX_RADIUS 200.0
+#define PRINTER_RADIUS 200.0
+#define Z_MAX_LENGTH 350
+#define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
+#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
 
 #elif PRINTER == 3 // Eris Delta
 #define DELTA_DIAGONAL_ROD 134.9  // 134.58 early measurement
