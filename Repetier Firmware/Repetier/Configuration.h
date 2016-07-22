@@ -751,6 +751,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #endif
 
+#define UI_ENCODER_DIR 0 // 0 normal 1 inverts encoder direction
 #define UI_PAGES_DURATION 4000
 #define UI_ANIMATION 0
 #define UI_SPEEDDEPENDENT_POSITIONING 1

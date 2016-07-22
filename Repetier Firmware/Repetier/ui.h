@@ -1064,12 +1064,18 @@ void uiCheckSlowKeys(int &action) {}
 #define UI_DISPLAY_D5_PIN      73
 #define UI_DISPLAY_D6_PIN      74
 #define UI_DISPLAY_D7_PIN      75
+// inverting encoder directions from configuration.h file
+#if UI_ENCODER_DIR == 0
 #define UI_ENCODER_A           77
 #define UI_ENCODER_B           76
+#else
+#define UI_ENCODER_A           76
+#define UI_ENCODER_B           77
+#endif
 #define UI_ENCODER_CLICK       78
 #define UI_KILL_PIN            80
 #endif
-#if MOTHERBOARD == 302
+#if MOTHERBOARD == 302 // mini-rambo
 #define BEEPER_PIN             84
 #define UI_DISPLAY_RS_PIN      82
 #define UI_DISPLAY_RW_PIN      -1
@@ -1082,8 +1088,14 @@ void uiCheckSlowKeys(int &action) {}
 #define UI_DISPLAY_D5_PIN      70
 #define UI_DISPLAY_D6_PIN      85
 #define UI_DISPLAY_D7_PIN      71
+// inverting encoder directions from configuration.h file
+#if UI_ENCODER_DIR == 0
 #define UI_ENCODER_A           72
 #define UI_ENCODER_B           14
+#else
+#define UI_ENCODER_A           72
+#define UI_ENCODER_B           14
+#endif
 #define UI_ENCODER_CLICK       9
 #define UI_KILL_PIN           32
 #endif
