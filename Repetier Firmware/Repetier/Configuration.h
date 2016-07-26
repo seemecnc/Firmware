@@ -137,7 +137,7 @@
 #define EXT0_PID_I 0.73
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 175
-#elif PRINTER == 2  // Rosotck MAX
+#elif PRINTER == 2  // Rostock MAX
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
