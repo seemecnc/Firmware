@@ -1325,7 +1325,8 @@ void ui_check_slow_keys(int &action) {}
 #include "uilang.h"
 #endif
 
-#define UI_VERSION_STRING "Repetier " REPETIER_VERSION
+#define UI_VERSION_STRING "Repetier v " REPETIER_VERSION
+#define UI_FW_DATE "FW Date " FIRMWARE_DATE
 
 #ifdef UI_HAS_I2C_KEYS
 #define COMPILE_I2C_DRIVER

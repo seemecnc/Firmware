@@ -49,6 +49,10 @@
  */
 #define PRINTER 2
 
+
+#define REPETIER_VERSION "0.92.2"
+#define FIRMWARE_DATE "072716" // in date format mmddyy
+
 #include "pins.h"
 
 

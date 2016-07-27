@@ -809,10 +809,11 @@ void UIDisplay::initialize()
     {
 #endif
         for(uint8_t y=0; y<UI_ROWS; y++) displayCache[y][0] = 0;
-        printRowP(0, versionString);
+        printRowP(0, PSTR(UI_PRINTER_COMPANY));
         printRowP(1, PSTR(UI_PRINTER_NAME));
 #if UI_ROWS>2
-        printRowP(UI_ROWS-1, PSTR(UI_PRINTER_COMPANY));
+        printRowP(UI_ROWS-2, PSTR(UI_FW_DATE));
+        printRowP(UI_ROWS-1, versionString); // printRowP(UI_ROWS-1, PSTR(UI_PRINTER_NAME));
 #endif
 #if UI_DISPLAY_TYPE == DISPLAY_U8G
     }
