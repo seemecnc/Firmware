@@ -66,7 +66,7 @@
 
 // ################## RAMBo Digipot Motor current control settings ################
 // Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
-#define MOTOR_CURRENT {140,140,140,150,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
+#define MOTOR_CURRENT {140,140,140,130,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
 
 
 //################### Mini Rambo etc... motor current settings    #########
@@ -755,7 +755,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #endif
 
-#define UI_ENCODER_DIR 0 // 0 normal 1 inverts encoder direction
+#define UI_ENCODER_DIR 1 // 0 normal 1 inverts encoder direction
 #define UI_PAGES_DURATION 4000
 #define UI_ANIMATION 0
 #define UI_SPEEDDEPENDENT_POSITIONING 1
