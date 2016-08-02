@@ -184,7 +184,9 @@ usage or for seraching for memory induced errors. Switch it off for production, 
 
 #include "Configuration.h"
 
+#ifndef GCODE_BUFFER_SIZE
 #define GCODE_BUFFER_SIZE 1
+#endif
 
 #ifndef FEATURE_BABYSTEPPING
 #define FEATURE_BABYSTEPPING 0

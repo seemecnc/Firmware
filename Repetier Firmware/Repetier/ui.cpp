@@ -840,7 +840,7 @@ void UIDisplay::initialize()
 #endif
 }
 #if UI_DISPLAY_TYPE == DISPLAY_4BIT || UI_DISPLAY_TYPE == DISPLAY_8BIT || UI_DISPLAY_TYPE == DISPLAY_I2C
-void UIDisplay::createChar(uint8_t location,const uint8_t PROGMEM charmap[])
+void UIDisplay::createChar(uint8_t location,const uint8_t charmap[] PROGMEM)
 {
     location &= 0x7; // we only have 8 locations 0-7
     lcdCommand(LCD_SETCGRAMADDR | (location << 3));

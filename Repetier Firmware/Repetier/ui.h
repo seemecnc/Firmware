@@ -227,7 +227,7 @@ What display type do you use?
 #define UI_MENU_TYPE_MODIFICATION_MENU 3
 #define UI_MENU_TYPE_WIZARD 5
 
-typedef struct {
+typedef struct UIMenuEntry_struct {
   const char *text; // Menu text
   uint8_t menuType; // 0 = Info, 1 = Headline, 2 = submenu ref, 3 = direct action command, 4 = modify action command,
   unsigned int action; // must be int so it gets 32 bit on arm!

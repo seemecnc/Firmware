@@ -1951,7 +1951,6 @@ S3(ext)=9
   #define HEATER_BED_PIN 4
   #define FAN_1_PIN -1// 6
   #define ORIG_PS_ON_PIN 71
-  #define PS_ON_PIN 71
   #define E1_MS1_PIN 77
   #define E1_MS2_PIN 77
   #define ORIG_SDCARDDETECT 	    15
@@ -1976,7 +1975,6 @@ S3(ext)=9
   #define HEATER_0_PIN  9
   #define HEATER_BED_PIN 3
   #define ORIG_PS_ON_PIN          4
-  #define PS_ON_PIN          4
   #define ORIG_SDCARDDETECT 	    81
   #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
 #endif //RAMBo/MiniRambo option

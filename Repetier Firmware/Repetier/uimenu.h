@@ -653,17 +653,19 @@ UI_MENU_CHANGEACTION(ui_menu_cext_acceleration,   UI_TEXT_EXTR_ACCEL,           
 UI_MENU_CHANGEACTION(ui_menu_cext_watch_period,   UI_TEXT_EXTR_WATCH,              UI_ACTION_EXTR_WATCH_PERIOD)
 UI_MENU_CHANGEACTION(ui_menu_ext_wait_temp,       UI_TEXT_EXTR_WAIT_RETRACT_TEMP,  UI_ACTION_EXTR_WAIT_RETRACT_TEMP)
 UI_MENU_CHANGEACTION(ui_menu_ext_wait_units,      UI_TEXT_EXTR_WAIT_RETRACT_UNITS, UI_ACTION_EXTR_WAIT_RETRACT_UNITS)
-#define UI_MENU_ADV_CNT 0
-#define UI_MENU_ADVANCE
 #if USE_ADVANCE
-#define UI_MENU_ADV_CNT 1
-#define UI_MENU_ADVANCE ,&ui_menu_cext_advancel
 #if ENABLE_QUADRATIC_ADVANCE
 #define UI_MENU_ADV_CNT 2
 #define UI_MENU_ADVANCE ,&ui_menu_cext_advancel,&ui_menu_cext_advancek
 UI_MENU_CHANGEACTION(ui_menu_cext_advancek,UI_TEXT_EXTR_ADVANCE_K,UI_ACTION_ADVANCE_K)
-#endif
+#else
+#define UI_MENU_ADV_CNT 1
+#define UI_MENU_ADVANCE ,&ui_menu_cext_advancel
 UI_MENU_CHANGEACTION(ui_menu_cext_advancel,UI_TEXT_EXTR_ADVANCE_L,UI_ACTION_ADVANCE_L)
+#endif
+#else
+#define UI_MENU_ADV_CNT 0
+#define UI_MENU_ADVANCE
 #endif
 #if TEMP_PID
 UI_MENU_CHANGEACTION(ui_menu_cext_manager, UI_TEXT_EXTR_MANAGER, UI_ACTION_EXTR_HEATMANAGER)
