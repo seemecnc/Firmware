@@ -53,6 +53,10 @@
 #define REPETIER_VERSION "0.92.2"
 #define FIRMWARE_DATE "072716" // in date format mmddyy
 
+#if PRINTER == 3
+#define FAN_BOARD_PIN 6  // ERIS Case Fan pin
+#endif
+
 #include "pins.h"
 
 
@@ -84,8 +88,6 @@
 
 
 // ################ END MANUAL SETTINGS ##########################
-
-#define FAN_BOARD_PIN 6  // ERIS Case Fan pin
 
 //#define EXTERNALSERIAL  use Arduino serial library instead of build in. Requires more ram, has only 63 byte input buffer.
 // Uncomment the following line if you are using arduino compatible firmware made for Arduino version earlier then 1.0
@@ -572,6 +574,7 @@
 #define WAITING_IDENTIFIER "wait"
 #define ECHO_ON_EXECUTE 1
 #define EEPROM_MODE 1
+#undef PS_ON_PIN
 #define PS_ON_PIN -1
 
 /* ======== Servos =======
