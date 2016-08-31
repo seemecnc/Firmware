@@ -1975,8 +1975,8 @@ S3(ext)=9
   #define DIGIPOT_CHANNELS {4,5,3,0,1} // X Y Z E0 E1 digipot channels to stepper driver mapping
   #define HEATER_0_PIN  9
   #define HEATER_BED_PIN 3
-  #define ORIG_PS_ON_PIN          4
-  #define PS_ON_PIN          4
+  #define ORIG_PS_ON_PIN     -1
+  #define PS_ON_PIN          -1
   #define ORIG_SDCARDDETECT 	    81
   #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
 #endif //RAMBo/MiniRambo option
