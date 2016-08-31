@@ -142,7 +142,7 @@
 #define EXT0_PID_I 0.73
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 235
-#elif PRINTER == 2  // Rostock MAX
+#elif PRINTER == 2  // Rostock MAX v2
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
@@ -163,6 +163,13 @@
 #define EXT0_PID_I 0.45
 #define EXT0_PID_D 176.0
 #define EXT0_PID_MAX 200
+#elif PRINTER == 5  // Rostock MAX v3
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT0_PID_I 0.73
+#define EXT0_PID_D 53.41
+#define EXT0_PID_MAX 255
 #endif
 
 #define EXT0_ADVANCE_K 0
@@ -372,9 +379,9 @@
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
 #elif PRINTER == 5
-#define INVERT_X_DIR 0
+#define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
-#define INVERT_Z_DIR 0
+#define INVERT_Z_DIR 1
 #endif
 
 #define X_HOME_DIR 1
