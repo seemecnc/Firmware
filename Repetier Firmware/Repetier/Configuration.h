@@ -52,7 +52,7 @@
 
 
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "083116" // in date format mmddyy
+#define FIRMWARE_DATE "090816" // in date format mmddyy
 
 #include "pins.h"
 
