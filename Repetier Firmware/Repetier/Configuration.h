@@ -639,12 +639,18 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 /* #################### Z-Probe configuration and Settings #####################
    These will change machine to machine, be sure to have the correct machine selected in the top of this config file
 */
+// 301 = RAMBO    302 = MINI_RAMBO
+#if MOTHERBOARD == 301
+#define Z_PROBE_PIN 4
+#elif MOTHERBOARD == 302
+#define Z_PROBE_PIN 16
+#endif
+
 
 #if PRINTER == 1  //  Orion Delta w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 16 // mini-rambo ext pins on P3 ext next to LCD header
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
 #define Z_PROBE_X_OFFSET 0
@@ -664,7 +670,6 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 16
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
@@ -684,7 +689,6 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 16 
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
 #define Z_PROBE_X_OFFSET 0
@@ -704,7 +708,6 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_Z_PROBE 0
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 16 // mini-rambo ext pins on P3 ext next to LCD header
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
 #define Z_PROBE_X_OFFSET 0
@@ -724,7 +727,6 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 4
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
@@ -745,12 +747,12 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 // ##############  Z Probe X/Y coordinates for endstop offsets and radius comp uses the Z_PROBE_Y3 coordinate ############
 
 #if PRINTER == 1  // Orion Delta with molded carriages AND ball cup arms - needs finished
-#define Z_PROBE_X1 -64.778
-#define Z_PROBE_Y1 -37.400
-#define Z_PROBE_X2 64.778
-#define Z_PROBE_Y2 -37.400
+#define Z_PROBE_X1 -75.933
+#define Z_PROBE_Y1 -43.84
+#define Z_PROBE_X2 75.933
+#define Z_PROBE_Y2 -43.84
 #define Z_PROBE_X3 0
-#define Z_PROBE_Y3 74.800
+#define Z_PROBE_Y3 87.69
 
 #elif PRINTER == 2  //  Rostock MAX with modled carriagges AND ball cup arms
 #define Z_PROBE_X1 -123.565
