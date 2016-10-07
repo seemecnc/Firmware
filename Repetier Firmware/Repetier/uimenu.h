@@ -307,6 +307,9 @@ Merge pages together. Use the following pattern:
 // How many pages do you want to have. Minimum is 1.
 #define UI_NUM_PAGES 1  //3
 #endif
+
+
+
 /* ============ MENU definition ================
 
 The menu works the same as pages. In addion you need to define what the lines do
