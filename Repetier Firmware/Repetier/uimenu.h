@@ -236,10 +236,15 @@ for 2 row displays. You can add additional pages or change the default pages lik
  #endif
   UI_PAGE4(ui_page2,"X:%x0 mm","Y:%x1 mm","Z:%x2 mm","%os")
 //UI_PAGE4(ui_page2,"dX:%y0 mm %sX","dY:%y1 mm %sY","dZ:%y2 mm %sZ","%os");
+
+// Edited page_3 for firmware info so don't need to re-boot to see version etc
+UI_PAGE4(ui_page3,UI_TEXT_PAGE_FWVERSION,UI_TEXT_PAGE_FWDATE,"Printer Model",UI_TEXT_PRINTER_READY)
+
+/*
  #if NUM_EXTRUDER>0
-    UI_PAGE4(ui_page3,UI_TEXT_PAGE_EXTRUDER1
+    UI_PAGE4(ui_page3,UI_TEXT_PAGE_FWVERSION
  #else
-    UI_PAGE4(ui_page3
+    UI_PAGE4(ui_page3 
  #endif
  #if NUM_EXTRUDER>1 && MIXING_EXTRUDER == 0
    ,UI_TEXT_PAGE_EXTRUDER2
@@ -260,6 +265,7 @@ for 2 row displays. You can add additional pages or change the default pages lik
    ,"","","","%os"
  #endif
  )
+ */
  #if EEPROM_MODE!=0
   UI_PAGE4(ui_page4,UI_TEXT_PRINT_TIME,"%Ut",UI_TEXT_PRINT_FILAMENT,"%Uf m")
   #define UI_PRINTTIME_PAGES &ui_page4
@@ -268,13 +274,23 @@ for 2 row displays. You can add additional pages or change the default pages lik
   #define UI_PRINTTIME_PAGES
   #define UI_PRINTTIME_COUNT 0
  #endif
+/* 
+UI_PAGE4(ui_page5,UI_TEXT_FIRMWARE_VERSION, UI_TEXT_FIRMWARE_DATE, "LINE 3", "LINE4"
+ */
+ 
+ 
+ 
 /*
 Merge pages together. Use the following pattern:
 #define UI_PAGES {&name1,&name2,&name3}
 */
- #define UI_PAGES {&ui_page1, UI_PRINTTIME_PAGES} //{&ui_page1,&ui_page2,&ui_page3 UI_PRINTTIME_PAGES}
+#define UI_PAGES {&ui_page1,&ui_page2,&ui_page3, UI_PRINTTIME_PAGES} //#define UI_PAGES {&ui_page1, UI_PRINTTIME_PAGES}
 // How many pages do you want to have. Minimum is 1.
- #define UI_NUM_PAGES 1+UI_PRINTTIME_COUNT //3+UI_PRINTTIME_COUNT
+ #define UI_NUM_PAGES 3+UI_PRINTTIME_COUNT //3+UI_PRINTTIME_COUNT
+ 
+ 
+ 
+ 
 #else
 #if HAVE_HEATED_BED
 UI_PAGE2(ui_page1,UI_TEXT_PAGE_EXTRUDER,UI_TEXT_PAGE_BED)

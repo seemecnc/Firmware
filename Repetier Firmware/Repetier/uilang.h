@@ -287,6 +287,11 @@
 #define UI_TEXT_WIZ_CH_FILAMENT3 "filament up/down"
 #define UI_TEXT_CLICK_DONE "Click when done"
 
+
+
+
+
+
 // *************** German translation ****************
 
 #if UI_LANGUAGE==1
@@ -1595,11 +1600,13 @@
 #if PRINTER == 1
 #define UI_TEXT_IDLE             "ORION Ready"
 #elif PRINTER == 2
-#define UI_TEXT_IDLE             "Rostock Max Ready"
+#define UI_TEXT_IDLE             "RostockMAX Ready"
 #elif PRINTER == 3
 #define UI_TEXT_IDLE             "ERIS Ready"
 #elif PRINTER == 4
 #define UI_TEXT_IDLE             "DROPLIT Ready"
+#elif PRINTER == 5
+#define UI_TEXT_IDLE             "RostockMAX Ready"
 #else
 #define UI_TEXT_IDLE             "Printer Ready"
 #endif
@@ -1744,13 +1751,15 @@
 #define UI_TEXT_EXTR_WAIT_RETRACT_TEMP  "Wait Temp.%XT" cDEG "C"
 #define UI_TEXT_EXTR_WAIT_RETRACT_UNITS "Wait Units:%XUmm"
 #if PRINTER == 1
-#define UI_TEXT_PRINTER_READY             "ORION Ready"
+#define UI_TEXT_PRINTER_READY             "ORION Delta"
 #elif PRINTER == 2
-#define UI_TEXT_PRINTER_READY             "Rostock Max Ready"
+#define UI_TEXT_PRINTER_READY             "Rostock Max v2"
 #elif PRINTER == 3
-#define UI_TEXT_PRINTER_READY             "ERIS Ready"
+#define UI_TEXT_PRINTER_READY             "ERIS Delta"
 #elif PRINTER == 4
-#define UI_TEXT_PRINTER_READY             "DROPLIT Ready"
+#define UI_TEXT_PRINTER_READY             "DROPLIT v2"
+#elif PRINTER == 5
+#define UI_TEXT_PRINTER_READY             "Rostock MAX v3"
 #else
 #define UI_TEXT_PRINTER_READY             "Printer Ready"
 #endif
@@ -1766,5 +1775,8 @@
 #define UI_TEXT_STRING_HM_DEADTIME     "Dead Time"
 #define UI_TEXT_STRING_HM_SLOWBANG     "SlowBang"
 #define UI_TEXT_STOP_PRINT "Stop Print"
+#define UI_TEXT_PAGE_FWVERSION "FW Version: test"
+#define UI_TEXT_PAGE_FWDATE "FW Date: test"
+#define UI_TEXT_PAGE_FWPRINTERMODEL "pepe"
 
 #endif
