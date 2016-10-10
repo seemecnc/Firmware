@@ -449,7 +449,7 @@
 #define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
 #define DELTA_MAX_RADIUS 200.0
 #define PRINTER_RADIUS 200.0
-#define Z_MAX_LENGTH 350
+#define Z_MAX_LENGTH 375
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
 #define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
 
