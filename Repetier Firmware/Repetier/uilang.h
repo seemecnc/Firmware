@@ -245,7 +245,7 @@
 #define UI_TEXT_HORIZONTAL_RADIUS "H. Radius :%oh"
 #define UI_TEXT_SHOW_MEASUREMENT  "Show meas."
 #define UI_TEXT_RESET_MEASUREMENT "Reset meas."
-#define UI_TEXT_SET_MEASURED_ORIGIN "Set Z=0.00"
+#define UI_TEXT_SET_MEASURED_ORIGIN "Set Z=0.0"
 #define UI_TEXT_AUTOLEVEL_FULL    "Full Auto Level"
 #define UI_TEXT_SET_ADVANCED      "Unlock Full Menu"
 #define UI_TEXT_SET_SIMPLE        "Unlock Simple Menu"
@@ -254,10 +254,10 @@
 #define UI_TEXT_CALIBRATING_RADIUS       "Calibrating:","Horizontal Radius","","Please Wait"
 #define UI_TEXT_CALIBRATING_BED       "Calibrating:","Bed Level Matrix","","Please Wait"
 #define UI_TEXT_CAL_PREHEAT       "Preheating","Keep Hands Away","","Please Wait"
-#define UI_TEXT_CLEAN_BED1         "CLEAN THE BED!!"
-#define UI_TEXT_CLEAN_BED2         ""
+#define UI_TEXT_CLEAN_BED1         "MAKE SURE NOZZLE &"
+#define UI_TEXT_CLEAN_BED2         "BED ARE CLEAN"
 #define UI_TEXT_OK                 "Begin Calibration"
-#define UI_TEXT_ZCALIB             "Z Calib."
+#define UI_TEXT_ZCALIB             "Calibration Menu"
 #define UI_TEXT_SET_P1            "Set P1"
 #define UI_TEXT_SET_P2            "Set P2"
 #define UI_TEXT_SET_P3	          "Set P3"
@@ -286,6 +286,11 @@
 #define UI_TEXT_WIZ_CH_FILAMENT2 "Rotate to move"
 #define UI_TEXT_WIZ_CH_FILAMENT3 "filament up/down"
 #define UI_TEXT_CLICK_DONE "Click when done"
+
+
+
+
+
 
 // *************** German translation ****************
 
@@ -1595,11 +1600,13 @@
 #if PRINTER == 1
 #define UI_TEXT_IDLE             "ORION Ready"
 #elif PRINTER == 2
-#define UI_TEXT_IDLE             "Rostock Max Ready"
+#define UI_TEXT_IDLE             "RostockMAX Ready"
 #elif PRINTER == 3
 #define UI_TEXT_IDLE             "ERIS Ready"
 #elif PRINTER == 4
 #define UI_TEXT_IDLE             "DROPLIT Ready"
+#elif PRINTER == 5
+#define UI_TEXT_IDLE             "RostockMAX Ready"
 #else
 #define UI_TEXT_IDLE             "Printer Ready"
 #endif
@@ -1613,16 +1620,16 @@
 #define UI_TEXT_EXTRUDER         "Extruder"
 #define UI_TEXT_SD_CARD          "SD Card Menu"
 #define UI_TEXT_DEBUGGING        "Debugging"
-#define UI_TEXT_HOME_ALL         "Home Towers"
-#define UI_TEXT_AUTOLEVEL_FULL    "Full Auto Level"
+#define UI_TEXT_HOME_ALL         "Home Printer"
+#define UI_TEXT_AUTOLEVEL_FULL    "Full Calibration"
 #define UI_TEXT_HOME_X           "Home X"
 #define UI_TEXT_HOME_Y           "Home Y"
 #define UI_TEXT_HOME_Z           "Home Z"
 #define UI_TEXT_PREHEAT_PLA      "Preheat PLA"
 #define UI_TEXT_PREHEAT_ABS      "Preheat ABS"
-#define UI_TEXT_COOLDOWN         "Cooldown"
+#define UI_TEXT_COOLDOWN         "Shut Off ALL Heats"
 #define UI_TEXT_SET_TO_ORIGIN    "Set to Origin"
-#define UI_TEXT_DISABLE_STEPPER  "Disable stepper"
+#define UI_TEXT_DISABLE_STEPPER  "Disable Steppers"
 #define UI_TEXT_X_POSITION       "X Position"
 #define UI_TEXT_X_POS_FAST       "X Pos. Fast"
 #define UI_TEXT_Y_POSITION       "Y Position"
@@ -1630,11 +1637,11 @@
 #define UI_TEXT_Z_POSITION       "Z Position"
 #define UI_TEXT_Z_POS_FAST       "Move Z Position"
 #define UI_TEXT_E_POSITION       "Extr. position"
-#define UI_TEXT_BED_TEMP         "Bed temp: %Eb" cDEG "C"
-#define UI_TEXT_EXTR0_TEMP       "Temp. 0 :  %E0" cDEG "C"
+#define UI_TEXT_BED_TEMP         "BED Temp:  %Eb" cDEG "C"
+#define UI_TEXT_EXTR0_TEMP       "NOZ Temp:  %E0" cDEG "C"
 #define UI_TEXT_EXTR1_TEMP       "Temp. 1 :  %E1" cDEG "C"
 #define UI_TEXT_EXTR2_TEMP       "Temp. 2 :  %E2" cDEG "C"
-#define UI_TEXT_EXTR0_OFF        "Extruder 0 Off"
+#define UI_TEXT_EXTR0_OFF        "Shut Down Nozzle"
 #define UI_TEXT_EXTR1_OFF        "Extruder 1 Off"
 #define UI_TEXT_EXTR2_OFF        "Extruder 2 Off"
 #define UI_TEXT_EXTR0_SELECT     "%X0 Select Extr. 0"
@@ -1666,7 +1673,7 @@
 #define UI_TEXT_OPS_MINDIST      "Min.dist:%Od"
 #define UI_TEXT_OPS_MOVE_AFTER   "Move after:%Oa"
 #define UI_TEXT_ANTI_OOZE        "Anti Ooze"
-#define UI_TEXT_PRINT_FILE       "Select File"
+#define UI_TEXT_PRINT_FILE       "Select SD File"
 #define UI_TEXT_PAUSE_PRINT      "Pause Print"
 #define UI_TEXT_CONTINUE_PRINT   "Continue Print"
 #define UI_TEXT_UNMOUNT_CARD     "Unmount Card"
@@ -1739,18 +1746,20 @@
 #define UI_TEXT_PAGE_EXTRUDER2     "E2:%e1/%E1" cDEG "C" cARROW "%o1"
 #define UI_TEXT_PAGE_EXTRUDER3     "E3:%e2/%E2" cDEG "C" cARROW "%o2"
 #define UI_TEXT_PAGE_BED          " B:%eb/%Eb" cDEG "C" cARROW "%ob"
-#define UI_TEXT_SPEED_MULTIPLY    "Speed Mul.:%om%%%"
-#define UI_TEXT_FLOW_MULTIPLY     "Flow Mul.:%of%%%"
+#define UI_TEXT_SPEED_MULTIPLY    "Speed Rate:%om%%%"
+#define UI_TEXT_FLOW_MULTIPLY     "Flow  Rate:%of%%%"
 #define UI_TEXT_EXTR_WAIT_RETRACT_TEMP  "Wait Temp.%XT" cDEG "C"
 #define UI_TEXT_EXTR_WAIT_RETRACT_UNITS "Wait Units:%XUmm"
 #if PRINTER == 1
-#define UI_TEXT_PRINTER_READY             "ORION Ready"
+#define UI_TEXT_PRINTER_READY             "ORION Delta"
 #elif PRINTER == 2
-#define UI_TEXT_PRINTER_READY             "Rostock Max Ready"
+#define UI_TEXT_PRINTER_READY             "Rostock Max v2"
 #elif PRINTER == 3
-#define UI_TEXT_PRINTER_READY             "ERIS Ready"
+#define UI_TEXT_PRINTER_READY             "ERIS Delta"
 #elif PRINTER == 4
-#define UI_TEXT_PRINTER_READY             "DROPLIT Ready"
+#define UI_TEXT_PRINTER_READY             "DROPLIT v2"
+#elif PRINTER == 5
+#define UI_TEXT_PRINTER_READY             "Rostock MAX v3"
 #else
 #define UI_TEXT_PRINTER_READY             "Printer Ready"
 #endif
@@ -1759,12 +1768,22 @@
 #define UI_TEXT_PRINTTIME_DAYS   " days "
 #define UI_TEXT_PRINTTIME_HOURS  ":"
 #define UI_TEXT_PRINTTIME_MINUTES ""
-#define UI_TEXT_PRINT_TIME     "Total Time Printing"
+#define UI_TEXT_PRINT_TIME     "Total Printing Time"
 #define UI_TEXT_PRINT_FILAMENT "Total Filament Used"
 #define UI_TEXT_PRINTED           "printed"
 #define UI_TEXT_POWER            "ATX power on/off"
 #define UI_TEXT_STRING_HM_DEADTIME     "Dead Time"
 #define UI_TEXT_STRING_HM_SLOWBANG     "SlowBang"
 #define UI_TEXT_STOP_PRINT "Stop Print"
+#define UI_TEXT_PAGE_FWVERSION "FW Version: test"
+#define UI_TEXT_PAGE_FWDATE "FW Date: test"
+#define UI_TEXT_PAGE_FWPRINTERMODEL "Juan!"
+#define UI_TEXT_SET_MEASURED_ORIGIN "Set Z Origin"
+#define UI_TEXT_CALIBRATE    "Calibrate"
+#define UI_TEXT_CAL_PREPARE "Getting Ready","To Calibrate","","Your Machine"
+#define UI_TEXT_CALIBRATING_ENDSTOPS       "Calibrating","Endstop Offsets","","Please Wait"
+#define UI_TEXT_CALIBRATING_HEIGHT       "Calibrating","Printer Z Height","","Please Wait"
+#define UI_TEXT_CALIBRATING_RADIUS       "Calibrating","Horizontal Radius","","Please Wait"
+#define UI_TEXT_CALIBRATING_BED       "Calibrating","Bed Level Matrix","","Please Wait"
 
 #endif
