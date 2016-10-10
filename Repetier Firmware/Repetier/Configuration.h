@@ -48,7 +48,7 @@
    DROPLIT = 4
    Rostock MAX v3 = 5
  */
-#define PRINTER 2
+#define PRINTER 5
 
 
 #define REPETIER_VERSION "0.92.2"
@@ -859,6 +859,7 @@ and longer beeps for important actions.
 Parameter is delay in microseconds and the secons is the number of repetitions.
 Values must be in range 1..255
 */
+// Orion Delta
 #if PRINTER == 1
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
@@ -872,6 +873,7 @@ Values must be in range 1..255
 #define UI_SET_MAX_EXTRUDER_TEMP   240
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//Rostock MAX v2
 #elif PRINTER == 2
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
@@ -885,6 +887,7 @@ Values must be in range 1..255
 #define UI_SET_MAX_EXTRUDER_TEMP   240
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//ERIS Delta
 #elif PRINTER == 3
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
@@ -899,6 +902,7 @@ Values must be in range 1..255
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
 #elif PRINTER == 4
+//DropLit v2
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
 #define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
@@ -911,6 +915,7 @@ Values must be in range 1..255
 #define UI_SET_MAX_EXTRUDER_TEMP   240
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//Rostock MAX v3
 #elif PRINTER == 5
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4

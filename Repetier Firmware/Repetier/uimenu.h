@@ -472,7 +472,8 @@ UI_MENU_ACTIONCOMMAND(ui_menu_ext_origin,UI_TEXT_EXTR_ORIGIN,UI_ACTION_RESET_EXT
 #define UI_MENU_EXTCOND &ui_menu_ext_temp0,&ui_menu_ext_temp1,&ui_menu_ext_temp2,&ui_menu_ext_off0,&ui_menu_ext_off1,&ui_menu_ext_off2,&ui_menu_ext_sel0,&ui_menu_ext_sel1,&ui_menu_ext_sel2,
 #define UI_MENU_EXTCNT 9
 #else
-#define UI_MENU_EXTCOND &ui_menu_ext_temp0,&ui_menu_ext_off0,
+//#define UI_MENU_EXTCOND &ui_menu_ext_temp0,&ui_menu_ext_off0,
+#define UI_MENU_EXTCOND &ui_menu_ext_temp0,
 #define UI_MENU_EXTCNT 2
 #endif
 #if HAVE_HEATED_BED
@@ -483,7 +484,7 @@ UI_MENU_ACTIONCOMMAND(ui_menu_ext_origin,UI_TEXT_EXTR_ORIGIN,UI_ACTION_RESET_EXT
 #define UI_MENU_BEDCNT 0
 #endif
 
-#define UI_MENU_EXTRUDER {UI_MENU_ADDCONDBACK UI_MENU_BEDCOND UI_MENU_EXTCOND }
+#define UI_MENU_EXTRUDER {UI_MENU_ADDCONDBACK UI_MENU_EXTCOND UI_MENU_BEDCOND }
 UI_MENU(ui_menu_extruder,UI_MENU_EXTRUDER,UI_MENU_BACKCNT+UI_MENU_BEDCNT+UI_MENU_EXTCNT+0)
 
 // **** SD card menu
@@ -542,7 +543,8 @@ UI_MENU_ACTIONCOMMAND(ui_menu_set_simple, UI_TEXT_SET_SIMPLE,UI_ACTION_SET_SIMPL
 #define UI_MENU_QUICK {UI_MENU_ADDCONDBACK &ui_menu_quick_speedmultiply,&ui_menu_quick_flowmultiply UI_TOOGLE_LIGHT_ENTRY UI_CHANGE_FIL_ENT,&ui_menu_quick_preheat_pla,&ui_menu_quick_preheat_abs,&ui_menu_quick_cooldown,&ui_menu_home_all,&ui_menu_set_advanced,&ui_menu_quick_stopstepper MENU_PSON_ENTRY DEBUG_PRINT_EXTRA}
 UI_MENU(ui_menu_quick,UI_MENU_QUICK,8+UI_MENU_BACKCNT+MENU_PSON_COUNT+DEBUG_PRINT_COUNT+UI_TOGGLE_LIGHT_COUNT+UI_CHANGE_FIL_CNT)
 // Printer Settings menu for Advanced menu
-#define UI_MENU_QUICK2 {UI_MENU_ADDCONDBACK &ui_menu_quick_speedmultiply,&ui_menu_quick_flowmultiply UI_TOOGLE_LIGHT_ENTRY UI_CHANGE_FIL_ENT,&ui_menu_quick_preheat_pla,&ui_menu_quick_preheat_abs,&ui_menu_quick_cooldown,&ui_menu_home_all,&ui_menu_set_simple,&ui_menu_quick_stopstepper MENU_PSON_ENTRY DEBUG_PRINT_EXTRA}
+//#define UI_MENU_QUICK2 {UI_MENU_ADDCONDBACK &ui_menu_quick_speedmultiply,&ui_menu_quick_flowmultiply UI_TOOGLE_LIGHT_ENTRY UI_CHANGE_FIL_ENT,&ui_menu_quick_preheat_pla,&ui_menu_quick_preheat_abs,&ui_menu_quick_cooldown,&ui_menu_home_all,&ui_menu_set_simple,&ui_menu_quick_stopstepper MENU_PSON_ENTRY DEBUG_PRINT_EXTRA}
+#define UI_MENU_QUICK2 {UI_MENU_ADDCONDBACK &ui_menu_quick_speedmultiply,&ui_menu_quick_flowmultiply UI_TOOGLE_LIGHT_ENTRY UI_CHANGE_FIL_ENT,&ui_menu_quick_preheat_pla,&ui_menu_quick_preheat_abs,&ui_menu_quick_cooldown,&ui_menu_home_all,&ui_menu_quick_stopstepper MENU_PSON_ENTRY DEBUG_PRINT_EXTRA}
 UI_MENU(ui_menu_quick2,UI_MENU_QUICK2,8+UI_MENU_BACKCNT+MENU_PSON_COUNT+DEBUG_PRINT_COUNT+UI_TOGGLE_LIGHT_COUNT+UI_CHANGE_FIL_CNT)
 
 // **** Fan menu
@@ -753,6 +755,7 @@ UI_MENU_SUBMENU(ui_menu_conf_debug, UI_TEXT_DEBUGGING,ui_menu_debugging)
 
 // **** Advanced user menu (configuration)
 
+//#define UI_MENU_CONFIGURATION {UI_MENU_ADDCONDBACK &ui_menu_conf_general,&ui_menu_conf_accel,&ui_menu_conf_feed,&ui_menu_conf_extr,&ui_menu_conf_debug UI_MENU_EEPROM_COND UI_MENU_DELTA_COND UI_MENU_SL_COND}
 #define UI_MENU_CONFIGURATION {UI_MENU_ADDCONDBACK &ui_menu_conf_general,&ui_menu_conf_accel,&ui_menu_conf_feed,&ui_menu_conf_extr,&ui_menu_conf_debug UI_MENU_EEPROM_COND UI_MENU_DELTA_COND UI_MENU_SL_COND}
 UI_MENU(ui_menu_configuration,UI_MENU_CONFIGURATION,UI_MENU_BACKCNT+UI_MENU_EEPROM_CNT+UI_MENU_DELTA_CNT+UI_MENU_SL_CNT+5)
 
@@ -766,9 +769,10 @@ UI_MENU_SUBMENU(ui_menu_main6,UI_TEXT_ADJTEMPS,ui_menu_extruder)
 UI_MENU_SUBMENU(ui_menu_main7, UI_TEXT_QUICK_SETTINGS, ui_menu_quick2)
 
 // **** Advanced Main Menu
-
-#define UI_MENU_MAIN {UI_MENU_ADDCONDBACK  &ui_menu_main7,SD_PRINTFILE_ENTRY &ui_menu_main6,&ui_menu_main2,UI_MENU_FAN_COND UI_MENU_SD_COND &ui_menu_main5}
-UI_MENU(ui_menu_main,UI_MENU_MAIN,4+UI_MENU_BACKCNT+UI_MENU_SD_CNT+UI_MENU_FAN_CNT+SD_PRINTFILE_ENTRY_CNT)
+//#define UI_MENU_MAIN {UI_MENU_ADDCONDBACK  &ui_menu_main7,SD_PRINTFILE_ENTRY &ui_menu_main6,&ui_menu_main2,UI_MENU_FAN_COND UI_MENU_SD_COND &ui_menu_main5}
+#define UI_MENU_MAIN {UI_MENU_ADDCONDBACK  &ui_menu_main7,SD_PRINTFILE_ENTRY &ui_menu_main6, UI_MENU_FAN_COND UI_MENU_SD_COND &ui_menu_main5}
+//UI_MENU(ui_menu_main,UI_MENU_MAIN,4+UI_MENU_BACKCNT+UI_MENU_SD_CNT+UI_MENU_FAN_CNT+SD_PRINTFILE_ENTRY_CNT)
+UI_MENU(ui_menu_main,UI_MENU_MAIN,3+UI_MENU_BACKCNT+UI_MENU_SD_CNT+UI_MENU_FAN_CNT+SD_PRINTFILE_ENTRY_CNT)
 
 // **** Simple Main Menu
 
