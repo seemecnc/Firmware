@@ -3155,12 +3155,13 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            // Preheat bed and extruder, wait till bed is at temp, display heating warning
            //pushMenu(&ui_menu_cal_preheat,false);
            pushMenu(&ui_menu_cal_prepare,false);
+           GCode::executeFString(PSTR("G4 S3"));
            //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
            GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
            menuLevel--;
            //  Run G69 S2 (endstop offset calibration), display please wait message
            pushMenu(&ui_menu_calibrating_endstops,true);
-           GCode::executeFString(PSTR("G28\nG69 S2"));
+           GCode::executeFString(PSTR("G69 S2"));
            /*
            menuLevel--;
            // Run G32 S2 (Bed Level Matrix), display please wait message
@@ -3170,14 +3171,14 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            menuLevel--;
            // Run G68 (horizontal radius calibration), display please wait message
            pushMenu(&ui_menu_calibrating_radius,true);
-           GCode::executeFString(PSTR("G28\nG68"));    
+           GCode::executeFString(PSTR("G68"));    
            menuLevel--;
            // Run G30 S2 (set Z height), display please wait message
            pushMenu(&ui_menu_calibrating_height,true);
-           GCode::executeFString(PSTR("G28\nG30 S2"));
+           GCode::executeFString(PSTR("G30 S2"));
            menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
-           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0"));
-           GCode::executeFString(PSTR("M117 Saving Calibration\nM500"));
+           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nG4 S1"));
+           GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
          }
 // ERIS Delta         
 #elif PRINTER == 3
@@ -3187,12 +3188,13 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            // Preheat bed and extruder, wait till bed is at temp, display heating warning
            //pushMenu(&ui_menu_cal_preheat,false);
            pushMenu(&ui_menu_cal_prepare,false);
+           GCode::executeFString(PSTR("G4 S3"));
            //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
            GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
            menuLevel--;
            //  Run G69 S2 (endstop offset calibration), display please wait message
            pushMenu(&ui_menu_calibrating_endstops,true);
-           GCode::executeFString(PSTR("G28\nG69 S2"));
+           GCode::executeFString(PSTR("G69 S2"));
            /*
            menuLevel--;
            // Run G32 S2 (Bed Level Matrix), display please wait message
@@ -3202,14 +3204,14 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            menuLevel--;
            // Run G68 (horizontal radius calibration), display please wait message
            pushMenu(&ui_menu_calibrating_radius,true);
-           GCode::executeFString(PSTR("G28\nG68"));    
+           GCode::executeFString(PSTR("G68"));    
            menuLevel--;
            // Run G30 S2 (set Z height), display please wait message
            pushMenu(&ui_menu_calibrating_height,true);
-           GCode::executeFString(PSTR("G28\nG30 S2"));
+           GCode::executeFString(PSTR("G30 S2"));
            menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
-           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nM202 Z400"));
-           GCode::executeFString(PSTR("M117 Saving Calibration\nM500"));
+           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nM202 Z400\nG4 S1"));
+           GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
          }
 #endif         
          break;
