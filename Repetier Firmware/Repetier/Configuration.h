@@ -656,7 +656,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 60
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
@@ -666,7 +666,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 
-#elif PRINTER == 2  // Rostock MAX w/ molded carriages and ball cup arms
+#elif PRINTER == 2  // Rostock MAX v2 w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
@@ -675,7 +675,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 60
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
