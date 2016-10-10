@@ -429,8 +429,8 @@ UI_MENU_CHANGEACTION(ui_menu_horizontal_radius,UI_TEXT_HORIZONTAL_RADIUS,UI_ACTI
 UI_MENU(ui_menu_delta,UI_MENU_DELTA,4 + UI_SPEED + UI_MENU_BACKCNT)
 #endif
 
-// **** Please Wait menu
-UI_MENU_ACTION4C(ui_menu_cal_preheat, UI_ACTION_DUMMY, UI_TEXT_CAL_PREHEAT)
+// **** Please Wait menu changed to pepare
+UI_MENU_ACTION4C(ui_menu_cal_prepare, UI_ACTION_DUMMY, UI_TEXT_CAL_PREPARE)
 UI_MENU_ACTION4C(ui_menu_calibrating_radius, UI_ACTION_DUMMY, UI_TEXT_CALIBRATING_RADIUS)
 UI_MENU_ACTION4C(ui_menu_calibrating_endstops,  UI_ACTION_DUMMY, UI_TEXT_CALIBRATING_ENDSTOPS)
 UI_MENU_ACTION4C(ui_menu_calibrating_height,  UI_ACTION_DUMMY, UI_TEXT_CALIBRATING_HEIGHT)

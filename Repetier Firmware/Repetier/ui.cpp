@@ -3141,34 +3141,81 @@ int UIDisplay::executeAction(int action, bool allowMoves)
         break;
         case UI_ACTION_CLEAN_BED2:
         break;
-        case UI_ACTION_AUTOLEVEL_FULL:  //Full auto leveling command runs G69 S2, G29 S2, G32 S2 for full calibration with eeprom saving
-         {
+
+// ##################################################################################################################        
+// ############ HERES WHERE THE MACHINE SPECIFIC PROBING CODE FOR HE280/ACCEL HOTENDS IS ADAPTED ####################
+// ##################################################################################################################
+
+        case UI_ACTION_AUTOLEVEL_FULL: 
+// 1 is Orion 2 is Rostock MAX v2 5 is Rostock MAX v3
+#if PRINTER == 1 || PRINTER == 2 || PRINTER == 5
+{
            // Would prefer to clear screen and display please wait message here until commands are done.
            menuLevel = 0;
            // Preheat bed and extruder, wait till bed is at temp, display heating warning
-           pushMenu(&ui_menu_cal_preheat,false);
-           Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
-           GCode::executeFString(PSTR("G28\nM190 S65"));
+           //pushMenu(&ui_menu_cal_preheat,false);
+           pushMenu(&ui_menu_cal_prepare,false);
+           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
+           GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
            menuLevel--;
            //  Run G69 S2 (endstop offset calibration), display please wait message
            pushMenu(&ui_menu_calibrating_endstops,true);
            GCode::executeFString(PSTR("G28\nG69 S2"));
+           /*
            menuLevel--;
            // Run G32 S2 (Bed Level Matrix), display please wait message
            pushMenu(&ui_menu_calibrating_bed,true);
-           GCode::executeFString(PSTR("G28\nG32 S2"));    
+           GCode::executeFString(PSTR("G28\nG32 S2")); 
+           */   
            menuLevel--;
            // Run G68 (horizontal radius calibration), display please wait message
            pushMenu(&ui_menu_calibrating_radius,true);
            GCode::executeFString(PSTR("G28\nG68"));    
            menuLevel--;
-           // Run G29 S2 (set Z height), display please wait message
+           // Run G30 S2 (set Z height), display please wait message
            pushMenu(&ui_menu_calibrating_height,true);
-           GCode::executeFString(PSTR("G28\nG29 S2"));
+           GCode::executeFString(PSTR("G28\nG30 S2"));
            menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
            GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0"));
+           GCode::executeFString(PSTR("M117 Saving Calibration\nM500"));
          }
+// ERIS Delta         
+#elif PRINTER == 3
+{
+          // Would prefer to clear screen and display please wait message here until commands are done.
+           menuLevel = 0;
+           // Preheat bed and extruder, wait till bed is at temp, display heating warning
+           //pushMenu(&ui_menu_cal_preheat,false);
+           pushMenu(&ui_menu_cal_prepare,false);
+           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
+           GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
+           menuLevel--;
+           //  Run G69 S2 (endstop offset calibration), display please wait message
+           pushMenu(&ui_menu_calibrating_endstops,true);
+           GCode::executeFString(PSTR("G28\nG69 S2"));
+           /*
+           menuLevel--;
+           // Run G32 S2 (Bed Level Matrix), display please wait message
+           pushMenu(&ui_menu_calibrating_bed,true);
+           GCode::executeFString(PSTR("G28\nG32 S2")); 
+           */   
+           menuLevel--;
+           // Run G68 (horizontal radius calibration), display please wait message
+           pushMenu(&ui_menu_calibrating_radius,true);
+           GCode::executeFString(PSTR("G28\nG68"));    
+           menuLevel--;
+           // Run G30 S2 (set Z height), display please wait message
+           pushMenu(&ui_menu_calibrating_height,true);
+           GCode::executeFString(PSTR("G28\nG30 S2"));
+           menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
+           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nM202 Z400"));
+           GCode::executeFString(PSTR("M117 Saving Calibration\nM500"));
+         }
+#endif         
          break;
+         
+ // ################# END OF MACHINE SPECIFIC PROBING CODES        
+         
         case UI_ACTION_SET_ADVANCED: // Set menu to Advanced (Full) Menu
         {
           EEPROM::setIsAdvanced(1);
