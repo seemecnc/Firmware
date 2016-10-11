@@ -3154,10 +3154,11 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            menuLevel = 0;
            // Preheat bed and extruder, wait till bed is at temp, display heating warning
            //pushMenu(&ui_menu_cal_preheat,false);
-           pushMenu(&ui_menu_cal_prepare,false);
-           GCode::executeFString(PSTR("G4 S3"));
-           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
            GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
+           pushMenu(&ui_menu_cal_prepare,false);
+           GCode::executeFString(PSTR("G4 S10"));
+           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
+           //GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
            menuLevel--;
            //  Run G69 S2 (endstop offset calibration), display please wait message
            pushMenu(&ui_menu_calibrating_endstops,true);
@@ -3187,10 +3188,11 @@ int UIDisplay::executeAction(int action, bool allowMoves)
            menuLevel = 0;
            // Preheat bed and extruder, wait till bed is at temp, display heating warning
            //pushMenu(&ui_menu_cal_preheat,false);
-           pushMenu(&ui_menu_cal_prepare,false);
-           GCode::executeFString(PSTR("G4 S3"));
-           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
            GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
+           pushMenu(&ui_menu_cal_prepare,false);
+           GCode::executeFString(PSTR("G4 S10"));
+           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
+           //GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
            menuLevel--;
            //  Run G69 S2 (endstop offset calibration), display please wait message
            pushMenu(&ui_menu_calibrating_endstops,true);
