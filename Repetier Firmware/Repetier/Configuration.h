@@ -1,61 +1,60 @@
 /*
     This file is part of Repetier-Firmware.
-
     Repetier-Firmware is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
-
     Repetier-Firmware is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
     along with Repetier-Firmware.  If not, see <http://www.gnu.org/licenses/>.
-
 */
-
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
-
-/**************** READ FIRST ************************
-
-   This configuration file was created with the configuration tool. For that
-   reason, it does not contain the same informations as the original Configuration.h file.
-   It misses the comments and unused parts. Open this file file in the config tool
-   to see and change the data. You can also upload it to newer/older versions. The system
-   will silently add new options, so compilation continues to work.
-
-   This file is optimized for version 0.92
-   generator: http://www.repetier.com/firmware/v092/
-
-   If you are in doubt which named functions use which pins on your board, please check the
-   pins.h for the used name->pin assignments and your board documentation to verify it is
-   as you expect.
-
-*/
-#define ADVANCED_USER 1 // Change to 1 to unlock full menus
-#define NUM_EXTRUDER 1
-
-// 301 = RAMBO    302 = MINI_RAMBO
+// ############################################################################################
+//############################# Define your motherboard here! #################################
+// ############################################################################################
+// 301 = RAMBo    302 = MINI RAMBo
 #define MOTHERBOARD 301
 
-/* Define Priner being used
-   Orion = 1
-   Rostock Max V2 = 2
-   ERIS = 3
-   DROPLIT = 4
-   Rostock MAX v3 = 5
- */
+// ############################################################################################
+//########################### Define your Printer Model here! #################################
+// ############################################################################################
+// ###########   Orion = 1
+// ###########   Rostock Max V2 = 2
+// ###########   ERIS = 3
+// ###########   DROPLIT = 4
+// ###########   Rostock MAX v3 = 5
 #define PRINTER 5
 
 
+
+
+// ############################################################################################
+// ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
+// ########### ONLY ADVANCCED USERS SHOULD MODIFY ANYTHING BELOW THIS LINE ####################
+// ############################################################################################
+
+
+
+
+// ############################################################################################
+// ############ FW version info and build date for LCD and M115 string! #######################
+// ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "10102016" // in date format mmddyy
+#define FIRMWARE_DATE "20161011" // in date format yyyymmdd
+
+
+
+
+
+
+#ifndef CONFIGURATION_H
+#define CONFIGURATION_H
+#define ADVANCED_USER 1 // Change to 1 to unlock full menus
+#define NUM_EXTRUDER 1
 
 #include "pins.h"
-
 
 //  Microstepping mode of your stepper drivers
 #define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]

@@ -1,5 +1,4 @@
 /*
-    working on lcd probeing menus
     
     This file is part of Repetier-Firmware.
 
