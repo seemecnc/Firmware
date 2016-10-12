@@ -57,7 +57,7 @@
 #include "pins.h"
 
 //  Microstepping mode of your stepper drivers
-#define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
+#define MICROSTEP_MODES {16,16,16,16,16} // 1,2,4,8,16
 #if MOTHERBOARD == 301  // RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
 #elif MOTHERBOARD == 302  // Mini RAMBo
@@ -65,9 +65,9 @@
 #endif
 
 // ################## RAMBo Digipot Motor current control settings ################
-// Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
-#define MOTOR_CURRENT {140,140,140,130,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-
+// Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
+// use 140 for xyz and 130 for the E if using Kysan/AutomationTechnology motors and 175 xyz and 200 if using wantai motors
+#define MOTOR_CURRENT {140,140,140,130,0} 
 
 //################### Mini Rambo etc... motor current settings    #########
 //  Motor PWM current for mini rambo is X+Y on the same first value, Z on the next, then Extruder(s) on the last value
