@@ -11,24 +11,22 @@
     You should have received a copy of the GNU General Public License
     along with Repetier-Firmware.  If not, see <http://www.gnu.org/licenses/>.
 */
-// ############################################################################################
 //############################# Define your motherboard here! #################################
-// ############################################################################################
 // 301 = RAMBo    302 = MINI RAMBo
 #define MOTHERBOARD 301
 
+// ########################## Define your Printer Model here! #################################
 // ############################################################################################
-//########################### Define your Printer Model here! #################################
-// ############################################################################################
-// ###########   Orion = 1
-// ###########   Rostock Max V2 = 2
-// ###########   ERIS = 3
-// ###########   DROPLIT = 4
-// ###########   Rostock MAX v3 = 5
+// ###########   Orion = 1              #######################################################
+// ###########   Rostock Max V2 = 2     #######################################################
+// ###########   ERIS = 3               #######################################################
+// ###########   DROPLIT = 4            #######################################################
+// ###########   Rostock MAX v3 = 5     #######################################################
 #define PRINTER 5
 
-
-
+// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###############
+// 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
+#define POWER_SUPPLY 1
 
 // ############################################################################################
 // ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
@@ -38,11 +36,12 @@
 
 
 
+
 // ############################################################################################
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20161011" // in date format yyyymmdd
+#define FIRMWARE_DATE "20161014" // in date format yyyymmdd
 
 
 
@@ -368,15 +367,22 @@
 #define DISABLE_Z 0
 #define DISABLE_E 0
 
-// ######   Inverting Axis Settings
+// ######   Inverting Axis Settings for Orion/Rostock MAX v2/DropLit
 #if PRINTER == 1 || PRINTER == 2 || PRINTER ==4
 #define INVERT_X_DIR 1
+// need to invert Y axis for newer PSU Orions
+#if POWER_SUPPLY == 2
+#define INVERT_Y_DIR 1
+#else
 #define INVERT_Y_DIR 0
+#endif
 #define INVERT_Z_DIR 1
+// ERIS Delta
 #elif PRINTER == 3
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
+// Rostock MAX v3
 #elif PRINTER == 5
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
