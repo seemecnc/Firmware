@@ -1,30 +1,20 @@
 /*
-    This file is part of Repetier-Firmware.
-    Repetier-Firmware is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    Repetier-Firmware is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    You should have received a copy of the GNU General Public License
-    along with Repetier-Firmware.  If not, see <http://www.gnu.org/licenses/>.
+Printer Model List as used throughout this firmware
+
+Orion = 1
+Rostock Max V2 = 2
+ERIS = 3
+DROPLIT = 4
+Rostock MAX v3 = 5
 */
-//############################# Define your motherboard here! #################################
+// ### Define your Printer Model here! ###
+#define PRINTER 5
+
+// ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
 #define MOTHERBOARD 301
 
-// ########################## Define your Printer Model here! #################################
-// ############################################################################################
-// ###########   Orion = 1              #######################################################
-// ###########   Rostock Max V2 = 2     #######################################################
-// ###########   ERIS = 3               #######################################################
-// ###########   DROPLIT = 4            #######################################################
-// ###########   Rostock MAX v3 = 5     #######################################################
-#define PRINTER 5
-
-// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###############
+// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
 // 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
 #define POWER_SUPPLY 1
 
