@@ -31,7 +31,7 @@ Rostock MAX v3 = 5
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20161014" // in date format yyyymmdd
+#define FIRMWARE_DATE "20161109" // in date format yyyymmdd
 
 
 
@@ -641,7 +641,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_PIN 16
 #endif
 
-
+#define Z_PROBE_TOLERANCE .1
 #if PRINTER == 1  //  Orion Delta w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  

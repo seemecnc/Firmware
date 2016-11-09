@@ -847,7 +847,7 @@ void Commands::processGCode(GCode *com)
         do{
           sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // First tap
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // Second tap
-          if ((sum1 - sum) > .1 || (sum1 - sum) < - 0.1){ //tap reports distance, if more or less than .1mm, it will re-run
+          if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             sum2 = sum1;
             sum = 0;
             if (repeats == 5){
@@ -861,7 +861,7 @@ void Commands::processGCode(GCode *com)
             sum2 = 0;
             repeats = 1;
           }
-        } while (sum2 > 0.1); // repeat until taps are within .1 mm
+        } while (sum2 > Z_PROBE_TOLERANCE); // repeat until taps are within .1 mm
         
         if(sum < 0) break;
         Printer::moveTo(EEPROM::zProbeX2(),EEPROM::zProbeY2(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
@@ -869,7 +869,7 @@ void Commands::processGCode(GCode *com)
         do{
           sum1 = Printer::runZProbe(false,false); // First tap
           last = Printer::runZProbe(false,false); // Second tap
-          if ((sum1 - last) > .1 || (sum1 - last) < - 0.1){
+          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             sum2 = last;
             last = 0;
             if (repeats == 5){
@@ -883,7 +883,7 @@ void Commands::processGCode(GCode *com)
             sum2 = 0;
             repeats = 1;
           }
-        } while (sum2 > 0.1); // Repeat until both taps are within .1 mm
+        } while (sum2 > Z_PROBE_TOLERANCE); // Repeat until both taps are within .1 mm
         
         if(last < 0) break;
         
@@ -893,7 +893,7 @@ void Commands::processGCode(GCode *com)
         do{
           sum1 = Printer::runZProbe(false,true); // First tap
           last = Printer::runZProbe(false,true); // Second tap
-          if ((sum1 - last) > .1 || (sum1 - last) < - 0.1){
+          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             sum2 = last;
             last = 0;
             if (repeats == 5){
@@ -907,7 +907,7 @@ void Commands::processGCode(GCode *com)
             sum2 = 0;
             repeats = 1;
           }
-        } while (sum2 > 0.1); // Repeat until both taps are within .1 mm
+        } while (sum2 > Z_PROBE_TOLERANCE); // Repeat until both taps are within .1 mm
         
         if(last < 0) break;
         sum += last;
@@ -967,7 +967,7 @@ void Commands::processGCode(GCode *com)
         
           sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // First tap
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // Second tap
-          if ((sum1 - sum) > .1 || (sum1 - sum) < - 0.1){ //tap reports distance, if more or less than .1mm, it will re-run
+          if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
               Com::printErrorFLN(Com::tZProbeFailed);
               sum = -1;
           }
@@ -1095,7 +1095,7 @@ void Commands::processGCode(GCode *com)
         
         sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
-        if ((sum1 - sum) > .1 || (sum1 - sum) < - 0.1){ //tap reports distance, if more or less than .1mm, it will re-run
+        if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printErrorFLN(Com::tZProbeFailed);
             sum = -1;
             continue;
@@ -1105,14 +1105,14 @@ void Commands::processGCode(GCode *com)
         
           sum1 = Printer::runZProbe(false,true); // First tap
           last = Printer::runZProbe(false,true); // Second tap
-          if ((sum1 - last) > .1 || (sum1 - last) < - 0.1){
+          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
               Com::printErrorFLN(Com::tZProbeFailed);
               sum = -1;
               continue;
           }
         } while (sum < 0);
         
-        sum = (sum - last)*80;
+        sum = (sum - last)*AXIS_STEPS_PER_MM;
         if(sum<0) 
         {
           sum=-sum;
@@ -1161,35 +1161,35 @@ void Commands::processGCode(GCode *com)
        
           sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
-          if ((sum1 - sum) > .1 || (sum1 - sum) < - 0.1){ //tap reports distance, if more or less than .1mm, it will re-run
+          if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             sum = -1;
             continue;
           }
 
-        int32_t offsetX = ((sum * 80) - (Z_PROBE_BED_DISTANCE * 80)), offsetStepsX = EEPROM::deltaTowerXOffsetSteps();
+        int32_t offsetX = ((sum * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsX = EEPROM::deltaTowerXOffsetSteps();
         Printer::moveTo(EEPROM::zProbeX2(),EEPROM::zProbeY2(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
  
           sum1 = Printer::runZProbe(false,false); //First tap Y tower
           last = Printer::runZProbe(false,false); //Second tap Y tower
-          if ((sum1 - last) > .1 || (sum1 - last) < - 0.1){
+          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             last = -1; // fail flag to stop probe
             continue;
           }
         
-        int32_t offsetY = ((last * 80) - (Z_PROBE_BED_DISTANCE * 80)), offsetStepsY = EEPROM::deltaTowerYOffsetSteps();
+        int32_t offsetY = ((last * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsY = EEPROM::deltaTowerYOffsetSteps();
         Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
         
           sum1 = Printer::runZProbe(false,true); //First tap Z tower
           last = Printer::runZProbe(false,true); //Second tap Z tower
-          if((sum1 - last) > .1 || (sum1 - last) < - 0.1){
+          if((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             last = -1; // fail flag to stop probe
             continue;
           }
           
-        int32_t offsetZ = ((last * 80) - (Z_PROBE_BED_DISTANCE * 80)), offsetStepsZ = EEPROM::deltaTowerZOffsetSteps();
+        int32_t offsetZ = ((last * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsZ = EEPROM::deltaTowerZOffsetSteps();
     
         if(com->hasS() && com->S)
         {
