@@ -414,15 +414,15 @@ Rostock MAX v3 = 5
 #define PRINTER_RADIUS 145.7
 #define Z_MAX_LENGTH 230.0
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #elif PRINTER == 2  // Rostock MAX v2
-#define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
+#define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 200.0
 #define PRINTER_RADIUS 200.0
 #define Z_MAX_LENGTH 350
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #elif PRINTER == 3 // Eris Delta
 #define DELTA_DIAGONAL_ROD 134.9  // 134.58 early measurement
@@ -441,12 +441,12 @@ Rostock MAX v3 = 5
 #define CARRIAGE_HORIZONTAL_OFFSET 100
 
 #elif PRINTER == 5  // Rostock MAX v3 
-#define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
+#define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 200.0
 #define PRINTER_RADIUS 200.0
 #define Z_MAX_LENGTH 375
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #endif
 #define DELTA_ALPHA_A 210
@@ -663,7 +663,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 #elif PRINTER == 2  // Rostock MAX v2 w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
@@ -720,7 +720,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 #elif PRINTER == 5  // Rostock MAX v3
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0

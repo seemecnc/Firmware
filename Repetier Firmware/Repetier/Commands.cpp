@@ -970,6 +970,8 @@ void Commands::processGCode(GCode *com)
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
               Com::printErrorFLN(Com::tZProbeFailed);
               sum = -1;
+          }else{
+            sum = (sum + sum1) / 2;
           }
     }while(sum < 1);
         if(com->hasS() && com->S)
@@ -1084,21 +1086,21 @@ void Commands::processGCode(GCode *com)
         bool oldAutolevel = Printer::isAutolevelActive();
         float sum = 0, sum1 = 0, last, hradius,oldFeedrate = Printer::feedrate;
     do{
-        Printer::radius0 = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET; // set horizontal radius to firmware default
+        //Printer::radius0 = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET; // set horizontal radius to firmware default
         EEPROM::storeDataIntoEEPROM(); //save firmware horizontal radius before calibration
         EEPROM::readDataFromEEPROM();
-        
         Printer::homeAxis(true,true,true);
         GCode::executeFString(Com::tZProbeStartScript);
         Printer::setAutolevelActive(false);
         Printer::moveTo(0,0,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
-        
         sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printErrorFLN(Com::tZProbeFailed);
             sum = -1;
             continue;
+        }else{
+          sum = (sum + sum1) / 2;
         }
 
         Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
@@ -1109,6 +1111,8 @@ void Commands::processGCode(GCode *com)
               Com::printErrorFLN(Com::tZProbeFailed);
               sum = -1;
               continue;
+          }else{
+            last = (last + sum1) / 2;
           }
         } while (sum < 0);
         
@@ -1165,6 +1169,8 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             sum = -1;
             continue;
+          }else{
+            sum = (sum + sum1) / 2;
           }
 
         int32_t offsetX = ((sum * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsX = EEPROM::deltaTowerXOffsetSteps();
@@ -1176,6 +1182,8 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             last = -1; // fail flag to stop probe
             continue;
+          }else{
+            last = (last + sum1) / 2;
           }
         
         int32_t offsetY = ((last * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsY = EEPROM::deltaTowerYOffsetSteps();
@@ -1187,6 +1195,8 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             last = -1; // fail flag to stop probe
             continue;
+          }else{
+            last = (last + sum1) / 2;
           }
           
         int32_t offsetZ = ((last * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsZ = EEPROM::deltaTowerZOffsetSteps();
