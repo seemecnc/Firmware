@@ -1100,7 +1100,7 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed);
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
-              probeSensitivity++;
+              probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
               accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
               accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -1120,7 +1120,7 @@ void Commands::processGCode(GCode *com)
               Com::printErrorFLN(Com::tZProbeFailed);
               Com::printFLN(PSTR("Current Probe Sensitivity:"), probeSensitivity );
               accelerometer_recv(0x32);
-              probeSensitivity++;
+              probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
               accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
               accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -1188,7 +1188,7 @@ void Commands::processGCode(GCode *com)
               accelerometer_recv(0x32);
               if ( com->hasS() )
               {
-                probeSensitivity++;
+                probeSensitivity+=2;
                 Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
                 accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
                 accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -1210,7 +1210,7 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
-              probeSensitivity++;
+              probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
               accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
               accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -1231,7 +1231,7 @@ void Commands::processGCode(GCode *com)
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
-              probeSensitivity++;
+              probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
               accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
               accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -1262,6 +1262,7 @@ void Commands::processGCode(GCode *com)
           {
            offsetY = offsetStepsY + (offsetY - offsetX);
            offsetZ = offsetStepsZ + (offsetZ - offsetX);
+           offsetX = 0;
            EEPROM::setDeltaTowerYOffsetSteps(offsetY);
            EEPROM::setDeltaTowerZOffsetSteps(offsetZ);
           }
@@ -1271,6 +1272,7 @@ void Commands::processGCode(GCode *com)
             offsetZ = offsetStepsZ + (offsetZ - offsetY);
             EEPROM::setDeltaTowerXOffsetSteps(offsetX);
             EEPROM::setDeltaTowerZOffsetSteps(offsetZ);
+            offsetY = 0;
           }
           else if(offsetZ < offsetX && offsetZ < offsetY)
           {
@@ -1278,16 +1280,19 @@ void Commands::processGCode(GCode *com)
             offsetY = offsetStepsY + (offsetY - offsetZ);
             EEPROM::setDeltaTowerXOffsetSteps(offsetX);
             EEPROM::setDeltaTowerYOffsetSteps(offsetY);
+            offsetZ = 0;
           }
-          //if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
-          //  sum = -1;
-          //  Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH _ TRYING AGAIN: "), probeSensitivity);
-          //}else{
+          if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
+            sum = -1;
+            Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH _ TRYING AGAIN: "), probeSensitivity);
+            Com::printFLN(PSTR("X: "), offsetX);
+            Com::printFLN(PSTR("Y: "), offsetY);
+            Com::printFLN(PSTR("Z: "), offsetZ);
+          }else{
             EEPROM::storeDataIntoEEPROM();
-          //}
+          }
         }
     }while(sum < 0 || last < 0);
-        #define Z_PROBE_SESNSITIVITY = probeSensitivity;
         Printer::updateCurrentPosition(true);
         printCurrentPosition(PSTR("G69 "));
         GCode::executeFString(Com::tZProbeEndScript);
