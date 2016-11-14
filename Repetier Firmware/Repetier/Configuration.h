@@ -31,7 +31,7 @@ Rostock MAX v3 = 5
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20161109" // in date format yyyymmdd
+#define FIRMWARE_DATE "20161114" // in date format yyyymmdd
 
 
 
