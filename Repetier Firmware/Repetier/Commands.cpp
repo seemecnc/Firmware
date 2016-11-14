@@ -1150,6 +1150,7 @@ void Commands::processGCode(GCode *com)
 #else
         bool oldAutolevel = Printer::isAutolevelActive();
         float sum1 = 0, sum = 0, last,oldFeedrate = Printer::feedrate;
+        int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
     do{
         if(com->hasS() && com->S == 2){ // only wipe values if saving the new values
         EEPROM::setDeltaTowerXOffsetSteps(0); // set X offset to 0
@@ -1167,6 +1168,17 @@ void Commands::processGCode(GCode *com)
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            if(probeSensitivity < 25){
+              accelerometer_recv(0x32);
+              if ( com->hasS() )
+              {
+                probeSensitivity++;
+                Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+                accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+                accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+                accelerometer_recv(0x32);
+              }
+            }
             sum = -1;
             continue;
           }else{
@@ -1180,6 +1192,17 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,false); //Second tap Y tower
           if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            if(probeSensitivity < 25){
+              accelerometer_recv(0x32);
+              if ( com->hasS() )
+              {
+                probeSensitivity++;
+                Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+                accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+                accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+                accelerometer_recv(0x32);
+              }
+            }
             last = -1; // fail flag to stop probe
             continue;
           }else{
@@ -1193,6 +1216,17 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,true); //Second tap Z tower
           if((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            if(probeSensitivity < 25){
+              accelerometer_recv(0x32);
+              if ( com->hasS() )
+              {
+                probeSensitivity++;
+                Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+                accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+                accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+                accelerometer_recv(0x32);
+              }
+            }
             last = -1; // fail flag to stop probe
             continue;
           }else{
