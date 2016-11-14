@@ -1097,7 +1097,7 @@ void Commands::processGCode(GCode *com)
         sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-            Com::printErrorFLN(Com::tZProbeFailed);
+            Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );  
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
@@ -1117,8 +1117,7 @@ void Commands::processGCode(GCode *com)
           sum1 = Printer::runZProbe(false,true); // First tap
           last = Printer::runZProbe(false,true); // Second tap
           if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
-              Com::printErrorFLN(Com::tZProbeFailed);
-              Com::printFLN(PSTR("Current Probe Sensitivity:"), probeSensitivity );
+              Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1183,7 +1182,7 @@ void Commands::processGCode(GCode *com)
           sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-            Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
               if ( com->hasS() )
@@ -1207,7 +1206,7 @@ void Commands::processGCode(GCode *com)
           sum1 = Printer::runZProbe(false,false); //First tap Y tower
           last = Printer::runZProbe(false,false); //Second tap Y tower
           if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
-            Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
@@ -1228,7 +1227,7 @@ void Commands::processGCode(GCode *com)
           sum1 = Printer::runZProbe(false,true); //First tap Z tower
           last = Printer::runZProbe(false,true); //Second tap Z tower
           if((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
-            Com::printErrorFLN(Com::tZProbeFailed); //output to terminal Z probe failure
+            Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
             if(probeSensitivity < 25){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
