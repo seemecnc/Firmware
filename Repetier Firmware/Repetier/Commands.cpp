@@ -1086,6 +1086,7 @@ void Commands::processGCode(GCode *com)
         bool oldAutolevel = Printer::isAutolevelActive();
         float sum = 0, sum1 = 0, last, hradius,oldFeedrate = Printer::feedrate;
         int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
+        float defaultRadius = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET;
     do{
         //Printer::radius0 = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET; // set horizontal radius to firmware default
         EEPROM::storeDataIntoEEPROM(); //save firmware horizontal radius before calibration
@@ -1144,6 +1145,10 @@ void Commands::processGCode(GCode *com)
         {
          hradius = (sum / Printer::radius0)*2;
          Printer::radius0 = Printer::radius0 + hradius;
+        }
+        if(Printer::radius0 / defaultRadius > 1.1 || Printer::radius0 / defaultRadius < 0.9){
+          Printer::radius0 = defaultRadius;
+          Com::printFLN(PSTR("Calculated Radius is bad :"), probeSensitivity );
         }
         EEPROM::storeDataIntoEEPROM();
         Printer::feedrate = oldFeedrate;
