@@ -8,11 +8,11 @@ DROPLIT = 4
 Rostock MAX v3 = 5
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 3
+#define PRINTER 5
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
-#define MOTHERBOARD 302
+#define MOTHERBOARD 301
 
 // ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
 // 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
