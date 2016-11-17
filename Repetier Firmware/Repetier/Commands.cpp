@@ -838,7 +838,7 @@ void Commands::processGCode(GCode *com)
         }
         Printer::homeAxis(true,true,true);
         GCode::executeFString(Com::tZProbeStartScript);
-        bool oldAutolevel = Printer::isAutolevelActive();
+        //bool oldAutolevel = Printer::isAutolevelActive();
         Printer::setAutolevelActive(false);
         float sum = 0, sum1 = 0, sum2 = 0,last,oldFeedrate = Printer::feedrate;
         int repeats = 1;
@@ -934,7 +934,8 @@ void Commands::processGCode(GCode *com)
 #endif
         }
         Printer::feedrate = oldFeedrate;
-        Printer::setAutolevelActive(oldAutolevel);
+        //Printer::setAutolevelActive(oldAutolevel);
+        Printer::setAutolevelActive(true);
         if(com->hasS() && com->S == 2)
             EEPROM::storeDataIntoEEPROM();
         Printer::updateCurrentPosition(true);
@@ -953,7 +954,7 @@ void Commands::processGCode(GCode *com)
         Printer::feedrate = oldFeedrate;
 #else
         float sum = 0, sum1 = 0,last,oldFeedrate = Printer::feedrate;
-        bool oldAutolevel = Printer::isAutolevelActive();
+        //bool oldAutolevel = Printer::isAutolevelActive();
     do{
         if(com->hasS() && com->S == 2){ // only reset eeprom if saving new value
         Printer::zLength = Z_MAX_LENGTH; // set Z height to firmware default
@@ -994,7 +995,8 @@ void Commands::processGCode(GCode *com)
 #endif
         }
         Printer::feedrate = oldFeedrate;
-        Printer::setAutolevelActive(oldAutolevel);
+        //Printer::setAutolevelActive(oldAutolevel);
+        Printer::setAutolevelActive(true);
         if(com->hasS() && com->S == 2)
             EEPROM::storeDataIntoEEPROM();
         Printer::updateCurrentPosition(true);
@@ -1083,7 +1085,7 @@ void Commands::processGCode(GCode *com)
         Printer::measureDistortion();
         Printer::feedrate = oldFeedrate;
 #else
-        bool oldAutolevel = Printer::isAutolevelActive();
+        //bool oldAutolevel = Printer::isAutolevelActive();
         float sum = 0, sum1 = 0, last, hradius,oldFeedrate = Printer::feedrate;
         int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
         float defaultRadius = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET;
@@ -1099,7 +1101,7 @@ void Commands::processGCode(GCode *com)
         sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );  
-            if(probeSensitivity < 25){
+            if(probeSensitivity < 27){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1152,7 +1154,8 @@ void Commands::processGCode(GCode *com)
         }
         EEPROM::storeDataIntoEEPROM();
         Printer::feedrate = oldFeedrate;
-        Printer::setAutolevelActive(oldAutolevel);
+        //Printer::setAutolevelActive(oldAutolevel);
+        Printer::setAutolevelActive(true);
         Printer::updateCurrentPosition(true);
         printCurrentPosition(PSTR("hehe"));
         GCode::executeFString(Com::tZProbeEndScript);
@@ -1168,7 +1171,7 @@ void Commands::processGCode(GCode *com)
         Printer::measureDistortion();
         Printer::feedrate = oldFeedrate;
 #else
-        bool oldAutolevel = Printer::isAutolevelActive();
+        //bool oldAutolevel = Printer::isAutolevelActive();
         float sum1 = 0, sum = 0, last,oldFeedrate = Printer::feedrate;
         int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
     do{
@@ -1188,7 +1191,7 @@ void Commands::processGCode(GCode *com)
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 25){
+            if(probeSensitivity < 27){
               accelerometer_recv(0x32);
               if ( com->hasS() )
               {
@@ -1212,7 +1215,7 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,false); //Second tap Y tower
           if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 25){
+            if(probeSensitivity < 27){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1233,7 +1236,7 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,true); //Second tap Z tower
           if((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 25){
+            if(probeSensitivity < 27){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1258,7 +1261,8 @@ void Commands::processGCode(GCode *com)
             Com::printFLN(Com::tZProbePrinterHeight,Printer::zLength);
         }
         Printer::feedrate = oldFeedrate;
-        Printer::setAutolevelActive(oldAutolevel);
+        //Printer::setAutolevelActive(oldAutolevel);
+        Printer::setAutolevelActive(true);
 
         if(com->hasS() && com->S == 2)
         {
