@@ -1152,7 +1152,6 @@ void Commands::processGCode(GCode *com)
           Printer::radius0 = defaultRadius;
           Com::printFLN(PSTR("Calculated Radius is bad :"), probeSensitivity );
         }
-        EEPROM::storeDataIntoEEPROM();
         Printer::feedrate = oldFeedrate;
         //Printer::setAutolevelActive(oldAutolevel);
         Printer::setAutolevelActive(true);
@@ -1161,6 +1160,7 @@ void Commands::processGCode(GCode *com)
         GCode::executeFString(Com::tZProbeEndScript);
         Printer::feedrate = oldFeedrate;
         Printer::homeAxis(true,true,true);
+        EEPROM::storeDataIntoEEPROM();
 #endif // DISTORTION_CORRECTION
     }
     break;
