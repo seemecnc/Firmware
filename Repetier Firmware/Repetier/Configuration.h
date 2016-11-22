@@ -361,7 +361,7 @@ Rostock MAX v3 = 5
 #if PRINTER == 1 || PRINTER == 2 || PRINTER ==4
 #define INVERT_X_DIR 1
 // need to invert Y axis for newer PSU Orions
-#if POWER_SUPPLY == 2
+#if POWER_SUPPLY == 2 && PRINTER == 1
 #define INVERT_Y_DIR 1
 #else
 #define INVERT_Y_DIR 0
