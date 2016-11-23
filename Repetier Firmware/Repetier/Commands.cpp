@@ -1044,11 +1044,13 @@ void Commands::processGCode(GCode *com)
       Printer::feedrate = oldFeedrate;
       Printer::homeAxis(true,true,true);
       EEPROM::storeDataIntoEEPROM();
+#if SDSUPPORT == 1
       if(sd.selectFile("g29cal.gcode", true)){
         sd.stopPrint();
         sd.deleteFile("g29cal.gcode");
         sd.initsd();
       }
+#endif
       GCode::executeFString(PSTR("M117 CALIBRATION COMPLETE"));
     }
     break;
