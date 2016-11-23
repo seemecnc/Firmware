@@ -78,8 +78,6 @@ void SDCard::initsd()
     if(READ(SDCARDDETECT) != SDCARDDETECTINVERTED)
         return;
 #endif
-    /*if(dir[0].isOpen())
-        dir[0].close();*/
     if(!fat.begin(SDSS, SPI_FULL_SPEED))
     {
         Com::printFLN(Com::tSDInitFail);
@@ -89,9 +87,10 @@ void SDCard::initsd()
     Printer::setMenuMode(MENU_MODE_SD_MOUNTED, true);
 
     fat.chdir();
-    if(selectFile("init.g", true))
-    {
-        startPrint();
+    if(!selectFile("calibrate.gcode", true)){
+      SDCard::startWrite("calibrate.gcode");
+      file.write("G29", strlen("G29"));
+      SDCard::finishWrite();
     }
 #endif
 }
@@ -463,21 +462,6 @@ void SDCard::makeDirectory(char *filename)
         Com::printFLN(Com::tCreationFailed);
     }
 }
-
-#ifdef GLENN_DEBUG
-void SDCard::writeToFile()
-{
-  size_t nbyte;
-  char szName[10];
-
-  strcpy(szName, "Testing\r\n");
-  nbyte = file.write(szName, strlen(szName));
-  Com::print("L=");
-  Com::print((long)nbyte);
-  Com::println();
-}
-
-#endif
 
 #endif
 
