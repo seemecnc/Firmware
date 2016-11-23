@@ -852,7 +852,7 @@ void Commands::processGCode(GCode *com)
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
         if ((xProbe - verify) > Z_PROBE_TOLERANCE || (xProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
           Com::printFLN(PSTR("Z probe (X Tower) failed on sensitivity: "), probeSensitivity );
-          if(probeSensitivity < 27){
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
             Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -872,7 +872,7 @@ void Commands::processGCode(GCode *com)
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
         if ((yProbe - verify) > Z_PROBE_TOLERANCE || (yProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
           Com::printFLN(PSTR("Z probe (Y Tower) failed on sensitivity: "), probeSensitivity );
-          if(probeSensitivity < 27){
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
             Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -892,7 +892,7 @@ void Commands::processGCode(GCode *com)
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
         if ((zProbe - verify) > Z_PROBE_TOLERANCE || (zProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
           Com::printFLN(PSTR("Z probe (Z Tower) failed on sensitivity: "), probeSensitivity );
-          if(probeSensitivity < 27){
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
             Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -974,9 +974,10 @@ void Commands::processGCode(GCode *com)
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((cProbe - verify) > Z_PROBE_TOLERANCE || (cProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
           Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
-          if(probeSensitivity < 27){
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
+            radiusLoop--;
             Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
@@ -997,7 +998,7 @@ void Commands::processGCode(GCode *com)
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((zProbe - verify) > Z_PROBE_TOLERANCE || (zProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
           Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
-          if(probeSensitivity < 27){
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
             Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1203,7 +1204,7 @@ void Commands::processGCode(GCode *com)
         sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );  
-            if(probeSensitivity < 27){
+            if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1296,7 +1297,7 @@ void Commands::processGCode(GCode *com)
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 27){
+            if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
               accelerometer_recv(0x32);
               if ( com->hasS() )
               {
@@ -1320,7 +1321,7 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,false); //Second tap Y tower
           if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 27){
+            if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
@@ -1341,7 +1342,7 @@ void Commands::processGCode(GCode *com)
           last = Printer::runZProbe(false,true); //Second tap Z tower
           if((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
             Com::printFLN(PSTR("Z probe failed on sensitivity: "), probeSensitivity );
-            if(probeSensitivity < 27){
+            if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
               accelerometer_recv(0x32);
               probeSensitivity+=2;
               Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
