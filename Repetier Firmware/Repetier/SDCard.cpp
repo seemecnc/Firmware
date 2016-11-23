@@ -87,11 +87,6 @@ void SDCard::initsd()
     Printer::setMenuMode(MENU_MODE_SD_MOUNTED, true);
 
     fat.chdir();
-    if(!selectFile("calibrate.gcode", true)){
-      SDCard::startWrite("calibrate.gcode");
-      file.write("G29", strlen("G29"));
-      SDCard::finishWrite();
-    }
 #endif
 }
 
