@@ -824,128 +824,228 @@ void Commands::processGCode(GCode *com)
     }
     break;
 #if FEATURE_Z_PROBE
-    case 29: // G29 3 points, build average or distortion compensation
+    case 29: // G29 Probe for Endstop Offsets, Horizontal Radius, and Z Height
     {
-#if DISTORTION_CORRECTION
-        float oldFeedrate = Printer::feedrate;
-        Printer::measureDistortion();
-        Printer::feedrate = oldFeedrate;
-#else
-        if(com->hasS() && com->S == 2){ // only reset value if saving new value
-        Printer::zLength = Z_MAX_LENGTH; // set Z height to firmware default
-        EEPROM::storeDataIntoEEPROM(); // store default before calibration
-        EEPROM::readDataFromEEPROM();
-        }
+      GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
+      float xProbe = 0, yProbe = 0, zProbe = 0, verify = 0, oldFeedrate = Printer::feedrate;
+      int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
+      bool failedProbe = false;
+      EEPROM::setDeltaTowerXOffsetSteps(0); // set X offset to 0
+      EEPROM::setDeltaTowerYOffsetSteps(0); // set Y offset to 0
+      EEPROM::setDeltaTowerZOffsetSteps(0); // set Z offset to 0
+      EEPROM::storeDataIntoEEPROM(); // store offsets to 0 before doing anything
+      EEPROM::readDataFromEEPROM();
+
+      //Crank up the max Z accel for the Eris
+#if PRINTER == 3
+      Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 1850;
+      Printer::updateDerivedParameter();
+#endif
+
+      do{
         Printer::homeAxis(true,true,true);
         GCode::executeFString(Com::tZProbeStartScript);
-        //bool oldAutolevel = Printer::isAutolevelActive();
         Printer::setAutolevelActive(false);
-        float sum = 0, sum1 = 0, sum2 = 0,last,oldFeedrate = Printer::feedrate;
-        int repeats = 1;
+
         Printer::moveTo(EEPROM::zProbeX1(),EEPROM::zProbeY1(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
-        
-        do{
-          sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // First tap
-          sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // Second tap
-          if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-            sum2 = sum1;
-            sum = 0;
-            if (repeats == 5){
-              Com::printErrorFLN(Com::tZProbeFailed);
-              sum = -1;
-              break;
-            }
-            ++repeats;
+        xProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
+        verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
+        if ((xProbe - verify) > Z_PROBE_TOLERANCE || (xProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
+          Com::printFLN(PSTR("Z probe (X Tower) failed on sensitivity: "), probeSensitivity );
+          if(probeSensitivity < 27){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
           }
-          else{
-            sum2 = 0;
-            repeats = 1;
-          }
-        } while (sum2 > Z_PROBE_TOLERANCE); // repeat until taps are within .1 mm
-        
-        if(sum < 0) break;
-        Printer::moveTo(EEPROM::zProbeX2(),EEPROM::zProbeY2(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
-        
-        do{
-          sum1 = Printer::runZProbe(false,false); // First tap
-          last = Printer::runZProbe(false,false); // Second tap
-          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
-            sum2 = last;
-            last = 0;
-            if (repeats == 5){
-              Com::printErrorFLN(Com::tZProbeFailed);
-              last = -1;
-              break;
-            }
-            ++repeats;
-          }
-          else{
-            sum2 = 0;
-            repeats = 1;
-          }
-        } while (sum2 > Z_PROBE_TOLERANCE); // Repeat until both taps are within .1 mm
-        
-        if(last < 0) break;
-        
-        sum += last;
-        Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
-        
-        do{
-          sum1 = Printer::runZProbe(false,true); // First tap
-          last = Printer::runZProbe(false,true); // Second tap
-          if ((sum1 - last) > Z_PROBE_TOLERANCE || (sum1 - last) < - Z_PROBE_TOLERANCE){
-            sum2 = last;
-            last = 0;
-            if (repeats == 5){
-              Com::printErrorFLN(Com::tZProbeFailed);
-              last = -1;
-              break;
-            }
-            ++repeats;
-          }
-          else{
-            sum2 = 0;
-            repeats = 1;
-          }
-        } while (sum2 > Z_PROBE_TOLERANCE); // Repeat until both taps are within .1 mm
-        
-        if(last < 0) break;
-        sum += last;
-        sum *= 0.33333333333333;
-        sum = sum;
-        Com::printFLN(Com::tZProbeAverage,sum);
-        if(com->hasS() && com->S)
-        {
-#if MAX_HARDWARE_ENDSTOP_Z
-#if DRIVE_SYSTEM==DELTA
-            Printer::updateCurrentPosition();
-            Printer::zLength += sum - Printer::currentPosition[Z_AXIS];
-            Printer::updateDerivedParameter();
-            //Printer::homeAxis(true,true,true);
-#else
-            Printer::currentPositionSteps[Z_AXIS] = sum * Printer::axisStepsPerMM[Z_AXIS];
-            Printer::zLength = Printer::runZMaxProbe() + sum-ENDSTOP_Z_BACK_ON_HOME;
-#endif
-            Com::printInfoFLN(Com::tZProbeZReset);
-            Com::printFLN(Com::tZProbePrinterHeight,Printer::zLength);
-#else
-            Printer::currentPositionSteps[Z_AXIS] = sum * Printer::axisStepsPerMM[Z_AXIS];
-            Com::printFLN(PSTR("Adjusted z origin"));
-#endif
+          xProbe = -1; failedProbe = true;
+          continue;
+        }else{
+          xProbe = (xProbe + verify) / 2;
         }
+        int32_t offsetX = ((xProbe * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsX = EEPROM::deltaTowerXOffsetSteps();
+
+        Printer::moveTo(EEPROM::zProbeX2(),EEPROM::zProbeY2(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
+        yProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
+        verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
+        if ((yProbe - verify) > Z_PROBE_TOLERANCE || (yProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
+          Com::printFLN(PSTR("Z probe (Y Tower) failed on sensitivity: "), probeSensitivity );
+          if(probeSensitivity < 27){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
+          }
+          yProbe = -1; failedProbe = true;
+          continue;
+        }else{
+          yProbe = (yProbe + verify) / 2;
+        }
+        int32_t offsetY = ((yProbe * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsY = EEPROM::deltaTowerYOffsetSteps();
+
+        Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
+        zProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
+        verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
+        if ((zProbe - verify) > Z_PROBE_TOLERANCE || (zProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
+          Com::printFLN(PSTR("Z probe (Z Tower) failed on sensitivity: "), probeSensitivity );
+          if(probeSensitivity < 27){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
+          }
+          zProbe = -1; failedProbe = true;
+          continue;
+        }else{
+          zProbe = (zProbe + verify) / 2;
+        }
+        int32_t offsetZ = ((zProbe * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsZ = EEPROM::deltaTowerZOffsetSteps();
+
+        Printer::updateCurrentPosition();
+        Printer::updateDerivedParameter();
+        Com::printInfoFLN(Com::tZProbeZReset);
+        Com::printFLN(Com::tZProbePrinterHeight,Printer::zLength);
         Printer::feedrate = oldFeedrate;
-        //Printer::setAutolevelActive(oldAutolevel);
+
+        if(offsetX < offsetY && offsetX < offsetZ)
+        {
+          offsetY = offsetStepsY + (offsetY - offsetX);
+          offsetZ = offsetStepsZ + (offsetZ - offsetX);
+          offsetX = 0;
+        }
+        else if(offsetY < offsetX && offsetY < offsetZ)
+        {
+          offsetX = offsetStepsX + (offsetX - offsetY);
+          offsetZ = offsetStepsZ + (offsetZ - offsetY);
+          offsetY = 0;
+        }
+        else if(offsetZ < offsetX && offsetZ < offsetY)
+        {
+          offsetX = offsetStepsX + (offsetX - offsetZ);
+          offsetY = offsetStepsY + (offsetY - offsetZ);
+          offsetZ = 0;
+        }
+        if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
+          xProbe = -1; yProbe = -1; zProbe = -1;
+          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH - TRYING AGAIN: "), probeSensitivity);
+          Com::printFLN(PSTR("X: "), offsetX);
+          Com::printFLN(PSTR("Y: "), offsetY);
+          Com::printFLN(PSTR("Z: "), offsetZ);
+          failedProbe = true;
+        }else{
+          EEPROM::setDeltaTowerXOffsetSteps(offsetX);
+          EEPROM::setDeltaTowerYOffsetSteps(offsetY);
+          EEPROM::setDeltaTowerZOffsetSteps(offsetZ);
+          EEPROM::storeDataIntoEEPROM();
+          failedProbe = false;
+        }
+      }while(failedProbe);
+
+      Printer::updateCurrentPosition(true);
+      Printer::feedrate = oldFeedrate;
+      printCurrentPosition(PSTR("G69 "));
+      GCode::executeFString(Com::tZProbeEndScript);
+
+      //Horizontal Radius Calc and Z Height
+      float cProbe, hradius;
+      float defaultRadius = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET;
+      float oldRadius;
+      int radiusLoop;
+      radiusLoop = 0;
+
+      do{
+        radiusLoop++;
+        oldRadius = Printer::radius0;
+        failedProbe = false;
+        EEPROM::storeDataIntoEEPROM(); //save firmware horizontal radius before calibration
+        EEPROM::readDataFromEEPROM();
         Printer::setAutolevelActive(true);
-        if(com->hasS() && com->S == 2)
-            EEPROM::storeDataIntoEEPROM();
-        Printer::updateCurrentPosition(true);
-        printCurrentPosition(PSTR("G29 "));
-        GCode::executeFString(Com::tZProbeEndScript);
-        Printer::feedrate = oldFeedrate;
         Printer::homeAxis(true,true,true);
-#endif // DISTORTION_CORRECTION
+        Printer::setAutolevelActive(false);
+        GCode::executeFString(Com::tZProbeStartScript);
+        Printer::moveTo(0,0,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
+        cProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
+        verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
+        if ((cProbe - verify) > Z_PROBE_TOLERANCE || (cProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
+          Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
+          if(probeSensitivity < 27){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
+          }
+          cProbe = -1; failedProbe = true;
+          continue;
+        }else{
+          cProbe = (cProbe + verify) / 2;
+          Com::printFLN(PSTR("Old Z Height:"), Printer::zLength );
+          Printer::zLength += cProbe - Printer::currentPosition[Z_AXIS];
+          Printer::updateDerivedParameter();
+          Com::printFLN(PSTR("New Z Height:"), Printer::zLength );
+        }
+
+        Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
+        zProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
+        verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
+        if ((zProbe - verify) > Z_PROBE_TOLERANCE || (zProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
+          Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
+          if(probeSensitivity < 27){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
+          }
+          zProbe = -1; failedProbe = true;
+          continue;
+        }else{
+          zProbe = (zProbe + verify) / 2;
+        }
+
+        hradius = (cProbe - zProbe)*AXIS_STEPS_PER_MM;
+        if(hradius<0)
+        {
+          hradius=-hradius;
+          hradius = (hradius / Printer::radius0)*2;
+          Com::printFLN(Com::tZProbeAverage,hradius);
+          Printer::radius0 = Printer::radius0 - hradius;
+        }else{
+          hradius = (hradius / Printer::radius0)*2;
+          Printer::radius0 = Printer::radius0 + hradius;
+        }
+
+        if(Printer::radius0 / defaultRadius > 1.1 || Printer::radius0 / defaultRadius < 0.9){
+          Com::printFLN(PSTR("Calculated Radius is bad: "), Printer::radius0 );
+          Printer::radius0 = defaultRadius;
+        }
+        Com::printFLN(PSTR("Old Horizontal Radius: "), oldRadius );
+        Com::printFLN(PSTR("New Horizontal Radius: "), Printer::radius0 );
+      }while(radiusLoop < 3 && (failedProbe || ((Printer::radius0 - oldRadius) > Z_PROBE_TOLERANCE) || ((Printer::radius0 - oldRadius) < -Z_PROBE_TOLERANCE) ));
+
+      //Reset the max Z accel for the Eris
+#if PRINTER == 3
+      Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 400;
+      Printer::updateDerivedParameter();
+#endif
+      Printer::setAutolevelActive(true);
+      Printer::updateCurrentPosition(true);
+      printCurrentPosition(PSTR("hehe"));
+      GCode::executeFString(Com::tZProbeEndScript);
+      Printer::feedrate = oldFeedrate;
+      Printer::homeAxis(true,true,true);
+      EEPROM::storeDataIntoEEPROM();
     }
     break;
+
     case 30: // G30 single probe set Z0
     {
 #if DISTORTION_CORRECTION
@@ -1089,8 +1189,10 @@ void Commands::processGCode(GCode *com)
         float sum = 0, sum1 = 0, last, hradius,oldFeedrate = Printer::feedrate;
         int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
         float defaultRadius = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET;
+        float oldRadius;
     do{
         //Printer::radius0 = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET; // set horizontal radius to firmware default
+        oldRadius = Printer::radius0;
         EEPROM::storeDataIntoEEPROM(); //save firmware horizontal radius before calibration
         EEPROM::readDataFromEEPROM();
         Printer::homeAxis(true,true,true);
@@ -1150,7 +1252,10 @@ void Commands::processGCode(GCode *com)
         }
         if(Printer::radius0 / defaultRadius > 1.1 || Printer::radius0 / defaultRadius < 0.9){
           Printer::radius0 = defaultRadius;
-          Com::printFLN(PSTR("Calculated Radius is bad :"), probeSensitivity );
+          Com::printFLN(PSTR("Calculated Radius is bad :"), Printer::radius0 );
+        }else{
+          Com::printFLN(PSTR("Old Radius: "), oldRadius );
+          Com::printFLN(PSTR("New Radius: "), Printer::radius0 );
         }
         Printer::feedrate = oldFeedrate;
         //Printer::setAutolevelActive(oldAutolevel);

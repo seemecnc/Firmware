@@ -734,14 +734,8 @@ UI_MENU_ACTION2C(ui_menu_eeprom_loaded, UI_ACTION_DUMMY, UI_TEXT_EEPROM_LOADED)
 #define UI_MENU_EEPROM_COND
 #define UI_MENU_EEPROM_CNT 0
 #endif
-#ifdef SOFTWARE_LEVELING
-#define UI_MENU_SL_COND ,&ui_menu_conf_level
-#define UI_MENU_SL_CNT 1
-UI_MENU_SUBMENU(ui_menu_conf_level, UI_TEXT_LEVEL, ui_menu_level)
-#else
 #define UI_MENU_SL_COND
 #define UI_MENU_SL_CNT 0
-#endif
 #if Z_HOME_DIR > 0
 #define UI_MENU_DELTA_COND ,&ui_menu_conf_delta
 #define UI_MENU_DELTA_CNT 1

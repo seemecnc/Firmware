@@ -3148,74 +3148,13 @@ int UIDisplay::executeAction(int action, bool allowMoves)
 
         case UI_ACTION_AUTOLEVEL_FULL: 
 // 1 is Orion 2 is Rostock MAX v2 5 is Rostock MAX v3
-#if PRINTER == 1 || PRINTER == 2 || PRINTER == 5
-{
-           // Would prefer to clear screen and display please wait message here until commands are done.
-           menuLevel = 0;
-           // Preheat bed and extruder, wait till bed is at temp, display heating warning
-           //pushMenu(&ui_menu_cal_preheat,false);
-           GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
-           pushMenu(&ui_menu_cal_prepare,false);
-           GCode::executeFString(PSTR("G4 S10"));
-           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
-           //GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
-           menuLevel--;
-           //  Run G69 S2 (endstop offset calibration), display please wait message
-           pushMenu(&ui_menu_calibrating_endstops,true);
-           GCode::executeFString(PSTR("G69 S2"));
-           /*
-           menuLevel--;
-           // Run G32 S2 (Bed Level Matrix), display please wait message
-           pushMenu(&ui_menu_calibrating_bed,true);
-           GCode::executeFString(PSTR("G28\nG32 S2")); 
-           */   
-           menuLevel--;
-           // Run G68 (horizontal radius calibration), display please wait message
-           pushMenu(&ui_menu_calibrating_radius,true);
-           GCode::executeFString(PSTR("G68"));    
-           menuLevel--;
-           // Run G30 S2 (set Z height), display please wait message
-           pushMenu(&ui_menu_calibrating_height,true);
-           GCode::executeFString(PSTR("G30 S2"));
-           menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
-           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nG4 S1"));
-           GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
-         }
-// ERIS Delta         
-#elif PRINTER == 3
-{
-          // Would prefer to clear screen and display please wait message here until commands are done.
-           menuLevel = 0;
-           // Preheat bed and extruder, wait till bed is at temp, display heating warning
-           //pushMenu(&ui_menu_cal_preheat,false);
-           GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
-           pushMenu(&ui_menu_cal_prepare,false);
-           GCode::executeFString(PSTR("G4 S10"));
-           //Extruder::setTemperatureForExtruder(UI_SET_PRESET_EXTRUDER_TEMP_ABS,0);
-           //GCode::executeFString(PSTR("M202 Z1850\nM104 S0\nM140 S0\nM107"));
-           menuLevel--;
-           //  Run G69 S2 (endstop offset calibration), display please wait message
-           pushMenu(&ui_menu_calibrating_endstops,true);
-           GCode::executeFString(PSTR("G69 S2"));
-           /*
-           menuLevel--;
-           // Run G32 S2 (Bed Level Matrix), display please wait message
-           pushMenu(&ui_menu_calibrating_bed,true);
-           GCode::executeFString(PSTR("G28\nG32 S2")); 
-           */   
-           menuLevel--;
-           // Run G68 (horizontal radius calibration), display please wait message
-           pushMenu(&ui_menu_calibrating_radius,true);
-           GCode::executeFString(PSTR("G68"));    
-           menuLevel--;
-           // Run G30 S2 (set Z height), display please wait message
-           pushMenu(&ui_menu_calibrating_height,true);
-           GCode::executeFString(PSTR("G30 S2"));
-           menuLevel = 0; // Set Menu to Home Menu in order to display status message and turn off preheat.
-           GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nM202 Z400\nG4 S1"));
-           GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
-         }
-#endif         
+#if PRINTER == 1 || PRINTER == 2 || PRINTER == 3 || PRINTER == 5
+          //menuLevel = 0;
+          menuLevel--;
+          GCode::executeFString(PSTR("G29"));
+          //GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nG4 S1"));
+          //GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
+#endif
          break;
          
  // ################# END OF MACHINE SPECIFIC PROBING CODES        
