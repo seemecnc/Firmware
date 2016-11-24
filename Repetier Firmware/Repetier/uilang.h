@@ -1258,6 +1258,7 @@
 #define UI_TEXT_QUICK_SETTINGS   "Reglages Rapides"
 #define UI_TEXT_CONFIGURATION    "Configuration"
 #define UI_TEXT_POSITION         "Position"
+#define UI_TEXT_ADJTEMPS         "Ajuster Temp"
 #define UI_TEXT_EXTRUDER         "Extrudeuse"
 #define UI_TEXT_SD_CARD          "Carte SD"
 #define UI_TEXT_DEBUGGING        "Deboguer"
