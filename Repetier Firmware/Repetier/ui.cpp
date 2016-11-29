@@ -3149,11 +3149,21 @@ int UIDisplay::executeAction(int action, bool allowMoves)
         case UI_ACTION_AUTOLEVEL_FULL: 
 // 1 is Orion 2 is Rostock MAX v2 5 is Rostock MAX v3
 #if PRINTER == 1 || PRINTER == 2 || PRINTER == 3 || PRINTER == 5
-          //menuLevel = 0;
-          menuLevel--;
-          GCode::executeFString(PSTR("G29"));
-          //GCode::executeFString(PSTR("M117 Calibration Complete\nM104 S0\nM140 S0\nG4 S1"));
-          //GCode::executeFString(PSTR("M117 Calibration Saved\nM500"));
+          menuLevel = 0;
+
+          if(sd.sdactive){
+            sd.startWrite("g29cal.gcode");
+            sd.file.write("G29", strlen("G29"));
+            sd.finishWrite();
+            if(sd.selectFile("g29cal.gcode", true)){
+              sd.startPrint();
+            }else{
+              GCode::executeFString(PSTR("M117 SD CARD ERROR"));
+            }
+          }else{
+            GCode::executeFString(PSTR("M117 INSERT SD CARD"));
+          }
+
 #endif
          break;
          

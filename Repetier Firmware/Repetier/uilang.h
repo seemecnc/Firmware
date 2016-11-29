@@ -1622,7 +1622,7 @@
 #define UI_TEXT_SD_CARD          "SD Card Menu"
 #define UI_TEXT_DEBUGGING        "Debugging"
 #define UI_TEXT_HOME_ALL         "Home Printer"
-#define UI_TEXT_AUTOLEVEL_FULL    "Unstable Calib."
+#define UI_TEXT_AUTOLEVEL_FULL    "Full Calibration"
 #define UI_TEXT_HOME_X           "Home X"
 #define UI_TEXT_HOME_Y           "Home Y"
 #define UI_TEXT_HOME_Z           "Home Z"
