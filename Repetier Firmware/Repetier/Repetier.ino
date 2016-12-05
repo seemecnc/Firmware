@@ -1,4 +1,5 @@
-/*
+ /*
+    
     This file is part of Repetier-Firmware.
 
     Repetier-Firmware is free software: you can redistribute it and/or modify
@@ -44,8 +45,8 @@ Implemented Codes
 - G20 - Units for G0/G1 are inches.
 - G21 - Units for G0/G1 are mm.
 - G28 - Home all axis or named axis.
-- G29 S<1 or 2> - Z-Probe at the 3 defined probe points. S = 1 measure avg. zHeight, S = 2 store avg zHeight
-- G30 P<0..3> - Single z-probe at current position P = 1 first measurement, P = 2 Last measurement P = 0 or 3 first and last measurement
+- G29 - SeeMeCNC modded probing code to execute endstop offset>z height>printer radius autocal routine
+- G30 - Single z-probe at center S2 stores new z height
 - G31 - Write signal of probe sensor
 - G32 S<1 or 2> Autolevel print bed. S = 1 measure zLength, S = 2 Measue and store new zLength  NOT USED ON ERIS
 - G68 - Horizontal Radius calibration    NO S1 or S2 needed at all

@@ -1,64 +1,52 @@
 /*
-    This file is part of Repetier-Firmware.
+Printer Model List as used throughout this firmware
 
-    Repetier-Firmware is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Repetier-Firmware is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Repetier-Firmware.  If not, see <http://www.gnu.org/licenses/>.
-
+Orion = 1
+Rostock Max V2 = 2
+ERIS = 3
+DROPLIT = 4
+Rostock MAX v3 = 5
 */
+// ### Define your Printer Model here! ###
+#define PRINTER 5
+
+// ### Define your motherboard here! ###
+// 301 = RAMBo    302 = MINI RAMBo
+#define MOTHERBOARD 301
+
+// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
+// 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
+#define POWER_SUPPLY 2
+
+// ############################################################################################
+// ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
+// ########### ONLY ADVANCCED USERS SHOULD MODIFY ANYTHING BELOW THIS LINE ####################
+// ############################################################################################
+
+
+
+
+
+// ############################################################################################
+// ############ FW version info and build date for LCD and M115 string! #######################
+// ############################################################################################
+#define REPETIER_VERSION "0.92.2"
+#define FIRMWARE_DATE "20161123" // in date format yyyymmdd
+
+
+
+
+
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
-
-/**************** READ FIRST ************************
-
-   This configuration file was created with the configuration tool. For that
-   reason, it does not contain the same informations as the original Configuration.h file.
-   It misses the comments and unused parts. Open this file file in the config tool
-   to see and change the data. You can also upload it to newer/older versions. The system
-   will silently add new options, so compilation continues to work.
-
-   This file is optimized for version 0.92
-   generator: http://www.repetier.com/firmware/v092/
-
-   If you are in doubt which named functions use which pins on your board, please check the
-   pins.h for the used name->pin assignments and your board documentation to verify it is
-   as you expect.
-
-*/
 #define ADVANCED_USER 1 // Change to 1 to unlock full menus
 #define NUM_EXTRUDER 1
 
-// 301 = RAMBO    302 = MINI_RAMBO
-#define MOTHERBOARD 301
-
-/* Define Priner being used
-   Orion = 1
-   Rostock Max V2 = 2
-   ERIS = 3
-   DROPLIT = 4
-   Rostock MAX v3 = 5
- */
-#define PRINTER 2
-
-
-#define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "090816" // in date format mmddyy
-
 #include "pins.h"
 
-
 //  Microstepping mode of your stepper drivers
-#define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
+#define MICROSTEP_MODES {16,16,16,16,16} // 1,2,4,8,16
 #if MOTHERBOARD == 301  // RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
 #elif MOTHERBOARD == 302  // Mini RAMBo
@@ -66,9 +54,9 @@
 #endif
 
 // ################## RAMBo Digipot Motor current control settings ################
-// Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
-#define MOTOR_CURRENT {140,140,140,130,0} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
-
+// Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
+// use 140 for xyz and 130 for the E if using Kysan/AutomationTechnology motors and 175 xyz and 200 if using wantai motors
+#define MOTOR_CURRENT {140,140,140,130,0} 
 
 //################### Mini Rambo etc... motor current settings    #########
 //  Motor PWM current for mini rambo is X+Y on the same first value, Z on the next, then Extruder(s) on the last value
@@ -369,15 +357,22 @@
 #define DISABLE_Z 0
 #define DISABLE_E 0
 
-// ######   Inverting Axis Settings
+// ######   Inverting Axis Settings for Orion/Rostock MAX v2/DropLit
 #if PRINTER == 1 || PRINTER == 2 || PRINTER ==4
 #define INVERT_X_DIR 1
+// need to invert Y axis for newer PSU Orions
+#if POWER_SUPPLY == 2 && PRINTER == 1
+#define INVERT_Y_DIR 1
+#else
 #define INVERT_Y_DIR 0
+#endif
 #define INVERT_Z_DIR 1
+// ERIS Delta
 #elif PRINTER == 3
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
+// Rostock MAX v3
 #elif PRINTER == 5
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
@@ -419,15 +414,15 @@
 #define PRINTER_RADIUS 145.7
 #define Z_MAX_LENGTH 230.0
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #elif PRINTER == 2  // Rostock MAX v2
-#define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
+#define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 200.0
 #define PRINTER_RADIUS 200.0
 #define Z_MAX_LENGTH 350
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #elif PRINTER == 3 // Eris Delta
 #define DELTA_DIAGONAL_ROD 134.9  // 134.58 early measurement
@@ -446,12 +441,12 @@
 #define CARRIAGE_HORIZONTAL_OFFSET 100
 
 #elif PRINTER == 5  // Rostock MAX v3 
-#define DELTA_DIAGONAL_ROD 290.8  // ball cup arms
+#define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 200.0
 #define PRINTER_RADIUS 200.0
-#define Z_MAX_LENGTH 350
+#define Z_MAX_LENGTH 375
 #define END_EFFECTOR_HORIZONTAL_OFFSET 30.22
-#define CARRIAGE_HORIZONTAL_OFFSET 27.1  // molded cheapskates
+#define CARRIAGE_HORIZONTAL_OFFSET 26.5  // molded cheapskates
 
 #endif
 #define DELTA_ALPHA_A 210
@@ -646,17 +641,18 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_PIN 16
 #endif
 
-
+#define Z_PROBE_TOLERANCE .1
+#define Z_PROBE_MAX_SENSITIVITY 40
 #if PRINTER == 1  //  Orion Delta w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 60
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
@@ -666,16 +662,16 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 
-#elif PRINTER == 2  // Rostock MAX w/ molded carriages and ball cup arms
+#elif PRINTER == 2  // Rostock MAX v2 w/ molded carriages and ball cup arms
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 60
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
@@ -687,7 +683,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 #elif PRINTER == 3  // ERIS Delta
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
@@ -706,7 +702,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 #elif PRINTER == 4  // DropLit doesn't have a probe yet ;)
 #define FEATURE_Z_PROBE 0
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1 //0
 #define Z_PROBE_ON_HIGH 0 //1
@@ -725,7 +721,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 
 #elif PRINTER == 5  // Rostock MAX v3
 #define FEATURE_Z_PROBE 1
-#define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
+#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
@@ -824,7 +820,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define UI_PRINTER_NAME "ORION Delta"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #elif PRINTER == 2
-#define UI_PRINTER_NAME "Rostock Max"
+#define UI_PRINTER_NAME "RostockMAXv2"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #elif PRINTER == 3
 #define UI_PRINTER_NAME "ERIS Delta"
@@ -859,6 +855,8 @@ and longer beeps for important actions.
 Parameter is delay in microseconds and the secons is the number of repetitions.
 Values must be in range 1..255
 */
+// Orion Delta
+#if PRINTER == 1
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
 #define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
@@ -871,5 +869,62 @@ Values must be in range 1..255
 #define UI_SET_MAX_EXTRUDER_TEMP   240
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//Rostock MAX v2
+#elif PRINTER == 2
+#define BEEPER_SHORT_SEQUENCE 1,1
+#define BEEPER_LONG_SEQUENCE 32,4
+#define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
+#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
+#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 100
+#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
+#define UI_SET_MIN_HEATED_BED_TEMP  30
+#define UI_SET_MAX_HEATED_BED_TEMP 120
+#define UI_SET_MIN_EXTRUDER_TEMP   150
+#define UI_SET_MAX_EXTRUDER_TEMP   240
+#define UI_SET_EXTRUDER_FEEDRATE 2
+#define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//ERIS Delta
+#elif PRINTER == 3
+#define BEEPER_SHORT_SEQUENCE 1,1
+#define BEEPER_LONG_SEQUENCE 32,4
+#define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
+#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
+#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 100
+#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
+#define UI_SET_MIN_HEATED_BED_TEMP  30
+#define UI_SET_MAX_HEATED_BED_TEMP 120
+#define UI_SET_MIN_EXTRUDER_TEMP   150
+#define UI_SET_MAX_EXTRUDER_TEMP   240
+#define UI_SET_EXTRUDER_FEEDRATE 2
+#define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+#elif PRINTER == 4
+//DropLit v2
+#define BEEPER_SHORT_SEQUENCE 1,1
+#define BEEPER_LONG_SEQUENCE 32,4
+#define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
+#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
+#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 100
+#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
+#define UI_SET_MIN_HEATED_BED_TEMP  30
+#define UI_SET_MAX_HEATED_BED_TEMP 120
+#define UI_SET_MIN_EXTRUDER_TEMP   150
+#define UI_SET_MAX_EXTRUDER_TEMP   240
+#define UI_SET_EXTRUDER_FEEDRATE 2
+#define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+//Rostock MAX v3
+#elif PRINTER == 5
+#define BEEPER_SHORT_SEQUENCE 1,1
+#define BEEPER_LONG_SEQUENCE 32,4
+#define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
+#define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
+#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 100
+#define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
+#define UI_SET_MIN_HEATED_BED_TEMP  30
+#define UI_SET_MAX_HEATED_BED_TEMP 120
+#define UI_SET_MIN_EXTRUDER_TEMP   100
+#define UI_SET_MAX_EXTRUDER_TEMP   280
+#define UI_SET_EXTRUDER_FEEDRATE 2
+#define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+#endif
 
 #endif

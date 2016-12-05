@@ -1885,7 +1885,7 @@ S3(ext)=9
 
 
 #if MOTHERBOARD == 302
-  #define MINI-RAMBO
+  #define MINI_RAMBO
 #endif
 #if MOTHERBOARD == 301 || MOTHERBOARD == 302
 #define KNOWN_BOARD
@@ -1943,7 +1943,7 @@ S3(ext)=9
 #else
   #define HEATER_2_PIN -1
 #endif
-#ifdef MINI-RAMBO
+#ifdef MINI_RAMBO
   #define ORIG_X_MAX_PIN 30
   #define ORIG_Y_MAX_PIN 24
   #define ORIG_Z_MAX_PIN 23
