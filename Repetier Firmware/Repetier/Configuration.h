@@ -108,7 +108,7 @@ Rostock MAX v3 = 5
 #define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 #define EXT0_STEPS_PER_MM 92.4
-#define EXT0_TEMPSENSOR_TYPE 97
+#define EXT0_TEMPSENSOR_TYPE 8
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -262,7 +262,7 @@ Rostock MAX v3 = 5
 
 #elif PRINTER == 2  // Rostock MAX w/PEEK hotend
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define MAXTEMP 285            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
 #define MIN_DEFECT_TEMPERATURE 18  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 
