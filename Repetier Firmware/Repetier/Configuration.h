@@ -9,7 +9,7 @@ Rostock MAX v3 = 5
 Hacker Series H2 = 6
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 2
+#define PRINTER 5
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
