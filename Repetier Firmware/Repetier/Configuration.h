@@ -159,6 +159,7 @@ Hacker Series H2 = 6
 #define MIN_DEFECT_TEMPERATURE 18  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 #define INVERT_X_DIR 1
+#define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
 #define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 145.0
@@ -291,6 +292,7 @@ Hacker Series H2 = 6
 #define MIN_DEFECT_TEMPERATURE 18 // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 #define INVERT_X_DIR 1
+#define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
 #define DELTA_DIAGONAL_ROD 100  // 134.58 early measurement
 #define DELTA_MAX_RADIUS 100  // max printable area allowed by firmware
