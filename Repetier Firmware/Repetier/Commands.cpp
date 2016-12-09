@@ -868,6 +868,11 @@ void Commands::processGCode(GCode *com)
         }
         int32_t offsetX = ((xProbe * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsX = EEPROM::deltaTowerXOffsetSteps();
 
+        if(com->hasS() && com->S == 2){
+          Printer::homeAxis(true,true,true);
+          GCode::executeFString(Com::tZProbeStartScript);
+          Printer::setAutolevelActive(false);
+        }
         Printer::moveTo(EEPROM::zProbeX2(),EEPROM::zProbeY2(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
         yProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
@@ -888,6 +893,11 @@ void Commands::processGCode(GCode *com)
         }
         int32_t offsetY = ((yProbe * AXIS_STEPS_PER_MM) - (Z_PROBE_BED_DISTANCE * AXIS_STEPS_PER_MM)), offsetStepsY = EEPROM::deltaTowerYOffsetSteps();
 
+        if(com->hasS() && com->S == 2){
+          Printer::homeAxis(true,true,true);
+          GCode::executeFString(Com::tZProbeStartScript);
+          Printer::setAutolevelActive(false);
+        }
         Printer::moveTo(EEPROM::zProbeX3(),EEPROM::zProbeY3(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
         zProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
@@ -1031,7 +1041,7 @@ void Commands::processGCode(GCode *com)
         }
         Com::printFLN(PSTR("Old Horizontal Radius: "), oldRadius );
         Com::printFLN(PSTR("New Horizontal Radius: "), Printer::radius0 );
-      }while(radiusLoop < 3 && (failedProbe || ((Printer::radius0 - oldRadius) > Z_PROBE_TOLERANCE) || ((Printer::radius0 - oldRadius) < -Z_PROBE_TOLERANCE) ));
+      }while(radiusLoop < 4 && (failedProbe || ((Printer::radius0 - oldRadius) > Z_PROBE_TOLERANCE) || ((Printer::radius0 - oldRadius) < -Z_PROBE_TOLERANCE) ));
 
       //Reset the max Z accel for the Eris
 #if PRINTER == 3
@@ -1058,63 +1068,81 @@ void Commands::processGCode(GCode *com)
 
     case 30: // G30 single probe set Z0
     {
-#if DISTORTION_CORRECTION
-        float oldFeedrate = Printer::feedrate;
-        Printer::measureDistortion();
-        Printer::feedrate = oldFeedrate;
-#else
+      if(com->hasS() && com->S == 2){
         float sum = 0, sum1 = 0,last,oldFeedrate = Printer::feedrate;
-        //bool oldAutolevel = Printer::isAutolevelActive();
-    do{
-        if(com->hasS() && com->S == 2){ // only reset eeprom if saving new value
-        Printer::zLength = Z_MAX_LENGTH; // set Z height to firmware default
-        EEPROM::storeDataIntoEEPROM(); // store default before calibration
-        EEPROM::readDataFromEEPROM(); // would not take effect unless read!
-        }
-        Printer::homeAxis(true,true,true);
-        GCode::executeFString(Com::tZProbeStartScript);
-        Printer::setAutolevelActive(false);
-        Printer::moveTo(0,0,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
-        
+        do{
+          if(com->hasS() && com->S == 2){ // only reset eeprom if saving new value
+            Printer::zLength = Z_MAX_LENGTH; // set Z height to firmware default
+            EEPROM::storeDataIntoEEPROM(); // store default before calibration
+            EEPROM::readDataFromEEPROM(); // would not take effect unless read!
+          }
+          Printer::homeAxis(true,true,true);
+          GCode::executeFString(Com::tZProbeStartScript);
+          Printer::setAutolevelActive(false);
+          Printer::moveTo(0,0,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
           sum1 = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // First tap
           sum = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); // Second tap
           if ((sum1 - sum) > Z_PROBE_TOLERANCE || (sum1 - sum) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-              Com::printErrorFLN(Com::tZProbeFailed);
-              sum = -1;
+            Com::printErrorFLN(Com::tZProbeFailed);
+            sum = -1;
           }else{
             sum = (sum + sum1) / 2;
           }
-    }while(sum < 1);
+        }while(sum < 1);
         if(com->hasS() && com->S)
         {
-#if MAX_HARDWARE_ENDSTOP_Z
-#if DRIVE_SYSTEM==DELTA
-            //Printer::updateCurrentPosition();
-            Printer::zLength += sum - Printer::currentPosition[Z_AXIS];
-            Printer::updateDerivedParameter();
-            //Printer::homeAxis(true,true,true);
-#else
-            Printer::currentPositionSteps[Z_AXIS] = sum * Printer::axisStepsPerMM[Z_AXIS];
-            Printer::zLength = Printer::runZMaxProbe() + sum-ENDSTOP_Z_BACK_ON_HOME;
-#endif
-            Com::printInfoFLN(Com::tZProbeZReset);
-            Com::printFLN(Com::tZProbePrinterHeight,Printer::zLength);
-#else
-            Printer::currentPositionSteps[Z_AXIS] = sum * Printer::axisStepsPerMM[Z_AXIS];
-            Com::printFLN(PSTR("Adjusted z origin"));
-#endif
+          Printer::zLength += sum - Printer::currentPosition[Z_AXIS];
+          Printer::updateDerivedParameter();
         }
         Printer::feedrate = oldFeedrate;
-        //Printer::setAutolevelActive(oldAutolevel);
         Printer::setAutolevelActive(true);
         if(com->hasS() && com->S == 2)
-            EEPROM::storeDataIntoEEPROM();
+          EEPROM::storeDataIntoEEPROM();
         Printer::updateCurrentPosition(true);
         printCurrentPosition(PSTR("G30 "));
         GCode::executeFString(Com::tZProbeEndScript);
         Printer::feedrate = oldFeedrate;
         Printer::homeAxis(true,true,true);
+      }else{
+#if PRINTER == 3
+        Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 1850;
+        Printer::updateDerivedParameter();
 #endif
+        float pProbe, verify;
+        int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
+        if(com->hasX() && com->hasY()){
+          if(com->hasF()){ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,com->F); }
+          else{ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed()); }
+        }
+        pProbe = Printer::runZProbe(true,false,1,false);
+        pProbe -= Printer::currentPosition[Z_AXIS];
+        verify = Printer::runZProbe(false,true,1,false);
+        verify -= Printer::currentPosition[Z_AXIS];
+        if ((pProbe - verify) > Z_PROBE_TOLERANCE || (pProbe - verify) < - Z_PROBE_TOLERANCE){
+          Com::printFLN(PSTR("Probes do not match. Off by "), (pProbe - verify) );
+          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
+            accelerometer_recv(0x32);
+            probeSensitivity+=2;
+            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+            accelerometer_recv(0x32);
+            GCode::executeFString(PSTR("G30"));
+          }
+        }else{
+          pProbe = (pProbe + verify) /2;
+          Com::printFLN(PSTR("PROBE-ZOFFSET:"), pProbe );
+          /* String zoutput = "PROBE Z:";
+          zoutput = zoutput + pProbe;
+          char ztemp[15];
+          zoutput.toCharArray(ztemp, 15);
+          UI_STATUS_UPD_RAM(ztemp); */
+        }
+#if PRINTER == 3
+        Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 400;
+        Printer::updateDerivedParameter();
+#endif
+      }
     }
     break;
     case 31:  // G31 display hall sensor output

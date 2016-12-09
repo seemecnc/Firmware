@@ -1761,6 +1761,8 @@
 #define UI_TEXT_PRINTER_READY             "DROPLIT v2"
 #elif PRINTER == 5
 #define UI_TEXT_PRINTER_READY             "Rostock MAX v3"
+#elif PRINTER == 6
+#define UI_TEXT_PRINTER_READY             "Hacker H2"
 #else
 #define UI_TEXT_PRINTER_READY             "Printer Ready"
 #endif

@@ -3147,8 +3147,7 @@ int UIDisplay::executeAction(int action, bool allowMoves)
 // ##################################################################################################################
 
         case UI_ACTION_AUTOLEVEL_FULL: 
-// 1 is Orion 2 is Rostock MAX v2 5 is Rostock MAX v3
-#if PRINTER == 1 || PRINTER == 2 || PRINTER == 3 || PRINTER == 5
+#if SDSUPPORT == 1
           menuLevel = 0;
 
           if(sd.sdactive){
