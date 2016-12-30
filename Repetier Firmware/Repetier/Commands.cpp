@@ -22,6 +22,7 @@
 #include "Repetier.h"
 
 uint8_t mpu_threshold = 50;
+float probes[9];
 
 #include <Wire.h>
 
@@ -860,6 +861,11 @@ void Commands::processGCode(GCode *com)
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
             accelerometer_recv(0x32);
+          }else{
+            Com::printFLN(PSTR("Calibration Failed"));
+            GCode::executeFString(PSTR("M117 CALIBRATION FAILED"));
+            Com::printErrorFLN(Com::tZProbeFailed);
+            break;
           }
           xProbe = -1; failedProbe = true;
           continue;
@@ -885,6 +891,11 @@ void Commands::processGCode(GCode *com)
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
             accelerometer_recv(0x32);
+          }else{
+            Com::printFLN(PSTR("Calibration Failed"));
+            GCode::executeFString(PSTR("M117 CALIBRATION FAILED"));
+            Com::printErrorFLN(Com::tZProbeFailed);
+            break;
           }
           yProbe = -1; failedProbe = true;
           continue;
@@ -910,6 +921,11 @@ void Commands::processGCode(GCode *com)
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
             accelerometer_recv(0x32);
+          }else{
+            Com::printFLN(PSTR("Calibration Failed"));
+            GCode::executeFString(PSTR("M117 CALIBRATION FAILED"));
+            Com::printErrorFLN(Com::tZProbeFailed);
+            break;
           }
           zProbe = -1; failedProbe = true;
           continue;
@@ -944,11 +960,12 @@ void Commands::processGCode(GCode *com)
         }
         if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
           xProbe = -1; yProbe = -1; zProbe = -1;
-          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH - TRYING AGAIN: "), probeSensitivity);
+          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting"), probeSensitivity);
           Com::printFLN(PSTR("X: "), offsetX);
           Com::printFLN(PSTR("Y: "), offsetY);
           Com::printFLN(PSTR("Z: "), offsetZ);
           failedProbe = true;
+          break;
         }else{
           EEPROM::setDeltaTowerXOffsetSteps(offsetX);
           EEPROM::setDeltaTowerYOffsetSteps(offsetY);
@@ -993,6 +1010,11 @@ void Commands::processGCode(GCode *com)
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
             accelerometer_recv(0x32);
+          }else{
+            Com::printFLN(PSTR("Calibration Failed"));
+            GCode::executeFString(PSTR("M117 CALIBRATION FAILED"));
+            Com::printErrorFLN(Com::tZProbeFailed);
+            break;
           }
           cProbe = -1; failedProbe = true;
           continue;
@@ -1016,6 +1038,11 @@ void Commands::processGCode(GCode *com)
             accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
             accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
             accelerometer_recv(0x32);
+          }else{
+            Com::printFLN(PSTR("Calibration Failed"));
+            GCode::executeFString(PSTR("M117 CALIBRATION FAILED"));
+            Com::printErrorFLN(Com::tZProbeFailed);
+            break;
           }
           zProbe = -1; failedProbe = true;
           continue;
@@ -1104,44 +1131,50 @@ void Commands::processGCode(GCode *com)
         Printer::feedrate = oldFeedrate;
         Printer::homeAxis(true,true,true);
       }else{
-#if PRINTER == 3
-        Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 1850;
-        Printer::updateDerivedParameter();
-#endif
-        float pProbe, verify;
-        int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
-        if(com->hasX() && com->hasY()){
-          if(com->hasF()){ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,com->F); }
-          else{ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed()); }
-        }
-        pProbe = Printer::runZProbe(true,false,1,false);
-        pProbe -= Printer::currentPosition[Z_AXIS];
-        verify = Printer::runZProbe(false,true,1,false);
-        verify -= Printer::currentPosition[Z_AXIS];
-        if ((pProbe - verify) > Z_PROBE_TOLERANCE || (pProbe - verify) < - Z_PROBE_TOLERANCE){
-          Com::printFLN(PSTR("Probes do not match. Off by "), (pProbe - verify) );
-          if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
-            accelerometer_recv(0x32);
-            probeSensitivity+=2;
-            Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
-            accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
-            accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
-            accelerometer_recv(0x32);
-            GCode::executeFString(PSTR("G30"));
+        if(com->hasP() && com->P >= 10){
+          for(int i=0;i<10;i++){
+            Com::printF(PSTR("Point "), i);
+            Com::printFLN(PSTR(" - PROBE OFFSET:"), probes[i] );
           }
         }else{
-          pProbe = (pProbe + verify) /2;
-          Com::printFLN(PSTR("PROBE-ZOFFSET:"), pProbe );
-          /* String zoutput = "PROBE Z:";
-          zoutput = zoutput + pProbe;
-          char ztemp[15];
-          zoutput.toCharArray(ztemp, 15);
-          UI_STATUS_UPD_RAM(ztemp); */
-        }
 #if PRINTER == 3
-        Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 400;
-        Printer::updateDerivedParameter();
+          Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 1850;
+          Printer::updateDerivedParameter();
 #endif
+          float pProbe, verify;
+          int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
+          if(com->hasX() && com->hasY()){
+            if(com->hasF()){ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,com->F); }
+            else{ Printer::moveTo(com->X,com->Y,IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed()); }
+          }
+          pProbe = Printer::runZProbe(true,false,1,false);
+          pProbe -= Printer::currentPosition[Z_AXIS];
+          verify = Printer::runZProbe(false,true,1,false);
+          verify -= Printer::currentPosition[Z_AXIS];
+          if ((pProbe - verify) > Z_PROBE_TOLERANCE || (pProbe - verify) < - Z_PROBE_TOLERANCE){
+            Com::printFLN(PSTR("Probes do not match. Off by "), (pProbe - verify) );
+            if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
+              accelerometer_recv(0x32);
+              probeSensitivity+=2;
+              Com::printFLN(PSTR("Setting Probe Sensitivity To:"), probeSensitivity );
+              accelerometer_write(0x32,uint8_t(probeSensitivity)); //INT1 THRESHOLD
+              accelerometer_write(0x3A,uint8_t(probeSensitivity)); //CLICK THRESHOLD
+              accelerometer_recv(0x32);
+              GCode::executeFString(PSTR("G30"));
+            }
+          }else{
+            pProbe = (pProbe + verify) / 2;
+            if(com->hasP()){
+              if(com->P < 10){ probes[com->P] = pProbe; }
+            }else{
+              Com::printFLN(PSTR("PROBE-ZOFFSET:"), pProbe );
+            }
+          }
+#if PRINTER == 3
+          Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 400;
+          Printer::updateDerivedParameter();
+#endif
+        }
       }
     }
     break;
