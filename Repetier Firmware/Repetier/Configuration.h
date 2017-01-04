@@ -30,7 +30,7 @@ Hacker H2 = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20161227" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170103" // in date format yyyymmdd
 
 
 
@@ -753,7 +753,7 @@ Hacker H2 = 6
 #define POWER_INVERTING 0
 #define KILL_METHOD 1
 #define GCODE_BUFFER_SIZE 2
-#define ACK_WITH_LINENUMBER 1  // will set to 0 when done debugging
+#define ACK_WITH_LINENUMBER 0
 #define WAITING_IDENTIFIER "wait"
 #define ECHO_ON_EXECUTE 1
 #define EEPROM_MODE 1

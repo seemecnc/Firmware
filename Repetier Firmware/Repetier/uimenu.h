@@ -229,7 +229,7 @@ for 2 row displays. You can add additional pages or change the default pages lik
    //UI_PAGE4(ui_page1,UI_TEXT_PAGE_EXTRUDER,UI_TEXT_PAGE_BED,UI_TEXT_PAGE_BUFFER,"%os");
  #else
  #if NUM_EXTRUDER>0
-   UI_PAGE4(ui_page1,"NOZ:%ec Target:%Ec","Z:%x2 mm","","%os")
+   UI_PAGE4(ui_page1,"NOZ:%ec Target:%Ec","Speed:%om%%% Flow:%of%%%","Z:%x2 mm","%os")
    #else
    UI_PAGE4(ui_page1,"","Z:%x2 mm",UI_TEXT_PAGE_BUFFER,"%os")
    #endif
