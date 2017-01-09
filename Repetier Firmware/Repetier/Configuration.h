@@ -30,7 +30,7 @@ Hacker H2 = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170103" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170109" // in date format yyyymmdd
 
 
 
@@ -191,7 +191,7 @@ Hacker H2 = 6
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
 #define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
 #define INVERT_X_DIR 1
-#define INVERT_Y_DIR 1
+#define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
 #define DELTA_DIAGONAL_ROD 291.06  // ball cup arms
 #define DELTA_MAX_RADIUS 145.0
