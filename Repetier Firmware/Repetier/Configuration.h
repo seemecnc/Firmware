@@ -117,6 +117,7 @@ Hacker H2 = 6
 #define HAVE_HEATED_BED 1
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
 #define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define UI_SET_MAX_EXTRUDER_TEMP   245
 #define INVERT_X_DIR 1
 #if POWER_SUPPLY == 2
 #define INVERT_Y_DIR 1
@@ -189,7 +190,8 @@ Hacker H2 = 6
 #define EXT0_PID_MAX 235
 #define HAVE_HEATED_BED 1
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
@@ -257,6 +259,7 @@ Hacker H2 = 6
 #define MOTOR_CURRENT_PWM {20, 20, 130}
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
 #define MAXTEMP 240            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define UI_SET_MAX_EXTRUDER_TEMP   240
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
@@ -384,6 +387,7 @@ Hacker H2 = 6
 #define HAVE_HEATED_BED 1
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
 #define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
 #define INVERT_Z_DIR 1
@@ -449,6 +453,7 @@ Hacker H2 = 6
 #define EXT0_PID_MAX 255
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
 #define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
 #define INVERT_Z_DIR 1
@@ -834,7 +839,6 @@ Values must be in range 1..255
 #define UI_SET_MIN_HEATED_BED_TEMP  30
 #define UI_SET_MAX_HEATED_BED_TEMP 120
 #define UI_SET_MIN_EXTRUDER_TEMP   150
-#define UI_SET_MAX_EXTRUDER_TEMP   240
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
 #endif
