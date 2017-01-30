@@ -39,7 +39,7 @@
 #define NUM_EXTRUDER 1
 
 // 301 = RAMBO    302 = MINI_RAMBO
-#define MOTHERBOARD 301
+#define MOTHERBOARD 302
 
 /* Define Priner being used
    Orion = 1
@@ -48,11 +48,11 @@
    DROPLIT = 4
    Rostock MAX v3 = 5
  */
-#define PRINTER 2
+#define PRINTER 4
 
 
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "090816" // in date format mmddyy
+#define FIRMWARE_DATE "20170130" // in date format mmddyy
 
 #include "pins.h"
 
