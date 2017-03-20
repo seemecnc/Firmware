@@ -1,14 +1,28 @@
 /*
 Printer Model List as used throughout this firmware
-Orion = 1
-Rostock Max V2 = 2
-ERIS = 3
-DROPLIT = 4
-Rostock MAX v3 = 5
-Hacker H2 = 6
+Orion            = 1
+Rostock Max V2   = 2
+ERIS             = 3
+Rostock MAX v3   = 5
+Hacker H2        = 6
 */
 // ### Define your Printer Model here! ###
 #define PRINTER 5
+
+// SeeMeCNC Bowden w/PEEK barrel = 1
+// HE240 on ERIS w/accel probe   = 2
+// HE280 w/accel probe           = 3
+#define HOTEND 3
+
+// ### Number of active extruders
+// 1 is standard, 2 is with the Y coupler for dual filament input
+#define NUM_EXTRUDER 1
+
+// ### CLONE settings ###
+// 0 is none, for just a standard single extruder/nozzle setup
+// 1 is dual input filament setups - this is for the pins.h file to configure the second input reading
+// 2 NOT USED YET, but will be for dual independent hotends/nozzles/extruders
+#define CLONE 0
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
@@ -18,28 +32,22 @@ Hacker H2 = 6
 // 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
 #define POWER_SUPPLY 2
 
+
 // ############################################################################################
 // ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
 // ########### ONLY ADVANCCED USERS SHOULD MODIFY ANYTHING BELOW THIS LINE ####################
 // ############################################################################################
 
 
-
-
 // ############################################################################################
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170201" // in date format yyyymmdd
-
-
-
-
+#define FIRMWARE_DATE "20170320" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 #define ADVANCED_USER 1 // Change to 1 to unlock full menus
-#define NUM_EXTRUDER 1
 
 #include "pins.h"
 
@@ -53,9 +61,7 @@ Hacker H2 = 6
 #define MOTOR_CURRENT_PWM_RANGE 2000
 #endif
 
-
-// ################ END MANUAL SETTINGS ##########################
-
+#define Z_LIFT_ON_PAUSE 20         // Amount to lift the head (mm) when pausing from the LCD screen
 #define MIN_DEFECT_TEMPERATURE 17  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 
@@ -68,26 +74,68 @@ Hacker H2 = 6
 //#define PULLEY_CIRCUMFERENCE (PULLEY_DIAMETER * 3.1415927)
 #define STEPS_PER_ROTATION 200
 #define MICRO_STEPS 16
-#if PRINTER == 4
-#define AXIS_STEPS_PER_MM 1600  // DropLit v2 step settings
-#else
 #define AXIS_STEPS_PER_MM ((float)(MICRO_STEPS * STEPS_PER_ROTATION) / PULLEY_CIRCUMFERENCE)  // for deltas with 1.8 deg. steppers and 20 tooth GT2 pulleys
-#endif
 #define XAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
 #define YAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
 #define ZAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
-#define EXTRUDER_FAN_COOL_TEMP 40
-#define PDM_FOR_EXTRUDER 1
+
+// ### Hotend and Extruder configuration
+#define MIN_EXTRUDER_TEMP 150
+#if HOTEND == 1
+#define MAXTEMP 240
+#define UI_SET_MAX_EXTRUDER_TEMP 240
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT0_PID_I 0.73
+#define EXT0_PID_D 53.41
+#define EXT0_PID_MAX 235
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT1_PID_I 0.73
+#define EXT1_PID_D 53.41
+#define EXT1_PID_MAX 235
+#elif HOTEND == 2
+#define MAXTEMP 240
+#define UI_SET_MAX_EXTRUDER_TEMP 240
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 200
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 120
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 25.0
+#define EXT0_PID_I 0.85
+#define EXT0_PID_D 176.0
+#define EXT0_PID_MAX 210
+#elif HOTEND == 3
+#define MAXTEMP 290
+#define UI_SET_MAX_EXTRUDER_TEMP 280
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT0_PID_I 0.73
+#define EXT0_PID_D 53.41
+#define EXT0_PID_MAX 255
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT1_PID_I 0.73
+#define EXT1_PID_D 53.41
+#define EXT1_PID_MAX 255
+#endif
+// using PWM not PDM
+#define PDM_FOR_EXTRUDER 0
 #define PDM_FOR_COOLER 0
+#define FEATURE_WATCHDOG 1
 #define DECOUPLING_TEST_MAX_HOLD_VARIANCE 20
 #define DECOUPLING_TEST_MIN_TEMP_RISE 1
 #define RETRACT_ON_PAUSE 2
 #define PAUSE_START_COMMANDS "G91/nG1 Z10.0 E-5.0 F1500/nG90/n"
 #define PAUSE_END_COMMANDS "G91/nG1 Z-10.0 E5.1 F1500/nG90/n"
+
+// ### EXT0 Setup ###
 #define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 #define EXT0_STEPS_PER_MM 92.4
-#define EXT0_TEMPSENSOR_TYPE 97
+#define EXT0_TEMPSENSOR_TYPE 97 //97
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -100,11 +148,84 @@ Hacker H2 = 6
 #define EXT0_MAX_ACCELERATION 6500
 #define EXT0_HEAT_MANAGER 1
 #define EXT0_WATCHPERIOD 3
+#define EXT0_ADVANCE_K 0
+#define EXT0_ADVANCE_L 0
+#define EXT0_ADVANCE_BACKLASH_STEPS 0
+#define EXT0_WAIT_RETRACT_TEMP 150
+#define EXT0_WAIT_RETRACT_UNITS 0
+#define EXT0_SELECT_COMMANDS "M117 Extruder 0\nT0\nM84 P4\nG91\nG1E172F6000\nG1E5F500\nG90"
+#define EXT0_DESELECT_COMMANDS "G91\nG1E-180F6000\nG90"
+#if MOTHERBOARD == 301
+#define EXT0_EXTRUDER_COOLER_PIN 7
+#elif MOTHERBOARD == 302
+#define EXT0_EXTRUDER_COOLER_PIN -1
+#endif
+#define EXTRUDER_FAN_COOL_TEMP 40
+#define EXT0_EXTRUDER_COOLER_SPEED 200
+#define EXT0_DECOUPLE_TEST_PERIOD 45000
 
+// ### EXT1 Setup ###
+#define EXT1_X_OFFSET 0
+#define EXT1_Y_OFFSET 0
+#define EXT1_STEPS_PER_MM 92.4
+#define EXT1_TEMPSENSOR_TYPE 97 //97
+#define EXT1_TEMPSENSOR_PIN TEMP_1_PIN
+#define EXT1_HEATER_PIN HEATER_1_PIN
+#define EXT1_STEP_PIN ORIG_E1_STEP_PIN
+#define EXT1_DIR_PIN ORIG_E1_DIR_PIN
+#define EXT1_INVERSE 1
+#define EXT1_ENABLE_PIN E1_ENABLE_PIN
+#define EXT1_ENABLE_ON 0
+#define EXT1_MAX_FEEDRATE 100
+#define EXT1_MAX_START_FEEDRATE 45
+#define EXT1_MAX_ACCELERATION 6500
+#define EXT1_HEAT_MANAGER 1
+#define EXT1_WATCHPERIOD 3
+#define EXT1_ADVANCE_K 0
+#define EXT1_ADVANCE_L 0
+#define EXT1_ADVANCE_BACKLASH_STEPS 0
+#define EXT1_WAIT_RETRACT_TEMP 150
+#define EXT1_WAIT_RETRACT_UNITS 0
+#define EXT1_SELECT_COMMANDS "M117 Extruder 1\nT1\nM84 P4\nG91\nG1E172F6000\nG1E5F500\nG90"
+#define EXT1_DESELECT_COMMANDS "G91\nG1E-180F6000\nG90"
+#if MOTHERBOARD == 301
+#define EXT1_EXTRUDER_COOLER_PIN 7
+#elif MOTHERBOARD == 302
+#define EXT1_EXTRUDER_COOLER_PIN -1
+#endif
+#define EXTRUDER_FAN_COOL_TEMP 40
+#define EXT1_EXTRUDER_COOLER_SPEED 200
+#define EXT1_DECOUPLE_TEST_PERIOD 45000
+
+// ############# Heated bed configuration ########################
+#define HEATED_BED_MAX_TEMP 120
+#define SKIP_M190_IF_WITHIN 5
+#define HEATED_BED_SENSOR_TYPE 97 //97
+#define HEATED_BED_SENSOR_PIN TEMP_BED_PIN
+#define HEATED_BED_HEATER_PIN HEATER_BED_PIN
+#define HEATED_BED_SET_INTERVAL 5000
+#define HEATED_BED_HEAT_MANAGER 1
+#define HEATED_BED_PID_INTEGRAL_DRIVE_MAX 255
+#define HEATED_BED_PID_INTEGRAL_DRIVE_MIN 80
+#define HEATED_BED_PID_PGAIN_OR_DEAD_TIME   87.86
+#define HEATED_BED_PID_IGAIN   3.01
+#define HEATED_BED_PID_DGAIN 641.82
+#define HEATED_BED_PID_MAX 255
+#define HEATED_BED_DECOUPLE_TEST_PERIOD 300000
+
+
+
+// #################################
+// ### PRINTER SPECIFIC SETTINGS ###
+// #################################
 
 #if PRINTER == 1  // Orion Delta
 #if MOTHERBOARD == 301
+#if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
+#elif NUM_EXTRUDER == 2
+#define MOTOR_CURRENT {140,140,140,145,145}
+#endif
 #elif MOTHERBOARD == 302
 #define MOTOR_CURRENT_PWM {60, 60, 130}
 #endif
@@ -115,9 +236,6 @@ Hacker H2 = 6
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 235
 #define HAVE_HEATED_BED 1
-#define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define UI_SET_MAX_EXTRUDER_TEMP   245
 #define INVERT_X_DIR 1
 #if POWER_SUPPLY == 2
 #define INVERT_Y_DIR 1
@@ -181,7 +299,11 @@ Hacker H2 = 6
 #define SDCARDDETECTINVERTED 0
 
 #elif PRINTER == 2 // Rostock MAX v2
+#if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
+#elif NUM_EXTRUDER == 2
+#define MOTOR_CURRENT {140,140,140,145,145}
+#endif
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
@@ -189,9 +311,6 @@ Hacker H2 = 6
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 235
 #define HAVE_HEATED_BED 1
-#define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 1
@@ -232,7 +351,6 @@ Hacker H2 = 6
 #define Z_PROBE_REPETITIONS 1
 #define Z_PROBE_HEIGHT -0.1
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
-//#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 #define Z_PROBE_X1 -123.565
@@ -257,9 +375,6 @@ Hacker H2 = 6
 #define EXT0_PID_D 176.0
 #define EXT0_PID_MAX 210
 #define MOTOR_CURRENT_PWM {20, 20, 130}
-#define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 240            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define UI_SET_MAX_EXTRUDER_TEMP   240
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
@@ -298,9 +413,8 @@ Hacker H2 = 6
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -.2
+#define Z_PROBE_HEIGHT -0.2
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
-//#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 #define Z_PROBE_X1 -54
@@ -314,80 +428,14 @@ Hacker H2 = 6
 #define HAVE_HEATED_BED 0
 
 
-#elif PRINTER == 4  // DropLit v2 bogus values to compile fw
-#define MOTOR_CURRENT_PWM {0, 50, 0}  // No need for X/Y or E motor currents
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 22.0
-#define EXT0_PID_I 0.45
-#define EXT0_PID_D 176.0
-#define EXT0_PID_MAX 200
-#define MOTOR_CURRENT_PWM {0, 50, 0}  // No need for X/Y or E motor currents
-#define MIN_EXTRUDER_TEMP 50   //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 100             //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define DELTA_DIAGONAL_ROD 100  // 134.58 early measurement
-#define DELTA_MAX_RADIUS 100  // max printable area allowed by firmware
-#define PRINTER_RADIUS 100  //PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET
-#define Z_MAX_LENGTH 125.0
-#define END_EFFECTOR_HORIZONTAL_OFFSET 100
-#define CARRIAGE_HORIZONTAL_OFFSET 100
-#define DELTASEGMENTS_PER_PRINTLINE 22
-#define STEPPER_INACTIVE_TIME 60
-#define MAX_INACTIVE_TIME 600
-#define MAX_FEEDRATE_X 6
-#define MAX_FEEDRATE_Y 6
-#define MAX_FEEDRATE_Z 6
-#define HOMING_FEEDRATE_X 6
-#define HOMING_FEEDRATE_Y 6
-#define HOMING_FEEDRATE_Z 6
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_X 1000
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1000
-#define MAX_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1000
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_X 1000
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Y 1000
-#define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 1000
-#define MAX_JERK 12
-#define MAX_ZJERK 12
-#define FEATURE_Z_PROBE 0
-#define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value
-#define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PULLUP 1 //0
-#define Z_PROBE_ON_HIGH 0 //1
-#define Z_PROBE_X_OFFSET 0
-#define Z_PROBE_Y_OFFSET 0
-#define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
-#define Z_PROBE_XY_SPEED 50
-#define Z_PROBE_SWITCHING_DISTANCE 10
-#define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -0.1
-#define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
-//#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
-#define Z_PROBE_FINISHED_SCRIPT ""
-#define FEATURE_AUTOLEVEL 1
-#define Z_PROBE_X1 0
-#define Z_PROBE_Y1 0
-#define Z_PROBE_X2 0
-#define Z_PROBE_Y2 0
-#define Z_PROBE_X3 0
-#define Z_PROBE_Y3 0
-#define UI_PRINTER_NAME "DropLit"
-#define FEATURE_CONTROLLER 0
-#define HAVE_HEATED_BED 0
-
 #elif PRINTER == 5  // Rostock MAX v3
-#define FAN_BOARD_PIN 6  // ERIS Case Fan pin
+#define FAN_BOARD_PIN 6  //Cooling fan on RAMBo board
+#if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
-#define EXT0_PID_MAX 255
+#elif NUM_EXTRUDER == 2
+#define MOTOR_CURRENT {140,140,140,145,145}
+#endif
 #define HAVE_HEATED_BED 1
-#define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
 #define INVERT_Z_DIR 1
@@ -422,13 +470,12 @@ Hacker H2 = 6
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 80
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
 #define Z_PROBE_HEIGHT -0.1
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
-//#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 #define Z_PROBE_X1 -123.565
@@ -444,16 +491,21 @@ Hacker H2 = 6
 #define UI_PRINTER_NAME "RostockMAXv3"
 
 #elif PRINTER == 6  // Hacker H2
+#if MOTHERBOARD == 301
+#if NUM_EXTRUDER == 1
+#define MOTOR_CURRENT {140,140,140,130,0}
+#elif NUM_EXTRUDER == 2
+#define MOTOR_CURRENT {140,140,140,145,145}
+#endif
+#elif MOTHERBOARD == 302
 #define MOTOR_CURRENT_PWM {100, 100, 130}
+#endif
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
 #define EXT0_PID_I 0.73
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 255
-#define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 290            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define UI_SET_MAX_EXTRUDER_TEMP   290
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
 #define INVERT_Z_DIR 1
@@ -488,13 +540,12 @@ Hacker H2 = 6
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
-#define Z_PROBE_SPEED 90
+#define Z_PROBE_SPEED 80
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
 #define Z_PROBE_HEIGHT -0.1
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
-//#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
 #define FEATURE_AUTOLEVEL 1
 #define Z_PROBE_X1 -75.933
@@ -509,26 +560,9 @@ Hacker H2 = 6
 #define UI_PRINTER_NAME "Hacker H2"
 #define HAVE_HEATED_BED 0
 #define FEATURE_CONTROLLER 13
-
 #endif
 
 
-#define EXT0_ADVANCE_K 0
-#define EXT0_ADVANCE_L 0
-#define EXT0_ADVANCE_BACKLASH_STEPS 0
-#define EXT0_WAIT_RETRACT_TEMP 150
-#define EXT0_WAIT_RETRACT_UNITS 0
-#define EXT0_SELECT_COMMANDS "M117 Extruder 1"
-#define EXT0_DESELECT_COMMANDS ""
-
-#if MOTHERBOARD == 302
-#define EXT0_EXTRUDER_COOLER_PIN -1
-#else
-#define EXT0_EXTRUDER_COOLER_PIN 7
-#endif
-
-#define EXT0_EXTRUDER_COOLER_SPEED 200
-#define EXT0_DECOUPLE_TEST_PERIOD 45000
 
 #define FEATURE_RETRACTION 0
 #define AUTORETRACT_ENABLED 0
@@ -545,10 +579,9 @@ Hacker H2 = 6
 #define FILAMENTCHANGE_REHOME 1
 #define FILAMENTCHANGE_SHORTRETRACT 5
 #define FILAMENTCHANGE_LONGRETRACT 50
-
 #define RETRACT_DURING_HEATUP true
 #define PID_CONTROL_RANGE 20
-#define SKIP_M109_IF_WITHIN 2
+#define SKIP_M109_IF_WITHIN 5
 #define SCALE_PID_TO_MAX 0
 #define TEMP_HYSTERESIS 0
 #define EXTRUDE_MAXLENGTH 1000
@@ -578,47 +611,11 @@ Hacker H2 = 6
 #define GENERIC_THERM_NUM_ENTRIES 33
 #define HEATER_PWM_SPEED 0
 
-// ############# Heated bed configuration ########################
-#define HEATED_BED_MAX_TEMP 120
-#define SKIP_M190_IF_WITHIN 5
-#define HEATED_BED_SENSOR_TYPE 97
-#define HEATED_BED_SENSOR_PIN TEMP_BED_PIN
-#define HEATED_BED_HEATER_PIN HEATER_BED_PIN
-#define HEATED_BED_SET_INTERVAL 5000
-#define HEATED_BED_HEAT_MANAGER 1
-#define HEATED_BED_PID_INTEGRAL_DRIVE_MAX 255
-#define HEATED_BED_PID_INTEGRAL_DRIVE_MIN 80
-#define HEATED_BED_PID_PGAIN_OR_DEAD_TIME   87.86
-#define HEATED_BED_PID_IGAIN   3.01
-#define HEATED_BED_PID_DGAIN 641.82
-#define HEATED_BED_PID_MAX 255
-#define HEATED_BED_DECOUPLE_TEST_PERIOD 300000
 
 
 // ################ Endstop configuration #####################
 
 
-#if PRINTER == 4  // DropLit v2
-#define ENDSTOP_PULLUP_X_MIN true
-#define ENDSTOP_X_MIN_INVERTING false
-#define MIN_HARDWARE_ENDSTOP_X false
-#define ENDSTOP_PULLUP_Y_MIN true
-#define ENDSTOP_Y_MIN_INVERTING false
-#define MIN_HARDWARE_ENDSTOP_Y false
-#define ENDSTOP_PULLUP_Z_MIN true
-#define ENDSTOP_Z_MIN_INVERTING false
-#define MIN_HARDWARE_ENDSTOP_Z false
-#define ENDSTOP_PULLUP_X_MAX true
-#define ENDSTOP_X_MAX_INVERTING false
-#define MAX_HARDWARE_ENDSTOP_X true
-#define ENDSTOP_PULLUP_Y_MAX true
-#define ENDSTOP_Y_MAX_INVERTING false
-#define MAX_HARDWARE_ENDSTOP_Y true
-#define ENDSTOP_PULLUP_Z_MAX true
-#define ENDSTOP_Z_MAX_INVERTING false
-#define MAX_HARDWARE_ENDSTOP_Z true
-#define max_software_endstop_r false
-#else  // others such as Rostock, Orion and Eris
 #define ENDSTOP_PULLUP_X_MIN true
 #define ENDSTOP_X_MIN_INVERTING false
 #define MIN_HARDWARE_ENDSTOP_X false
@@ -638,7 +635,6 @@ Hacker H2 = 6
 #define ENDSTOP_Z_MAX_INVERTING false
 #define MAX_HARDWARE_ENDSTOP_Z true
 #define max_software_endstop_r true
-#endif
 
 #define min_software_endstop_x false
 #define min_software_endstop_y false
@@ -678,6 +674,8 @@ Hacker H2 = 6
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
+
+// ###   Distortion correction for bed mapping ###
 #define DISTORTION_CORRECTION 0
 #define DISTORTION_CORRECTION_POINTS 5
 #define DISTORTION_CORRECTION_R 100
@@ -706,7 +704,6 @@ Hacker H2 = 6
 #define DELTA_DIAGONAL_CORRECTION_A 0
 #define DELTA_DIAGONAL_CORRECTION_B 0
 #define DELTA_DIAGONAL_CORRECTION_C 0
-
 #define DELTA_HOME_ON_POWER 0
 #define STEP_COUNTER
 #define DELTA_X_ENDSTOP_OFFSET_STEPS 0
@@ -749,11 +746,7 @@ Hacker H2 = 6
 
 // ################# Misc. settings ##################
 
-#if PRINTER == 4 // DropLit needs 115200 for raspi useage
-#define BAUDRATE 115200
-#else
 #define BAUDRATE 250000
-#endif
 #define ENABLE_POWER_ON_STARTUP 1
 #define POWER_INVERTING 0
 #define KILL_METHOD 1
@@ -762,7 +755,6 @@ Hacker H2 = 6
 #define WAITING_IDENTIFIER "wait"
 #define ECHO_ON_EXECUTE 1
 #define EEPROM_MODE 1
-#define PS_ON_PIN -1
 
 /* ======== Servos =======
 Control the servos with
@@ -771,11 +763,11 @@ Servos are controlled by a pulse width normally between 500 and 2500 with 1500ms
 WARNING: Servos can draw a considerable amount of current. Make sure your system can handle this or you may risk your hardware!
 */
 #define FEATURE_SERVO 0
-#define SERVO0_PIN 11
+#define SERVO0_PIN -1
 #define SERVO1_PIN -1
 #define SERVO2_PIN -1
 #define SERVO3_PIN -1
-#define FEATURE_WATCHDOG 1
+
 
 /* #################### Z-Probe configuration and Settings #####################
    These will change machine to machine, be sure to have the correct machine selected in the top of this config file
@@ -829,7 +821,6 @@ and longer beeps for important actions.
 Parameter is delay in microseconds and the secons is the number of repetitions.
 Values must be in range 1..255
 */
-#if PRINTER != 4
 #define BEEPER_SHORT_SEQUENCE 1,1
 #define BEEPER_LONG_SEQUENCE 32,4
 #define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
@@ -841,6 +832,5 @@ Values must be in range 1..255
 #define UI_SET_MIN_EXTRUDER_TEMP   150
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
-#endif
 
 #endif

@@ -1897,9 +1897,12 @@ S3(ext)=9
 #error Oops!  Make sure you have 'Arduino Mega 2560' selected from the 'Tools -> Boards' menu.
 #endif
 
+// ### Comm Pins ###
 #define SCK_PIN          52
 #define MISO_PIN         50
 #define MOSI_PIN         51
+
+// ### X Axis Pins ###
 #define ORIG_X_STEP_PIN     37
 #define ORIG_X_DIR_PIN      48
 #define ORIG_X_MIN_PIN      12
@@ -1907,6 +1910,7 @@ S3(ext)=9
 #define X_MS1_PIN      40
 #define X_MS2_PIN      41
 
+// ### Y Axis Pins ###
 #define ORIG_Y_STEP_PIN     36
 #define ORIG_Y_DIR_PIN      49
 #define ORIG_Y_MIN_PIN      11
@@ -1914,67 +1918,105 @@ S3(ext)=9
 #define Y_MS1_PIN      69
 #define Y_MS2_PIN      39
 
+// ### Z Axis Pins ###
 #define ORIG_Z_STEP_PIN     35
 #define ORIG_Z_DIR_PIN      47
 #define ORIG_Z_MIN_PIN      10
 #define ORIG_Z_ENABLE_PIN   27
 #define Z_MS1_PIN      68
 #define Z_MS2_PIN      67
-#define TEMP_BED_PIN   2
 
+// ### HOTEND PINS ###
+#if MOTHERBOARD == 301
 #define TEMP_0_PIN     0
-//#define HEATER_2_PIN   7
-//#define TEMP_2_PIN     1
+#if CLONE == 0
+#define TEMP_1_PIN     -1
+#elif CLONE == 1
+#define TEMP_1_PIN     0
+#elif CLONE == 2
+#define TEMP_1_PIN     -1 // WILL NEED ASSIGNED EVENTUALLY
+#endif
+#define TEMP_2_PIN     -1
+#if CLONE == 0
+#define HEATER_0_PIN 9
+#define HEATER_1_PIN -1
+#define HEATER_2_PIN -1
+#elif CLONE == 1
+#define HEATER_0_PIN 9
+#define HEATER_1_PIN -1
+#define HEATER_2_PIN -1
+#elif CLONE == 2
+#define HEATER_0_PIN 9
+#define HEATER_1_PIN -1 // WILL NEED ASSIGNED EVENTUALLY
+#define HEATER_2_PIN -1
+#endif
+#elif MOTHERBOARD == 302
+#define TEMP_0_PIN     0
+#define TEMP_1_PIN     -1
+#define TEMP_2_PIN     -1
+#define HEATER_0_PIN 3
+#define HEATER_1_PIN -1
+#define HEATER_2_PIN -1
+#endif
 
+// ### FAN pins ###
+#define ORIG_FAN_PIN    8
+#define FAN_1_PIN -1
+
+// ### EXT0 and EXT1 PINS ###
 #define ORIG_E0_STEP_PIN    34
 #define ORIG_E0_DIR_PIN     43
 #define ORIG_E0_ENABLE_PIN  26
 #define E0_MS1_PIN     65
 #define E0_MS2_PIN     66
+#if MOTHERBOARD == 301
+#define ORIG_E1_STEP_PIN    33
+#define ORIG_E1_DIR_PIN     42
+#define ORIG_E1_ENABLE_PIN  25
+#define E1_MS1_PIN 63
+#define E1_MS2_PIN 64
+#elif MOTHERBOARD == 302
+#define ORIG_E1_STEP_PIN    -1
+#define ORIG_E1_DIR_PIN     -1
+#define ORIG_E1_ENABLE_PIN  -1
+#define E1_MS1_PIN 77
+#define E1_MS2_PIN 77
+#endif
+
+// ### BED Pins ###
+#define TEMP_BED_PIN   2
+#if MOTHERBOARD == 301
+#define HEATER_BED_PIN 3
+#elif MOTHERBOARD == 302
+#define HEATER_BED_PIN 4
+#endif
+
+// ### Misc Pins ###
 #define LED_PIN        13
-#define ORIG_FAN_PIN    8
 #define SUICIDE_PIN    -1  //PIN that has to be turned on right after start, to keep power flowing.
 #define SDPOWER        -1
 #define SDSS           53
 #define MAX6675_SS       53
 
-#ifdef BARICUDA
-  #define HEATER_2_PIN 6
-#else
-  #define HEATER_2_PIN -1
-#endif
+// ### MINI RAMBo specific pins ###
 #ifdef MINI_RAMBO
   #define ORIG_X_MAX_PIN 30
   #define ORIG_Y_MAX_PIN 24
   #define ORIG_Z_MAX_PIN 23
-  #define HEATER_0_PIN 3
-  #define HEATER_BED_PIN 4
-  #define FAN_1_PIN -1// 6
   #define ORIG_PS_ON_PIN 71
   #define PS_ON_PIN 71
-  #define E1_MS1_PIN 77
-  #define E1_MS2_PIN 77
   #define ORIG_SDCARDDETECT 	    15
-
   #define MOTOR_CURRENT_PWM_XY_PIN 46
   #define MOTOR_CURRENT_PWM_Z_PIN 45
   #define MOTOR_CURRENT_PWM_E_PIN 44
-  
- // moved current control to configuration.h file for ease of setup/tuning j.o.
- 
-#else //RAMBo
+
+// ### RAMBo specific pins ###
+#else
   #define ORIG_X_MAX_PIN 24
   #define ORIG_Y_MAX_PIN 23
   #define ORIG_Z_MAX_PIN 30
-  #define ORIG_E1_STEP_PIN    33
-  #define ORIG_E1_DIR_PIN     42
-  #define ORIG_E1_ENABLE_PIN  25
-  #define E1_MS1_PIN 63
-  #define E1_MS2_PIN 64
   #define DIGIPOTSS_PIN 38
   #define DIGIPOT_CHANNELS {4,5,3,0,1} // X Y Z E0 E1 digipot channels to stepper driver mapping
-  #define HEATER_0_PIN  9
-  #define HEATER_BED_PIN 3
   #define ORIG_PS_ON_PIN     -1
   #define PS_ON_PIN          -1
   #define ORIG_SDCARDDETECT 	    81
@@ -1983,7 +2025,11 @@ S3(ext)=9
 
 
 #define E0_PINS ORIG_E0_STEP_PIN,ORIG_E0_DIR_PIN,ORIG_E0_ENABLE_PIN,E0_MS1_PIN,E0_MS2_PIN,
+#if CLONE == 0
 #define E1_PINS
+#else
+#define E1_PINS ORIG_E1_STEP_PIN,ORIG_E1_DIR_PIN,ORIG_E1_ENABLE_PIN,E1_MS1_PIN,E1_MS2_PIN,
+#endif
 
 #endif
 

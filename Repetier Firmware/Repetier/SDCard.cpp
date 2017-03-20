@@ -129,16 +129,12 @@ void SDCard::pausePrint(bool intern)
         Printer::moveToReal(IGNORE_COORDINATE, IGNORE_COORDINATE, IGNORE_COORDINATE,
                             Printer::memoryE - RETRACT_ON_PAUSE,
                             Printer::maxFeedrate[E_AXIS] / 2);
-#if DRIVE_SYSTEM == DELTA
         Printer::moveToReal(0,0, IGNORE_COORDINATE, IGNORE_COORDINATE, Printer::homingFeedrate[Z_AXIS]);
-        Printer::moveToReal(IGNORE_COORDINATE,IGNORE_COORDINATE, Printer::zLength - 10, IGNORE_COORDINATE, Printer::homingFeedrate[Z_AXIS]);
-#else
-        Printer::moveToReal(Printer::xMin, Printer::yMin + Printer::yLength, IGNORE_COORDINATE, IGNORE_COORDINATE, Printer::maxFeedrate[X_AXIS]);
-#endif
+        Printer::moveToReal(IGNORE_COORDINATE,IGNORE_COORDINATE, Printer::memoryZ + Z_LIFT_ON_PAUSE, IGNORE_COORDINATE, Printer::homingFeedrate[Z_AXIS]);
         Printer::lastCmdPos[X_AXIS] = Printer::currentPosition[X_AXIS];
         Printer::lastCmdPos[Y_AXIS] = Printer::currentPosition[Y_AXIS];
         Printer::lastCmdPos[Z_AXIS] = Printer::currentPosition[Z_AXIS];
-        GCode::executeFString(PSTR(PAUSE_START_COMMANDS));
+        //GCode::executeFString(PSTR(PAUSE_START_COMMANDS));
     }
 }
 
@@ -146,7 +142,7 @@ void SDCard::continuePrint(bool intern)
 {
     if(!sd.sdactive) return;
     if(intern) {
-        GCode::executeFString(PSTR(PAUSE_END_COMMANDS));
+        //GCode::executeFString(PSTR(PAUSE_END_COMMANDS));
         Printer::GoToMemoryPosition(true, true, false, false, Printer::homingFeedrate[Z_AXIS]);
         Printer::GoToMemoryPosition(false, false, true, false, Printer::homingFeedrate[Z_AXIS] / 2.0f);
         Printer::GoToMemoryPosition(false, false, false, true, Printer::maxFeedrate[E_AXIS] / 2.0f);

@@ -1639,7 +1639,11 @@
 #define UI_TEXT_Z_POS_FAST       "Move Z Position"
 #define UI_TEXT_E_POSITION       "Extr. position"
 #define UI_TEXT_BED_TEMP         "BED Temp:  %Eb" cDEG "C"
+#if NUM_EXTRUDER == 2
+#define UI_TEXT_EXTR0_TEMP       "Temp. 0 :  %E0" cDEG "C"
+#else
 #define UI_TEXT_EXTR0_TEMP       "NOZ Temp:  %E0" cDEG "C"
+#endif
 #define UI_TEXT_EXTR1_TEMP       "Temp. 1 :  %E1" cDEG "C"
 #define UI_TEXT_EXTR2_TEMP       "Temp. 2 :  %E2" cDEG "C"
 #define UI_TEXT_EXTR0_OFF        "Shut Down Nozzle"
@@ -1760,7 +1764,11 @@
 #elif PRINTER == 4
 #define UI_TEXT_PRINTER_READY             "DROPLIT v2"
 #elif PRINTER == 5
+#if NUM_EXTRUDER <2
 #define UI_TEXT_PRINTER_READY             "Rostock MAX v3"
+#else
+#define UI_TEXT_PRINTER_READY             "Rostock MAX v3 Dual"
+#endif
 #elif PRINTER == 6
 #define UI_TEXT_PRINTER_READY             "Hacker H2"
 #else

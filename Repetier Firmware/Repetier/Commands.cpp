@@ -22,7 +22,7 @@
 #include "Repetier.h"
 
 uint8_t mpu_threshold = 50;
-float probes[9];
+//float probes[9];
 
 #include <Wire.h>
 
@@ -960,7 +960,8 @@ void Commands::processGCode(GCode *com)
         }
         if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
           xProbe = -1; yProbe = -1; zProbe = -1;
-          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting"), probeSensitivity);
+          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting. Sensitivity: "), probeSensitivity);
+          GCode::executeFString(PSTR("M117 Endstop Offset Error"));
           Com::printFLN(PSTR("X: "), offsetX);
           Com::printFLN(PSTR("Y: "), offsetY);
           Com::printFLN(PSTR("Z: "), offsetZ);
@@ -975,6 +976,7 @@ void Commands::processGCode(GCode *com)
         }
       }while(failedProbe);
 
+      if(failedProbe) break;
       Printer::updateCurrentPosition(true);
       Printer::feedrate = oldFeedrate;
       printCurrentPosition(PSTR("G69 "));
@@ -1131,12 +1133,14 @@ void Commands::processGCode(GCode *com)
         Printer::feedrate = oldFeedrate;
         Printer::homeAxis(true,true,true);
       }else{
+        /*
         if(com->hasP() && com->P >= 10){
           for(int i=0;i<10;i++){
             Com::printF(PSTR("Point "), i);
             Com::printFLN(PSTR(" - PROBE OFFSET:"), probes[i] );
           }
         }else{
+        */
 #if PRINTER == 3
           Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 1850;
           Printer::updateDerivedParameter();
@@ -1164,17 +1168,17 @@ void Commands::processGCode(GCode *com)
             }
           }else{
             pProbe = (pProbe + verify) / 2;
-            if(com->hasP()){
-              if(com->P < 10){ probes[com->P] = pProbe; }
-            }else{
+            //if(com->hasP()){
+            //  if(com->P < 10){ probes[com->P] = pProbe; }
+            //}else{
               Com::printFLN(PSTR("PROBE-ZOFFSET:"), pProbe );
-            }
+            //}
           }
 #if PRINTER == 3
           Printer::maxTravelAccelerationMMPerSquareSecond[Z_AXIS] = 400;
           Printer::updateDerivedParameter();
 #endif
-        }
+        //}
       }
     }
     break;
@@ -1845,8 +1849,32 @@ void Commands::processMCode(GCode *com)
         }
         else
         {
+          if(com->hasP()){
+            switch(com->P){
+              case 0:
+                Printer::disableXStepper();
+                break;
+
+              case 1:
+                Printer::disableYStepper();
+                break;
+
+              case 2:
+                Printer::disableZStepper();
+                break;
+
+              case 3:
+                Extruder::disableCurrentExtruderMotor();
+                break;
+
+              case 4:
+                Extruder::disableAllExtruderMotors();
+                break;
+            }
+          }else{
             Commands::waitUntilEndOfAllMoves();
             Printer::kill(true);
+          }
         }
         break;
     case 85: // M85
@@ -1907,10 +1935,25 @@ void Commands::processMCode(GCode *com)
 #endif
         if (com->hasS())
         {
+#if CLONE == 1
+            if(com->hasT()){
+              if(com->T == Extruder::current->id){
+                for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+                  Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+                }
+              }
+              else break;
+            }
+            else
+              for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+                Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+              }
+#else
             if(com->hasT())
                 Extruder::setTemperatureForExtruder(com->S,com->T,com->hasF() && com->F>0);
             else
                 Extruder::setTemperatureForExtruder(com->S,Extruder::current->id,com->hasF() && com->F>0);
+#endif
         }
 #endif
         break;
@@ -1932,8 +1975,23 @@ void Commands::processMCode(GCode *com)
         UI_STATUS_UPD(UI_TEXT_HEATING_EXTRUDER);
         Commands::waitUntilEndOfAllMoves();
         Extruder *actExtruder = Extruder::current;
+#if CLONE == 1
+        if(com->hasT()){
+          if(com->T == Extruder::current->id){
+            for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+              Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+            }
+          }
+          else break;
+        }
+        else
+          for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+            Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+          }
+#else
         if(com->hasT() && com->T<NUM_EXTRUDER) actExtruder = &extruder[com->T];
         if (com->hasS()) Extruder::setTemperatureForExtruder(com->S,actExtruder->id,com->hasF() && com->F>0);
+#endif
 #if defined(SKIP_M109_IF_WITHIN) && SKIP_M109_IF_WITHIN > 0
         if(abs(actExtruder->tempControl.currentTemperatureC - actExtruder->tempControl.targetTemperatureC)<(SKIP_M109_IF_WITHIN)) break; // Already in range
 #endif
@@ -2585,9 +2643,11 @@ void Commands::emergencyStop()
 #if EXT0_HEATER_PIN>-1
     WRITE(EXT0_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
+/*
 #if defined(EXT1_HEATER_PIN) && EXT1_HEATER_PIN>-1 && NUM_EXTRUDER>1
     WRITE(EXT1_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
+*/
 #if defined(EXT2_HEATER_PIN) && EXT2_HEATER_PIN>-1 && NUM_EXTRUDER>2
     WRITE(EXT2_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
