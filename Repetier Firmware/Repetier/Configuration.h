@@ -14,6 +14,14 @@ Hacker H2        = 6
 // HE280 w/accel probe           = 3
 #define HOTEND 3
 
+// ### Define your motherboard here! ###
+// 301 = RAMBo    302 = MINI RAMBo
+#define MOTHERBOARD 301
+
+// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
+// 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
+#define POWER_SUPPLY 2
+
 // ### Number of active extruders
 // 1 is standard, 2 is with the Y coupler for dual filament input
 #define NUM_EXTRUDER 1
@@ -23,15 +31,6 @@ Hacker H2        = 6
 // 1 is dual input filament setups - this is for the pins.h file to configure the second input reading
 // 2 NOT USED YET, but will be for dual independent hotends/nozzles/extruders
 #define CLONE 0
-
-// ### Define your motherboard here! ###
-// 301 = RAMBo    302 = MINI RAMBo
-#define MOTHERBOARD 301
-
-// ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
-// 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
-#define POWER_SUPPLY 2
-
 
 // ############################################################################################
 // ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
@@ -43,7 +42,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170320" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170328" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
