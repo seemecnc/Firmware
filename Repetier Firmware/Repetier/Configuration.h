@@ -42,7 +42,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170328" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170414" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -265,6 +265,7 @@ Hacker H2        = 6
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 2800
 #define MAX_JERK 28
 #define MAX_ZJERK 28
+#if HOTEND == 3
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value
 #define Z_PROBE_BED_DISTANCE 20
@@ -288,6 +289,9 @@ Hacker H2        = 6
 #define Z_PROBE_Y2 -43.84
 #define Z_PROBE_X3 0
 #define Z_PROBE_Y3 87.69
+#else
+#define FEATURE_Z_PROBE 0
+#endif
 #define SDSUPPORT 1
 #define SDCARDDETECT 81
 #define SDCARDDETECTINVERTED 0
@@ -336,7 +340,11 @@ Hacker H2        = 6
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 3000
 #define MAX_JERK 32
 #define MAX_ZJERK 32
+#if HOTEND == 3
 #define FEATURE_Z_PROBE 1
+#else
+#define FEATURE_Z_PROBE 0
+#endif
 #define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1
