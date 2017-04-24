@@ -1935,7 +1935,7 @@ void Commands::processMCode(GCode *com)
 #endif
         if (com->hasS())
         {
-#if CLONE == 1
+#if NUM_EXTRUDER > 1
             if(com->hasT()){
               if(com->T == Extruder::current->id){
                 for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
@@ -1975,7 +1975,7 @@ void Commands::processMCode(GCode *com)
         UI_STATUS_UPD(UI_TEXT_HEATING_EXTRUDER);
         Commands::waitUntilEndOfAllMoves();
         Extruder *actExtruder = Extruder::current;
-#if CLONE == 1
+#if NUM_EXTRUDER > 1
         if(com->hasT()){
           if(com->T == Extruder::current->id){
             for(uint8_t i = 0; i < NUM_EXTRUDER; i++){

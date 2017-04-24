@@ -1929,25 +1929,19 @@ S3(ext)=9
 // ### HOTEND PINS ###
 #if MOTHERBOARD == 301
 #define TEMP_0_PIN     0
-#if CLONE == 0
+#if NUM_EXTRUDER == 1
 #define TEMP_1_PIN     -1
-#elif CLONE == 1
+#elif NUM_EXTRUDER == 2
 #define TEMP_1_PIN     0
-#elif CLONE == 2
-#define TEMP_1_PIN     -1 // WILL NEED ASSIGNED EVENTUALLY
 #endif
 #define TEMP_2_PIN     -1
-#if CLONE == 0
+#if NUM_EXTRUDER == 1
 #define HEATER_0_PIN 9
 #define HEATER_1_PIN -1
 #define HEATER_2_PIN -1
-#elif CLONE == 1
+#elif NUM_EXTRUDER == 2
 #define HEATER_0_PIN 9
 #define HEATER_1_PIN -1
-#define HEATER_2_PIN -1
-#elif CLONE == 2
-#define HEATER_0_PIN 9
-#define HEATER_1_PIN -1 // WILL NEED ASSIGNED EVENTUALLY
 #define HEATER_2_PIN -1
 #endif
 #elif MOTHERBOARD == 302
@@ -2025,7 +2019,7 @@ S3(ext)=9
 
 
 #define E0_PINS ORIG_E0_STEP_PIN,ORIG_E0_DIR_PIN,ORIG_E0_ENABLE_PIN,E0_MS1_PIN,E0_MS2_PIN,
-#if CLONE == 0
+#if NUM_EXTRUDER == 1
 #define E1_PINS
 #else
 #define E1_PINS ORIG_E1_STEP_PIN,ORIG_E1_DIR_PIN,ORIG_E1_ENABLE_PIN,E1_MS1_PIN,E1_MS2_PIN,

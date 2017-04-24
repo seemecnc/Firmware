@@ -2474,7 +2474,7 @@ bool UIDisplay::nextPreviousAction(int8_t next, bool allowMoves)
         if(tmp < UI_SET_MIN_EXTRUDER_TEMP) tmp = 0;
         else if(tmp > UI_SET_MAX_EXTRUDER_TEMP) tmp = UI_SET_MAX_EXTRUDER_TEMP;
         Extruder::setTemperatureForExtruder(tmp,0);
-#if CLONE == 1
+#if NUM_EXTRUDER > 1
         Extruder::setTemperatureForExtruder(tmp,1);
 #endif
     }
@@ -2489,7 +2489,7 @@ bool UIDisplay::nextPreviousAction(int8_t next, bool allowMoves)
         if(tmp < UI_SET_MIN_EXTRUDER_TEMP) tmp = 0;
         else if(tmp > UI_SET_MAX_EXTRUDER_TEMP) tmp = UI_SET_MAX_EXTRUDER_TEMP;
         Extruder::setTemperatureForExtruder(tmp,1);
-#if CLONE == 1
+#if NUM_EXTRUDER > 1
         Extruder::setTemperatureForExtruder(tmp,0);
 #endif
     }

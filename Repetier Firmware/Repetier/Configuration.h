@@ -26,11 +26,6 @@ Hacker H2        = 6
 // 1 is standard, 2 is with the Y coupler for dual filament input
 #define NUM_EXTRUDER 1
 
-// ### CLONE settings ###
-// 0 is none, for just a standard single extruder/nozzle setup
-// 1 is dual input filament setups - this is for the pins.h file to configure the second input reading
-// 2 NOT USED YET, but will be for dual independent hotends/nozzles/extruders
-#define CLONE 0
 
 // ############################################################################################
 // ################# BASIC CONFIGURATION IS ALL DONE ABOVE HERE ###############################
@@ -305,7 +300,7 @@ Hacker H2        = 6
 #if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
 #elif NUM_EXTRUDER == 2
-#define MOTOR_CURRENT {140,140,140,145,145}
+#define MOTOR_CURRENT {140,140,140,130,130}
 #endif
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 180
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
@@ -440,7 +435,7 @@ Hacker H2        = 6
 #if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
 #elif NUM_EXTRUDER == 2
-#define MOTOR_CURRENT {140,140,140,145,145}
+#define MOTOR_CURRENT {140,140,140,130,130}
 #endif
 #define HAVE_HEATED_BED 1
 #define INVERT_X_DIR 1
