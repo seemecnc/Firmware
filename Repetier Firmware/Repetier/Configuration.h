@@ -262,6 +262,9 @@ Hacker H2        = 6
 #define MAX_ZJERK 28
 #if HOTEND == 3
 #define FEATURE_Z_PROBE 1
+#else
+#define FEATURE_Z_PROBE 0
+#endif
 #define Z_PROBE_SENSITIVITY  20 // 0-126 7 bit value
 #define Z_PROBE_BED_DISTANCE 20
 #define Z_PROBE_PULLUP 1 //0
@@ -284,9 +287,6 @@ Hacker H2        = 6
 #define Z_PROBE_Y2 -43.84
 #define Z_PROBE_X3 0
 #define Z_PROBE_Y3 87.69
-#else
-#define FEATURE_Z_PROBE 0
-#endif
 #define SDSUPPORT 1
 #define SDCARDDETECT 81
 #define SDCARDDETECTINVERTED 0
