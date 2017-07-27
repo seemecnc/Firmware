@@ -49,7 +49,6 @@ Hacker H2        = 6
 #define MICROSTEP_MODES {16,16,16,16,16} // 1,2,4,8,16
 #if MOTHERBOARD == 301  // RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_DIGIPOT
-#define MOTOR_CURRENT {140,140,140,130,0}
 #elif MOTHERBOARD == 302  // Mini RAMBo
 #define STEPPER_CURRENT_CONTROL CURRENT_CONTROL_PWM
 #define MOTOR_CURRENT_PWM_RANGE 2000
@@ -376,7 +375,6 @@ Hacker H2        = 6
 #define EXT0_PID_I 0.85
 #define EXT0_PID_D 176.0
 #define EXT0_PID_MAX 210
-#define MOTOR_CURRENT_PWM {20, 20, 130}
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
@@ -428,10 +426,10 @@ Hacker H2        = 6
 #define UI_PRINTER_NAME "ERIS Delta"
 #define FEATURE_CONTROLLER 0
 #define HAVE_HEATED_BED 0
+#define FAN_BOARD_PIN 6  //Cooling fan on RAMBo board
 
 
 #elif PRINTER == 5  // Rostock MAX v3
-#define FAN_BOARD_PIN 6  //Cooling fan on RAMBo board
 #if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
 #elif NUM_EXTRUDER == 2
@@ -497,7 +495,7 @@ Hacker H2        = 6
 #if NUM_EXTRUDER == 1
 #define MOTOR_CURRENT {140,140,140,130,0}
 #elif NUM_EXTRUDER == 2
-#define MOTOR_CURRENT {140,140,140,145,145}
+#define MOTOR_CURRENT {140,140,140,130,130}
 #endif
 #elif MOTHERBOARD == 302
 #define MOTOR_CURRENT_PWM {100, 100, 130}
