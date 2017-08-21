@@ -828,7 +828,6 @@ void Commands::processGCode(GCode *com)
     case 29: // G29 Probe for Endstop Offsets, Horizontal Radius, and Z Height
     {
       GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
-      if(Extruder::current->tempControl.currentTemperatureC > 100){ GCode::executeFString(PSTR("G4 S10")); }
       float xProbe = 0, yProbe = 0, zProbe = 0, verify = 0, oldFeedrate = Printer::feedrate;
       int32_t probeSensitivity = Z_PROBE_SENSITIVITY;
       bool failedProbe = false;
