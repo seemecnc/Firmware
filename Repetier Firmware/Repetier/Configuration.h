@@ -37,7 +37,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170822" // in date format yyyymmdd
+#define FIRMWARE_DATE "20171026" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -101,7 +101,7 @@ Hacker H2        = 6
 #elif HOTEND == 3
 #define MAXTEMP 290
 #define UI_SET_MAX_EXTRUDER_TEMP 280
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 220
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
 #define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
 #define EXT0_PID_I 0.73
@@ -825,7 +825,7 @@ Values must be in range 1..255
 #define BEEPER_LONG_SEQUENCE 32,4
 #define UI_SET_PRESET_HEATED_BED_TEMP_PLA 60
 #define UI_SET_PRESET_EXTRUDER_TEMP_PLA   180
-#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 100
+#define UI_SET_PRESET_HEATED_BED_TEMP_ABS 80
 #define UI_SET_PRESET_EXTRUDER_TEMP_ABS   200
 #define UI_SET_MIN_HEATED_BED_TEMP  30
 #define UI_SET_MAX_HEATED_BED_TEMP 120
