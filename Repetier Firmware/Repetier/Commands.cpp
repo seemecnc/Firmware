@@ -47,7 +47,7 @@ void accelerometer_write(uint8_t reg, uint8_t val)
     Com::printFLN(PSTR("accelerometer write i2c error."));
 }
 
-void accelerometer_recv(uint8_t reg)
+bool accelerometer_recv(uint8_t reg)
 {
   uint8_t receiveByte;
 
@@ -61,10 +61,12 @@ void accelerometer_recv(uint8_t reg)
 
     Com::printF(PSTR("read reg "),reg);
     Com::printFLN(PSTR(" value: "),receiveByte);
+    return true;
   }
   else
   {
     Com::printFLN(PSTR("accelerometer i2c recv error."));
+    return false;
     //Serial.println(F("i2c recv error."));
   }
 }
@@ -156,12 +158,16 @@ void accelerometer_init()
   accelerometer_recv(0x3A);
 }
 
-void accelerometer_status()
+bool accelerometer_status()
 {
-    accelerometer_recv(0x31); //INT1_SRC (31h)
-    accelerometer_recv(0x35); //INT2_SRC (35h)
-    accelerometer_recv(0x39); //CLICK_SRC
-    accelerometer_recv(0x2D);
+    bool retValue = true;
+
+    if(!accelerometer_recv(0x31)) { retValue = false; } //INT1_SRC (31h)
+    if(!accelerometer_recv(0x35)) { retValue = false; } //INT1_SRC (31h)
+    if(!accelerometer_recv(0x39)) { retValue = false; } //INT1_SRC (31h)
+    if(!accelerometer_recv(0x2D)) { retValue = false; } //INT1_SRC (31h)
+
+    return(retValue);
 }
 
 const int sensitive_pins[] PROGMEM = SENSITIVE_PINS; // Sensitive pin list for M42
@@ -827,6 +833,11 @@ void Commands::processGCode(GCode *com)
 #if FEATURE_Z_PROBE
     case 29: // G29 Probe for Endstop Offsets, Horizontal Radius, and Z Height
     {
+      if(!accelerometer_status()) {
+        Com::printFLN(PSTR("I2C Error - Calibration Aborted"));
+        GCode::executeFString(PSTR("M117 I2C Error. Aborting"));
+        break;
+      }
       GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
       float xProbe = 0, yProbe = 0, zProbe = 0, verify = 0, oldFeedrate = Printer::feedrate;
       int32_t probeSensitivity = Z_PROBE_SENSITIVITY;

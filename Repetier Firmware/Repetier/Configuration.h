@@ -37,7 +37,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20171026" // in date format yyyymmdd
+#define FIRMWARE_DATE "20171030" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
