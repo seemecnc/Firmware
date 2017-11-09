@@ -34,7 +34,7 @@ void accelerometer_send(uint8_t val)
   Wire.write(val);
   if(Wire.endTransmission(false))
     //Myserial.println(F("send i2c error."));
-    Com::printFLN(PSTR("accelerometer send i2c error."));
+    Com::printFLN(PSTR("accelerometer send i2c failed."));
 }
 
 void accelerometer_write(uint8_t reg, uint8_t val)
@@ -44,7 +44,7 @@ void accelerometer_write(uint8_t reg, uint8_t val)
   Wire.write(val);
   if(Wire.endTransmission())
     //Myserial.println(F("write i2c error."));
-    Com::printFLN(PSTR("accelerometer write i2c error."));
+    Com::printFLN(PSTR("accelerometer write i2c failed."));
 }
 
 bool accelerometer_recv(uint8_t reg)
@@ -59,13 +59,13 @@ bool accelerometer_recv(uint8_t reg)
   {
     receiveByte = Wire.read(); 
 
-    Com::printF(PSTR("read reg "),reg);
-    Com::printFLN(PSTR(" value: "),receiveByte);
+//    Com::printF(PSTR("read reg "),reg);
+//    Com::printFLN(PSTR(" value: "),receiveByte);
     return true;
   }
   else
   {
-    Com::printFLN(PSTR("accelerometer i2c recv error."));
+    Com::printFLN(PSTR("accelerometer i2c recv failed."));
     return false;
     //Serial.println(F("i2c recv error."));
   }
@@ -828,6 +828,10 @@ void Commands::processGCode(GCode *com)
         if(homeAllAxis || !com->hasNoXYZ())
             Printer::homeAxis(homeAllAxis || com->hasX(),homeAllAxis || com->hasY(),homeAllAxis || com->hasZ());
         Printer::updateCurrentPosition();
+        if(Printer::isXMaxEndstopHit() || Printer::isYMaxEndstopHit() || Printer::isZMaxEndstopHit()){
+          GCode::executeFString(PSTR("M117 ENDSTOP ERROR"));
+          Com::printFLN(PSTR("Error: Endstops not working properply."));
+        }
     }
     break;
 #if FEATURE_Z_PROBE
@@ -856,9 +860,14 @@ void Commands::processGCode(GCode *com)
 
       do{
         Printer::homeAxis(true,true,true);
+        if(Printer::isXMaxEndstopHit() || Printer::isYMaxEndstopHit() || Printer::isZMaxEndstopHit()){
+          GCode::executeFString(PSTR("M117 ENDSTOP ERROR - ABORTING"));
+          Com::printFLN(PSTR("Error: Endstops not working properply. Aborting calibration"));
+          failedProbe = true;
+          break;
+        }
         GCode::executeFString(Com::tZProbeStartScript);
         Printer::setAutolevelActive(false);
-
         Printer::moveTo(EEPROM::zProbeX1(),EEPROM::zProbeY1(),IGNORE_COORDINATE,IGNORE_COORDINATE,EEPROM::zProbeXYSpeed());
         xProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //First tap
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false); //Second tap
@@ -1013,7 +1022,7 @@ void Commands::processGCode(GCode *com)
         cProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((cProbe - verify) > Z_PROBE_TOLERANCE || (cProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-          Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
+          Com::printFLN(PSTR("Z probe (HR - Center Point) failed on sensitivity: "), probeSensitivity );
           if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
@@ -1042,7 +1051,7 @@ void Commands::processGCode(GCode *com)
         zProbe = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         verify = Printer::runZProbe(true,false,Z_PROBE_REPETITIONS,false);
         if ((zProbe - verify) > Z_PROBE_TOLERANCE || (zProbe - verify) < - Z_PROBE_TOLERANCE){ //tap reports distance, if more or less than .1mm, it will re-run
-          Com::printFLN(PSTR("Z probe (Center Point) failed on sensitivity: "), probeSensitivity );
+          Com::printFLN(PSTR("Z probe (HR - Z tower) failed on sensitivity: "), probeSensitivity );
           if(probeSensitivity < Z_PROBE_MAX_SENSITIVITY){
             accelerometer_recv(0x32);
             probeSensitivity+=2;
