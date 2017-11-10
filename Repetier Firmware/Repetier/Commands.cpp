@@ -830,17 +830,24 @@ void Commands::processGCode(GCode *com)
         Printer::updateCurrentPosition();
         if(Printer::isXMaxEndstopHit() || Printer::isYMaxEndstopHit() || Printer::isZMaxEndstopHit()){
           GCode::executeFString(PSTR("M117 ENDSTOP ERROR"));
-          Com::printFLN(PSTR("Error: Endstops not working properply."));
+          Com::printF(PSTR("Error: "));
+          if(Printer::isXMaxEndstopHit()) Com::printF(PSTR("X "));
+          if(Printer::isYMaxEndstopHit()) Com::printF(PSTR("Y "));
+          if(Printer::isZMaxEndstopHit()) Com::printF(PSTR("Z "));
+          Com::printFLN(PSTR("Endstop(s) not working properly"));
         }
     }
     break;
 #if FEATURE_Z_PROBE
     case 29: // G29 Probe for Endstop Offsets, Horizontal Radius, and Z Height
     {
-      if(!accelerometer_status()) {
-        Com::printFLN(PSTR("I2C Error - Calibration Aborted"));
-        GCode::executeFString(PSTR("M117 I2C Error. Aborting"));
-        break;
+      if(!accelerometer_status()){
+        delay(250);
+        if(!accelerometer_status()) {
+          Com::printFLN(PSTR("I2C Error - Calibration Aborted"));
+          GCode::executeFString(PSTR("M117 I2C Error. Aborting"));
+          break;
+        }
       }
       GCode::executeFString(PSTR("M104 S0\nM140 S0\nM107"));
       float xProbe = 0, yProbe = 0, zProbe = 0, verify = 0, oldFeedrate = Printer::feedrate;
@@ -861,8 +868,12 @@ void Commands::processGCode(GCode *com)
       do{
         Printer::homeAxis(true,true,true);
         if(Printer::isXMaxEndstopHit() || Printer::isYMaxEndstopHit() || Printer::isZMaxEndstopHit()){
-          GCode::executeFString(PSTR("M117 ENDSTOP ERROR - ABORTING"));
-          Com::printFLN(PSTR("Error: Endstops not working properply. Aborting calibration"));
+          GCode::executeFString(PSTR("M117 ENDSTOP ERROR"));
+          Com::printF(PSTR("Error: "));
+          if(Printer::isXMaxEndstopHit()) Com::printF(PSTR("X "));
+          if(Printer::isYMaxEndstopHit()) Com::printF(PSTR("Y "));
+          if(Printer::isZMaxEndstopHit()) Com::printF(PSTR("Z "));
+          Com::printFLN(PSTR("Endstop(s) not working properly"));
           failedProbe = true;
           break;
         }
