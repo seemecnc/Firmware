@@ -30,25 +30,30 @@ uint8_t mpu_threshold = 50;
 
 void accelerometer_send(uint8_t val)
 {
+#if FEATURE_Z_PROBE == 1
   Wire.beginTransmission(ACCELEROMETER_I2C_ADDR);
   Wire.write(val);
   if(Wire.endTransmission(false))
     //Myserial.println(F("send i2c error."));
     Com::printFLN(PSTR("accelerometer send i2c failed."));
+#endif
 }
 
 void accelerometer_write(uint8_t reg, uint8_t val)
 {
+#if FEATURE_Z_PROBE == 1
   Wire.beginTransmission(ACCELEROMETER_I2C_ADDR);
   Wire.write(reg);
   Wire.write(val);
   if(Wire.endTransmission())
     //Myserial.println(F("write i2c error."));
     Com::printFLN(PSTR("accelerometer write i2c failed."));
+#endif
 }
 
 bool accelerometer_recv(uint8_t reg)
 {
+#if FEATURE_Z_PROBE == 1
   uint8_t receiveByte;
 
   accelerometer_send(reg); //Send an 8bit register to be read
@@ -69,10 +74,14 @@ bool accelerometer_recv(uint8_t reg)
     return false;
     //Serial.println(F("i2c recv error."));
   }
+#else
+  return false;
+#endif
 }
 
 void accelerometer_init()
 {
+#if FEATURE_Z_PROBE == 1
   Com::printFLN(PSTR("iis2dh accelerometer initializing..."));
   Wire.begin(); // join i2c bus
   
@@ -156,10 +165,12 @@ void accelerometer_init()
   accelerometer_recv(0x3A);
   accelerometer_write(0x3A,50);
   accelerometer_recv(0x3A);
+#endif
 }
 
 bool accelerometer_status()
 {
+#if FEATURE_Z_PROBE == 1
     bool retValue = true;
 
     if(!accelerometer_recv(0x31)) { retValue = false; } //INT1_SRC (31h)
@@ -168,6 +179,9 @@ bool accelerometer_status()
     if(!accelerometer_recv(0x2D)) { retValue = false; } //INT1_SRC (31h)
 
     return(retValue);
+#else
+    return(false);
+#endif
 }
 
 const int sensitive_pins[] PROGMEM = SENSITIVE_PINS; // Sensitive pin list for M42
