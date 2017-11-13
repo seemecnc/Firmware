@@ -7,16 +7,16 @@ Rostock MAX v3   = 5
 Hacker H2        = 6
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 3
+#define PRINTER 5
 
 // SeeMeCNC Bowden w/PEEK barrel = 1
 // HE240 on ERIS w/accel probe   = 2
 // HE280 w/accel probe           = 3
-#define HOTEND 2
+#define HOTEND 3
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
-#define MOTHERBOARD 302
+#define MOTHERBOARD 301
 
 // ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
 // 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
@@ -103,9 +103,9 @@ Hacker H2        = 6
 #define UI_SET_MAX_EXTRUDER_TEMP 280
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 230
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 19.0
-#define EXT0_PID_I 3.0
-#define EXT0_PID_D 30.0
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 48.3
+#define EXT0_PID_I 9.7
+#define EXT0_PID_D 60.0
 #define EXT0_PID_MAX 255
 #define EXT1_PID_INTEGRAL_DRIVE_MAX 230
 #define EXT1_PID_INTEGRAL_DRIVE_MIN 80
