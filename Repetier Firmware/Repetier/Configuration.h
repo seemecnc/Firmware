@@ -7,16 +7,16 @@ Rostock MAX v3   = 5
 Hacker H2        = 6
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 5
+#define PRINTER 3
 
 // SeeMeCNC Bowden w/PEEK barrel = 1
 // HE240 on ERIS w/accel probe   = 2
 // HE280 w/accel probe           = 3
-#define HOTEND 3
+#define HOTEND 2
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
-#define MOTHERBOARD 301
+#define MOTHERBOARD 302
 
 // ##### Older Orions w/ATX had Y inverted and NEW PSU on orions needs opposite ###
 // 1 = ATX on older machines  2 = Rail style PSU on newer machines ############################
@@ -37,7 +37,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20171110" // in date format yyyymmdd
+#define FIRMWARE_DATE "20171113" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -109,9 +109,9 @@ Hacker H2        = 6
 #define EXT0_PID_MAX 255
 #define EXT1_PID_INTEGRAL_DRIVE_MAX 230
 #define EXT1_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT1_PID_PGAIN_OR_DEAD_TIME 19.0
-#define EXT1_PID_I 3.0
-#define EXT1_PID_D 30.0
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 48.3
+#define EXT1_PID_I 9.7
+#define EXT1_PID_D 60.0
 #define EXT1_PID_MAX 255
 #endif
 // using PWM not PDM
