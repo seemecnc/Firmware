@@ -1028,7 +1028,11 @@ void Commands::processGCode(GCode *com)
 
       //Horizontal Radius Calc and Z Height
       float cProbe, hradius;
+#if PRINTER == 5
+      float defaultRadius = 144.0;
+#else
       float defaultRadius = PRINTER_RADIUS-END_EFFECTOR_HORIZONTAL_OFFSET-CARRIAGE_HORIZONTAL_OFFSET;
+#endif
       float oldRadius;
       int radiusLoop;
       radiusLoop = 0;
