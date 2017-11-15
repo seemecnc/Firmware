@@ -37,7 +37,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20171030" // in date format yyyymmdd
+#define FIRMWARE_DATE "20171115" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -55,7 +55,7 @@ Hacker H2        = 6
 #endif
 
 #define Z_LIFT_ON_PAUSE 20         // Amount to lift the head (mm) when pausing from the LCD screen
-#define MIN_DEFECT_TEMPERATURE 17  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
+#define MIN_DEFECT_TEMPERATURE 16  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 
 #define MIXING_EXTRUDER 0
@@ -101,17 +101,17 @@ Hacker H2        = 6
 #elif HOTEND == 3
 #define MAXTEMP 290
 #define UI_SET_MAX_EXTRUDER_TEMP 280
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 220
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 230
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 48.3
+#define EXT0_PID_I 9.7
+#define EXT0_PID_D 60.0
 #define EXT0_PID_MAX 255
-#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 230
 #define EXT1_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT1_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT1_PID_I 0.73
-#define EXT1_PID_D 53.41
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 48.3
+#define EXT1_PID_I 9.7
+#define EXT1_PID_D 60.0
 #define EXT1_PID_MAX 255
 #endif
 // using PWM not PDM
@@ -222,12 +222,6 @@ Hacker H2        = 6
 #elif MOTHERBOARD == 302
 #define MOTOR_CURRENT_PWM {60, 60, 130}
 #endif
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
-#define EXT0_PID_MAX 235
 #define HAVE_HEATED_BED 1
 #define INVERT_X_DIR 1
 #if POWER_SUPPLY == 2
@@ -301,12 +295,6 @@ Hacker H2        = 6
 #elif NUM_EXTRUDER == 2
 #define MOTOR_CURRENT {140,140,140,130,130}
 #endif
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
-#define EXT0_PID_MAX 235
 #define HAVE_HEATED_BED 1
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 0
@@ -369,12 +357,6 @@ Hacker H2        = 6
 
 #elif PRINTER == 3  // ERIS Delta
 #define MOTOR_CURRENT_PWM {20, 20, 130}
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 200
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 120
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 25.0
-#define EXT0_PID_I 0.85
-#define EXT0_PID_D 176.0
-#define EXT0_PID_MAX 210
 #define INVERT_X_DIR 0
 #define INVERT_Y_DIR 0
 #define INVERT_Z_DIR 0
@@ -500,12 +482,6 @@ Hacker H2        = 6
 #elif MOTHERBOARD == 302
 #define MOTOR_CURRENT_PWM {100, 100, 130}
 #endif
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
-#define EXT0_PID_MAX 255
 #define INVERT_X_DIR 1
 #define INVERT_Y_DIR 1
 #define INVERT_Z_DIR 1
