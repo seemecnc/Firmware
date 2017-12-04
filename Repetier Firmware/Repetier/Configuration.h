@@ -24,7 +24,11 @@ Hacker H2        = 6
 
 // ### Number of active extruders
 // 1 is standard, 2 is with the Y coupler for dual filament input
-#define NUM_EXTRUDER 1
+//
+// WARNING: There is a known bug in Repetier that causes random tool changes when using dual
+// extrusion if you have the USB cable connected. In order to avoid this, only print from
+// the SD card if you are running two extruders.
+#define NUM_EXTRUDER 2
 
 
 // ############################################################################################
@@ -37,7 +41,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20171115" // in date format yyyymmdd
+#define FIRMWARE_DATE "20171204" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
