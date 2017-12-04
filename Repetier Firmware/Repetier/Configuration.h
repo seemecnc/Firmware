@@ -28,7 +28,7 @@ Hacker H2        = 6
 // WARNING: There is a known bug in Repetier that causes random tool changes when using dual
 // extrusion if you have the USB cable connected. In order to avoid this, only print from
 // the SD card if you are running two extruders.
-#define NUM_EXTRUDER 2
+#define NUM_EXTRUDER 1
 
 
 // ############################################################################################
