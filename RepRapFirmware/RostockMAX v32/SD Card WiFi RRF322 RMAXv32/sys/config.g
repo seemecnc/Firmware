@@ -20,8 +20,8 @@ M586 P2 S0                                              ; disable Telnet
 M569 P0 S0                                              ; physical drive 0
 M569 P1 S0                                              ; physical drive 1
 M569 P2 S0                                              ; physical drive 2
-M569 P3 S0                                              ; physical drive 3
-M569 P4 S0                                              ; physical drive 4
+M569 P3 S0                                              ; physical drive 3   S one or zero = motor direction
+M569 P4 S0                                              ; physical drive 4   S one or zero = motor direction
 M584 X0 Y1 Z2 E3:4                                      ; set drive mapping
 M350 X16 Y16 Z16 E16:16 I1                              ; configure micro stepping with interpolation
 ;M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; 0.9 step/degree motors set steps per mm < adjust depending on pulley num. of Teeth
@@ -30,7 +30,7 @@ M92 X80.00 Y80.00 Z80.00 E91.00:91.00                   ; 20T PULLEYS 1.8 step/d
 M566 X700.00 Y700.00 Z700.00 E2000.00:2000.00           ; set maximum instantaneous speed changes (mm/min)
 M203 X10000.00 Y10000.00 Z10000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
 M201 X1400.00 Y1400.00 Z1400.00 E5000.00:5000.00        ; set accelerations (mm/s^2)
-M906 X1500 Y1500 Z1500 E1400:1400 I40                   ; set motor currents (mA) and motor idle factor in per cent
+M906 X1500 Y1500 Z1500 E1300:1300 I40                   ; set motor currents (mA) and motor idle factor in per cent
 M84 S30                                                 ; Set idle timeout
 
 ; Axis Limits
