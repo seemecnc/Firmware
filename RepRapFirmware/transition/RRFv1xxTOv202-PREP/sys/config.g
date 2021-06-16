@@ -2,7 +2,7 @@ M550 PDO_NOT_USE                           ; Printer name  ONLY USED FOR FIRMWAR
 M555 P2                                    ; Gcode Output Type
 M552 S0                                    ; DISable Wifi
 M575 P1 B57600 S1                          ; PanelDue Comm Setup
-G21                                        ; Work in millimetres
+G21                                        ; Work in millimeters
 G90                                        ; Send absolute coordinates
 
 M569 P0 S0                                 ; Drive 0 goes forwards (X)
@@ -19,12 +19,12 @@ M665 R144 L291.06 B135 H400 X0 Y0 Z0       ; delta radius, diagonal rod length, 
 M666 X0 Y0 Z0                              ; endstop offsets in mm
 
 M350 X16 Y16 Z16 E16:16 I1                 ; Set 16x microstepping w/ Interpolation
-M92 X200 Y200 Z200                         ; Set axis steps/mm
-M92 E182.0:182.0                           ; Set extruder steps/mm
+M92 X20 Y20 Z20                            ; Set axis steps/mm
+M92 E10.0:10.0                             ; Set extruder steps/mm
 
-M906 X1200 Y1200 Z1200 E1200:1200 I50      ; Set motor currents (mA) and idle current %
-M201 X4200 Y4200 Z4200 E5000               ; Accelerations (mm/s^2)
-M203 X15000 Y15000 Z15000 E15000           ; Maximum speeds (mm/min)
+M906 X500 Y500 Z500 E500:500 I50           ; Set motor currents (mA) and idle current %
+M201 X200 Y200 Z200 E500                   ; Accelerations (mm/s^2)
+M203 X100 Y100 Z100 E50                     ; Maximum speeds (mm/min)
 M566 X2000 Y2000 Z2000 E2000               ; Maximum instant speed changes mm/minute
 
 M106 P0 H-1                                ; Part Cooling Fan
