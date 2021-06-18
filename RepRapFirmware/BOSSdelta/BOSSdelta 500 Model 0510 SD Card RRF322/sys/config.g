@@ -6,9 +6,9 @@ M83                                                     ; relative extruder move
 ; REMOVE ONLY ONE semi-colon for ONE printer configuration. Information after semi-colon is ignored
 
 M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
-;M665 R260 L572.92 B252 H600                             ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-M665 R260 L572.92 B252 H1100                            ; 1 METER BOSS DELTA 
-;M665 R260 L572.92 B252 H2200                            ; 2.1 METER BOSS DELTA
+;M665 R252 L564.5 B252 H600                              ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
+M665 R252 L564.5 B252 H1100                             ; 1 METER BOSS DELTA 
+;M665 R252 L564.5 B252 H2200                             ; 2.1 METER BOSS DELTA
 
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by auto-calibration leveling)
 
@@ -42,7 +42,7 @@ M574 Y2 S1 P"ystop"                                     ; configure active-high 
 M574 Z2 S1 P"zstop"                                     ; configure active-high endstop for high end on Z via pin zstop
 
 ; Z-Probe
-M558 P5 I0 A4 R0.4 C"zprobe.in" H30 F1700 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
+M558 P5 I0 A4 R0.4 C"zprobe.in" H30 F1500 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
 G31 P500 X0 Y0 Z-0.25                                   ; set Z probe trigger value, offset and trigger height
 M557 R240 S40                                           ; define mesh grid
 
