@@ -6,9 +6,9 @@ M83                                                     ; relative extruder move
 ; REMOVE ONLY ONE semi-colon for ONE printer configuration. Information after semi-colon is ignored
 
 M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
-;M665 R250 L574.4 B250 H600                              ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-M665 R250 L574.4 B250 H1100                             ; 1 METER BOSS DELTA 
-;M665 R250 L574.4 B250 H2200                             ; 2.1 METER BOSS DELTA
+;M665 R250 L573.6 B250 H600                              ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
+M665 R250 L573.6 B250 H1100                             ; 1 METER BOSS DELTA 
+;M665 R250 L573.6 B250 H2200                             ; 2.1 METER BOSS DELTA
 
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by auto-calibration leveling)
 
