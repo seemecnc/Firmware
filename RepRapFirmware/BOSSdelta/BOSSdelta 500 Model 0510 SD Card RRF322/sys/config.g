@@ -8,7 +8,7 @@ M83                                                     ; relative extruder move
 M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
 ;M665 R250 L573.6 B250 H600                              ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
 M665 R250 L573.6 B250 H1100                             ; 1 METER BOSS DELTA 
-;M665 R250 L573.6 B250 H2200                             ; 2.1 METER BOSS DELTA
+;M665 R250 L573.6 B250 H2200                             ; 2.1 METER BOSS DELTA adjust 
 
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by auto-calibration leveling)
 
@@ -56,7 +56,7 @@ M143 H0 S120                                            ; set temperature limit 
 ; Hotend Heater
 M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp
 M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-M307 H1 R2.800 C109.1 D5.12 S1.00 V13.0                 ; Hotend Heater Process Parameters
+M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; Hotend Heater Process Parameters
 M143 H1 S280                                            ; Hotend Max Temp
 
 ; Fans
