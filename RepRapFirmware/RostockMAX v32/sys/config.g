@@ -5,8 +5,8 @@ M83                                                     ; relative extruder move
 
 ; Only remove ONE semi-colon for ONE printer configuration
 M550 P"RMAXV32"                                         ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
-M665 R144 L291.06 B135 H400 X0 Y0 Z0                    ; INJECTION MOLDED ARMS delta radius, diagonal rod length, printable radius and homed height
-;M665 R144 L337 B135 H350 X0 Y0 Z0                       ; CARBON FIBER ARMS length setting
+M665 R150 L340.5 B150 H400 X0 Y0 Z0                    ; INJECTION MOLDED ARMS delta radius, diagonal rod length, printable radius and homed height
+;M665 R150 L350 B150 H350 X0 Y0 Z0                       ; CARBON FIBER ARMS length setting
 
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by autocalibration leveling)
 

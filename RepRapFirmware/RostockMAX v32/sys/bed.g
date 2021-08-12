@@ -38,7 +38,6 @@ G30 P10 X56.29 Y-32.50 Z-99999 H0
 G30 P11 X-56.29 Y-32.50 Z-99999 H0
 G30 P12 X0 Y0 Z-99999 S9                    ; 9 factor calibration
 M500
-M140 S0                                     ; bed off
 G28                                         ; home
 
 
