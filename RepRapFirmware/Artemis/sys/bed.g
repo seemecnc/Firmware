@@ -21,7 +21,7 @@ G30 P6 X0 Y63.99 H0 Z-99999
 G30 P7 X48.9 Y-28.23 H0 Z-99999
 G30 P8 X-56.29 Y-32.5 H0 Z-99999
 G30 P9 X0 Y0 H0 Z-99999 S9
-;M500                                        ; save
+M500                                        ; save
 G28
 ; Use S-1 for measurements only, without calculations. Use S4 for endstop heights and Z-height only. Use S6 for full 6 factors
 ; If your Z probe has significantly different trigger heights depending on XY position, adjust the H parameters in the G30 commands accordingly. The value of each H parameter should be (trigger height at that XY position) - (trigger height at centre of bed)
