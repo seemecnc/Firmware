@@ -47,7 +47,7 @@ M557 R130 S30                                           ; define mesh grid
 ; Bed Heater
 M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
 M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-M307 H0 R0.245 C774.3 D25.92 S1.00 V12.9                ; Bed Heater Process Parameters
+M307 H0 R0.245 C774.3 D25.92 S1.00                      ; Bed Heater Process Parameters
 M140 H0                                                 ; map heated bed to heater 0
 M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
 
