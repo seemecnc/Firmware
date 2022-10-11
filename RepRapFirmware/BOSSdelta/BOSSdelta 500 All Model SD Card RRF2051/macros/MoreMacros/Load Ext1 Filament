@@ -1,0 +1,12 @@
+M291 P"EZR ONE Load filament just exiting EZR, then click OK" R"Load Filament" S3
+G28
+T0
+M302 P1
+G92 E0
+M83
+G1 E1250 F8000
+M302 P0
+M82
+T0
+G92 E0
+M84
