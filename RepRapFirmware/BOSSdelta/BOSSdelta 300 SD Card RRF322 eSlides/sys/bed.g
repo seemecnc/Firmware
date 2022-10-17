@@ -1,7 +1,8 @@
 ; bed.g
 ; called by G32 to perform auto calibration
 ;
-M665 R150 L340.5 B150 H510                  ; Carbon Fiber ARMS - copy values from config.g !!
+;M665 R150 L340.5 B150 H510                 ; Carbon Fiber ARMS - copy values from config.g !!
+M665 R150 L350.0 B150 H490                  ; Injection Molded ARMS 350mm length Z PROBE MUST HAVE 0.4MM OFFSET
 G28                                         ; home
 M117 Heating Bed Please Wait                ; display message
 M190 S70                                    ; bed preheat temperature

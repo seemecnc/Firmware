@@ -3,7 +3,7 @@
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
 
-; Only remove ONE semi-colon for ONE printer configuration
+; Only remove ONE semi-colon for ONE M665 printer configuration
 M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
 M665 R150 L340.5 B150 H510                              ; Carbon Fiber ARMS (R delta radius, L diagonal rod length, B printable radius, H homed height default)
 ;M665 R150 L350.9 B145 H500                             ; Injection Molded ARMS 350mm length
@@ -24,8 +24,8 @@ M569 P3 S1                                              ; physical drive 3
 M569 P4 S1                                              ; physical drive 4
 M584 X0 Y1 Z2 E3:4                                      ; set drive mapping
 M350 X16 Y16 Z16 E16:16 I1                              ; configure micro stepping with interpolation
-M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; set steps per mm
-M566 X700.00 Y700.00 Z700.00 E2000.00:2000.00           ; set maximum instantaneous speed changes (mm/min)
+M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; set steps per mm 
+M566 X1200.00 Y1200.00 Z1200.00 E2000.00:2000.00        ; set maximum instantaneous speed changes (mm/min)
 M203 X10000.00 Y10000.00 Z10000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
 M201 X1200.00 Y1200.00 Z1200.00 E5000.00:5000.00        ; set accelerations (mm/s^2)
 M906 X1500 Y1500 Z1500 E1400:1400 I40                   ; set motor currents (mA) and motor idle factor in per cent
@@ -41,7 +41,7 @@ M574 Z2 S1 P"zstop"                                     ; configure active-high 
 
 ; Z-Probe
 M558 P5 I0 A4 R0.4 C"zprobe.in" H20 F2500 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
-G31 P500 X0 Y0 Z-0.35                                   ; set Z probe trigger value, offset and trigger height
+G31 P500 X0 Y0 Z-0.4                                    ; set Z probe trigger value, offset and trigger height
 M557 R130 S30                                           ; define mesh grid
 
 ; Bed Heater
@@ -73,6 +73,8 @@ M563 P1 D1 H1 F0
 G10 P1 X0 Y0 Z0
 G10 P1 S0 R0
 
+M572 D0:1 S0.1:0.1                                      ; pressure advance for both tools
+
 ;Filament Runout Sensor
 M950 J0 C"!^e0Stop"                                     ; create switch pin
 M950 J1 C"!^e1stop"                                     ; create switch pin
@@ -83,4 +85,4 @@ M575 P1 S1 B57600                                       ; enable support for Pan
 M501                                                    ; load saved parameters from non-volatile memory
 T0                                                      ; select Tool 0
 M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
-M579 X1.0040 Y1.0040 Z1.0040                            ; scale axis all three must be equal
+M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal
