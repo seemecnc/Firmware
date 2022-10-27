@@ -1,0 +1,12 @@
+M117 BOSSdelta Autolevel Calibration
+M117 Heating Bed Please Wait
+M190 S70
+M104 S0
+M140 S0
+M558 P5 I0 A2 S0.05 R0.4 H30 F2500
+G32
+M500
+G28
+M84
+M375
+M117 BOSSdelta Autolevel Calibration Complete

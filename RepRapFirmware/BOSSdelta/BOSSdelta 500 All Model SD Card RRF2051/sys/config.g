@@ -1,87 +1,69 @@
-; SeeMeCNC 3D Printers
-; General preferences 
-G90                                                     ; absolute coordinates
-M83                                                     ; relative extruder moves
+; BOSSdelta 0510 machine Ethernet Configuration
+; by SeeMeCNC
 
-; REMOVE ONLY ONE semi-colon for ONE printer configuration. Information after semi-colon is ignored
+M111 S0                             ; debug off
+M550 PBOSS0510                      ; Printer name
+;M929 P"eventlog.txt" S1            ; event logging start
 
-M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
-;M665 R250 L573.6 B250 H600                              ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-M665 R250 L573.6 B250 H1100                             ; 1 METER BOSS DELTA 
-;M665 R250 L573.6 B250 H2200                             ; 2.1 METER BOSS DELTA adjust 
-
-M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by auto-calibration leveling)
+; Machine Parameters
+;M665 R260 L572.92 B252 H600             ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
+M665 R260 L572.92 B252 H1100 X0 Y0 Z0	; delta radius, diagonal rod length, printable radius and homed height
+;M665 R260 L572.92 B252 H2200            ; 2.1 METER BOSS DELTA adjust 
+M666 X0 Y0 Z0                           ; end stop offsets in mm
 
 ; Network
-M552 S1                                                 ; enable network
-M586 P0 S1                                              ; enable HTTP
-M586 P1 S0                                              ; disable FTP
-M586 P2 S0                                              ; disable Telnet
+M540 P0xF0:0xE1:0xD2:0xC3:0x11:0x11	; Set your own MAC Address (make different for each SeeMeCNC printer you own)
+G4 P1000                            ; pause a second
+M552 P0.0.0.0                       ; IP address P0.0.0.0 uses DHCP 
+G4 P1000                            ; pause a second
+M552 S1                             ; enable network
+G4 P1000                            ; pause a second
+M575 P1 B57600 S1                   ; PanelDue Comm Setup
+
+G21                                 ; Work in millimeters
+G90                                 ; Send absolute coordinates
 
 ; Drives
-M569 P0 S1                                              ; physical drive 0
-M569 P1 S1                                              ; physical drive 1
-M569 P2 S1                                              ; physical drive 2
-M569 P3 S1                                              ; physical drive 3
-M569 P4 S1                                              ; physical drive 4
-M584 X0 Y1 Z2 E3:4                                      ; set drive mapping
-M350 X16 Y16 Z16 E16:16 I1                              ; configure micro stepping with interpolation
-M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; set steps per mm
-M566 X350.00 Y350.00 Z350.00 E2000.00:2000.00           ; set maximum instantaneous speed changes (mm/min)
-M203 X10000.00 Y10000.00 Z10000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
-M201 X1200.00 Y1200.00 Z1200.00 E5000.00:5000.00        ; set accelerations (mm/s^2)
-M906 X1700 Y1700 Z1700 E1300:1300 I40                   ; set motor currents (mA) and motor idle factor in per cent
-M84 S30                                                 ; Set idle timeout
+M569 P0 S1                          ; Drive 0 goes forwards (X)
+M569 P1 S1                          ; Drive 1 goes forwards (Y)
+M569 P2 S1                          ; Drive 2 goes forwards (Z)
+M569 P3 S1                          ; Drive 3 goes forwards (E0)
+M569 P4 S1                          ; Drive 4 goes forwards (E1)
 
-; Axis Limits
-M208 Z0 S1                                              ; set minimum Z
+M574 X2 Y2 Z2 S1                    ; set end stop configuration (all end stops at high end, active high)
 
-; End-stops
-M574 X2 S1 P"xstop"                                     ; configure active-high endstop for high end on X via pin xstop
-M574 Y2 S1 P"ystop"                                     ; configure active-high endstop for high end on Y via pin ystop
-M574 Z2 S1 P"zstop"                                     ; configure active-high endstop for high end on Z via pin zstop
+M350 X16 Y16 Z16 E16:16 I1              ; Set 16x micro-stepping w/ Interpolation
+M92 X200.00 Y200.00 Z200.00             ; Set axis steps/mm
+M92 E182.0:182.0                        ; Set extruder steps/mm
 
-; Z-Probe
-M558 P5 I0 A4 R0.4 C"zprobe.in" H30 F1800 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
-G31 P500 X0 Y0 Z-0.25                                   ; set Z probe trigger value, offset and trigger height
-M557 R240 S40                                           ; define mesh grid
+M906 X1700 Y1700 Z1700 E1300:1300 I50   ; Set motor currents (mA) and idle current %
+M201 X1600 Y1600 Z1600 E5000            ; Accelerations (mm/s^2)
+M203 X10000 Y10000 Z10000 E14000        ; Maximum speeds (mm/min)
+M566 X200 Y200 Z300 E2000               ; Maximum instant speed changes mm/minute
 
-; Bed Heater
-M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
-M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-M307 H0 R0.245 C774.3 D25.92 S1.00 V12.9                ; Bed Heater Process Parameters
-M140 H0                                                 ; map heated bed to heater 0
-M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
+;Bed & Hotend Setup
+M106 P0 H-1                             ; Part Cooling Fan
+M106 P2 T50 S0.8 H1                     ; Heat sink fan
+M307 H0 B0                              ; Heated Bed (H2)
+M305 P0 T100000 B4388 R4700 H30 L0      ; Bed thermistor
+M305 P1 T100000 B4388 R4700 C7.06e-8 H30 L0	  ; Hot end Thermistor
+M563 P0 D0 H1                           ; Hot end (T0), drive (E0), heater (H1)
+G10 P0 S0 R0                            ; Hot end operating and standby temperatures
 
-; Hotend Heater
-M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp
-M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; Hotend Heater Process Parameters
-M143 H1 S280                                            ; Hotend Max Temp
+;Dual Extrusion Code
+M563 P1 D1 H1                           ; Hot end (T1), drive (E1), heater (H1)
+G10 P1 S0 R0                            ; Hot end (1) operating and standby temperatures
 
-; Fans
-M950 F0 C"fan0" Q500                                    ; create fan 0 on pin fan0 and set its frequency
-M106 P0 S0 H-1                                          ; set fan 0 value. Thermostatic control is turned off
-M950 F1 C"fan2" Q500                                    ; create fan 1 on pin fan1 and set its frequency
-M106 P1 S0.80 H1 T45                                    ; set fan 1 value. Thermostatic control is turned on
+;STRAIN GAGE PROBE
+M558 P5 I0 A2 S0.05 R0.4 H20 F2500      ; Strain gauge probe settings
+G31 P100 X0 Y0 Z-0.3                    ; Probe trigger and offset values
+M557 R245 S30                           ; define probing area
 
-; Tool Extruder 1
-M563 P0 D0 H1 F0
-G10 P0 X0 Y0 Z0
-G10 P0 S0 R0
+;Load stored values and heightmap
+M501                                    ; Load config-override values
+T0                                      ; Select Tool 0 Default
+M500                                    ; Save settings
+;M375                                    ; Load height map - omitted and using steps/mm adjustment for better accuracy due to timing pulley variation
 
-; Tool Extruder 2
-M563 P1 D1 H1 F0
-G10 P1 X0 Y0 Z0
-G10 P1 S0 R0
 
-;Filament Runout Sensor
-M950 J0 C"!^e0Stop"                                     ; create switch pin input first extruder
-M950 J1 C"!^e1stop"                                     ; create switch pin input second extruder
-M581 P0:1 T2 S1 R1                                      ; run trigger2.g to raise and pause if filament has run out during SD card printing
 
-; Miscellaneous
-M575 P1 S1 B57600                                       ; enable support for PanelDue
-M501                                                    ; load saved parameters from non-volatile memory
-T0                                                      ; select Tool 0
-M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
