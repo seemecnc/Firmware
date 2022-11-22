@@ -1,4 +1,4 @@
-; SeeMeCNC 3D Printers
+; SeeMeCNC 3D Printers RRF v3.4.4
 ; General preferences 
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
@@ -6,17 +6,16 @@ M83                                                     ; relative extruder move
 ; Only remove ONE semi-colon for ONE M665 printer configuration
 M550 P"BOSSdelta"                                       ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
 M665 R150 L340.5 B150 H510                              ; Carbon Fiber ARMS (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-;M665 R150 L350.9 B145 H500                             ; Injection Molded ARMS 350mm length
-
+;M665 R150 L350.9 B150 H500                             ; Injection Molded ARMS 350mm length
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by autocalibration leveling)
 
 ; Network
 ;M540 P0xF0:0xE1:0xD2:0xC3:0x11:0x11	                 ; Set your own MAC Address (make different for each SeeMeCNC printer you own)
 G4 P500
 M586 P0 S1                                              ; enable HTTP
-G4 P1000
+G4 P500
 M552 S1                                                 ; enable network and acquire dynamic address via DHCP
-G4 P1000
+G4 P500
 M586 P1 S0                                              ; disable FTP
 M586 P2 S0                                              ; disable Telnet
 M575 P1 B57600 S1                                       ; PanelDue Comm Setup
@@ -90,4 +89,4 @@ M575 P1 S1 B57600                                       ; enable support for Pan
 M501                                                    ; load saved parameters from non-volatile memory
 T0                                                      ; select Tool 0
 M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
-M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal
+;M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal

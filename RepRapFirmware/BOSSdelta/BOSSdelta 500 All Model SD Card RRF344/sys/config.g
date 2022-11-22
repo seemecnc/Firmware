@@ -1,14 +1,14 @@
-; BOSSdelta 0510 machine Ethernet Configuration
+; BOSSdelta 500 RRF v3.4.4 
 ; by SeeMeCNC
 
 M111 S0                                 ; debug off
 M550 P"BOSSdelta 500"                   ; Printer name
 ;M929 P"eventlog.txt" S1                 ; event logging start
 
-; Machine Parameters
+; Machine Parameters  >>>>>>>>> MUST COPY THE M665 LINE TO BED.G <<<<<<<<<
 G21                                     ; use mm units
 ;M665 R260 L572.92 B260 H600             ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-M665 R260 L572.92 B260 H1130          	; delta radius, diagonal rod length, printable radius and homed height
+M665 R260 L572.92 B260 H1130          	; 1 METER BOSS delta radius, diagonal rod length, printable radius and homed height
 ;M665 R260 L572.92 B260 H2200            ; 2.1 METER BOSS DELTA adjust 
 M666 X0 Y0 Z0                           ; end stop offsets in mm
 
@@ -32,8 +32,8 @@ M569 P4 S1                                             ; physical drive 4 goes f
 M584 X0 Y1 Z2 E3:4                                     ; set drive mapping
 M350 X16 Y16 Z16 E16:16 I1                             ; configure microstepping with interpolation
 M92 X200.00 Y200.00 Z200.00 E182.00:182.00             ; set steps per mm
-M566 X6000.00 Y6000.00 Z6000.00 E1200.00:1200.00       ; set maximum instantaneous speed changes (mm/min)
-M203 X9600.00 Y9600.00 Z9600.00 E1200.00:1200.00       ; set maximum speeds (mm/min)
+M566 X1000.00 Y1000.00 Z1000.00 E1200.00:1200.00       ; set maximum instantaneous speed changes (mm/min)
+M203 X9000.00 Y9000.00 Z9000.00 E9000.00:9000.00       ; set maximum speeds (mm/min)
 M201 X1600.00 Y1600.00 Z1600.00 E5000.00:5000.00       ; set accelerations (mm/s^2)
 M906 X1700 Y1700 Z1700 E1300:1300 I30                  ; set motor currents (mA) and motor idle factor in per cent
 M84 S30                                                ; Set idle timeout
@@ -80,7 +80,7 @@ M563 P1 D1 H1 F0
 G10 P1 X0 Y0 Z0
 G10 P1 S0 R0
 
-M572 D0:1 S0.1:0.1                                      ; pressure advance for both tools
+M572 D0:1 S0.3                                          ; pressure advance for both tools
 
 ;Filament Runout Sensor
 M950 J0 C"!^e0Stop"                                     ; create switch pin
@@ -94,5 +94,5 @@ M575 P1 S1 B57600                                       ; enable support for Pan
 M501                                                    ; load saved parameters from non-volatile memory
 M911 S11 R12 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"      ; set voltage thresholds and actions to run on power loss
 T0                                                      ; select first tool
-;M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal
+;M579 X1.0040 Y1.0040 Z1.0040                            ; scale axis all three must be equal
 

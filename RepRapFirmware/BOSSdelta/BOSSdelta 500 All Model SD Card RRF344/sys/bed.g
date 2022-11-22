@@ -1,7 +1,9 @@
 ; bed.g BOSS 500 series
 ; called by G32 to perform auto calibration or pressing wavy icon on touchscreen
 ;
-M665 R260 L572.92 B260 H1130                ; delta radius, diagonal rod length, printable radius and homed height
+;M665 R260 L572.92 B260 H600             ; 0.5 METER BOSS DELTA (R delta radius, L diagonal rod length, B printable radius, H homed height default)
+M665 R260 L572.92 B260 H1130          	; 1 METER BOSS delta radius, diagonal rod length, printable radius and homed height
+;M665 R260 L572.92 B260 H2200            ; 2.1 METER BOSS DELTA adjust 
 G28                                         ; home
 M117 Heating Bed Please Wait                ; display message
 M190 S70                                    ; bed preheat temperature
