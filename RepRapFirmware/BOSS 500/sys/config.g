@@ -80,7 +80,7 @@ M563 P1 D1 H1 F0
 G10 P1 X0 Y0 Z0
 G10 P1 S0 R0
 
-M572 D0:1 S0.3:-.3                                      ; pressure advance for both tools
+M572 D0:1 S0.3:0.3                                      ; pressure advance for both tools
 
 ;Filament Runout Sensor
 M950 J0 C"!^e0Stop"                                     ; create switch pin
