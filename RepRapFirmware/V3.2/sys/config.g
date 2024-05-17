@@ -1,5 +1,7 @@
 ; SeeMeCNC 3D Printers
-; General preferences 
+; firmware v3.4.4
+; General preferences
+; May 2024 edit M579 note 
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
 
@@ -89,4 +91,4 @@ M575 P1 S1 B57600                                       ; enable support for Pan
 M501                                                    ; load saved parameters from non-volatile memory
 T0                                                      ; select Tool 0
 M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
-M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal
+M579 X1.0000 Y1.0000 Z1.0000                            ; scale ONLY X and Y axis keeping Z zero
