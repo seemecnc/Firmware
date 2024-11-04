@@ -1,6 +1,6 @@
 ; bed.g for ARTEMIS
 ; updated July 2023
-; called by G32 to perform auto calibration
+; called by G32 to perform auto calibration or wavy icon on touchscreen or DWC browser Dashboard
 ;
 M665 R150 L340.5 B150 H540                 ; ARTEMIS Carbon Fiber ARMS (R delta radius, L diagonal rod length, B printable radius, H homed height default)
 ;M665 R150 L351.1 B145 H530                             ; ARTEMIS Injection Molded ARMS 

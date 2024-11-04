@@ -1,16 +1,13 @@
-; SeeMeCNC 3D Printers RRF v3.4.4
-; July 18 2023 updates to config.g & bed.g
-; June 2024 update M307 values
-; Oct 2024 adjust accel, instant speed, max speed
+; SeeMeCNC 3D Printers config for RRFv3.4.4
 ; General preferences 
+; July 18 2023 update
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
 
 ; Only remove ONE semi-colon for ONE M665 printer configuration
-; >>>>>>>> M665 must be the same in bed.g file <<<<<<<<<
-M550 P"BOSSdelta300"                                    ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
-M665 R158.5 L340.5 B150 H510                            ; Carbon Fiber ARMS (R delta radius, L diagonal rod length, B printable radius, H homed height default)
-;M665 R158.5 L350.9 B150 H500                           ; Injection Molded ARMS 350mm length
+M550 P"ARTEMIS"                                        ; set printer name (ARTEMIS, RostockMAX, BOSSdelta, SeeMeCNC, BestFriend, etc.)
+M665 R150 L340.5 B150 H540                             ; ARTEMIS Carbon Fiber ARMS (R delta radius, L diagonal rod length, B printable radius, H homed height default)
+;M665 R150 L351.1 B145 H530                             ; ARTEMIS Injection Molded ARMS 
 M666 X0 Y0 Z0                                           ; endstop adjustment (this is set by autocalibration leveling)
 
 ; Network
@@ -33,11 +30,12 @@ M569 P4 S1                                              ; physical drive 4
 M584 X0 Y1 Z2 E3:4                                      ; set drive mapping
 M350 X16 Y16 Z16 E16:16 I1                              ; configure micro stepping with interpolation
 M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; set steps per mm 
-M566 X800.00 Y800.00 Z800.00 E3000.00:3000.00           ; set maximum instantaneous speed changes (mm/min)*
-M203 X12000.00 Y12000.00 Z12000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
-M201 X1200.00 Y1200.00 Z1200.00 E5000.00:5000.00        ; set accelerations (mm/s^2)*
+M566 X2500.00 Y2500.00 Z2500.00 E2000.00:2000.00        ; set maximum instantaneous speed changes (mm/min)
+M203 X10000.00 Y10000.00 Z10000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
+M201 X600.00 Y600.00 Z600.00 E5000.00:5000.00           ; set accelerations (mm/s^2)
 M906 X1500 Y1500 Z1500 E1400:1400 I40                   ; set motor currents (mA) and motor idle factor in per cent
-M84 S30  
+M84 S30                                                 ; Set idle timeout
+
 ; Axis Limits
 M208 Z0 S1                                              ; set minimum Z
 
@@ -48,22 +46,20 @@ M574 Z2 S1 P"zstop"                                     ; configure active-high 
 
 ; Z-Probe
 M558 P5 I0 A4 R0.4 C"zprobe.in" H20 F2500 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
-G31 P500 X0 Y0 Z-0.35                                    ; set Z probe trigger value, offset and trigger height
-M557 R130 S30                                           ; define mesh grid
+G31 P500 X0 Y0 Z-0.3                                    ; set Z probe trigger value, offset and trigger height
+M557 R140 S30                                           ; define mesh grid
 
 ; Bed Heater
-M308 S0 P"bedtemp" Y"thermistor" T100000 B3950 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp (old B4725)
+M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
 M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-;M307 H0 R0.245 C774.3 D25.92 S1.00                      ; Bed Heater Process Parameters (original old thermistor values)
-M307 H0 R0.22 K0.17:0.000 D33.8 E1.35 S1.00 B0          ; Bed Heater Parameters for B3950 thermistors 
+M307 H0 R0.245 C774.3 D25.92 S1.00                      ; Bed Heater Process Parameters
 M140 H0                                                 ; map heated bed to heater 0
 M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
 
 ; Hotend Heater
-M308 S1 P"e0temp" Y"thermistor" T100000 B3950 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old B4725)
+M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp
 M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-;M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; OLD Hotend Heater Process Parameters for B4725 thermistor
-M307 H1 R5.1 K0.950:0.000 D4.9 E1.35 S1.00 B0           ; Hotend Heater B3950 PID TUNING:  M303 H1 S210 
+M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; Hotend Heater Process Parameters
 M143 H1 S280                                            ; Hotend Max Temp
 
 ; Fans
@@ -82,7 +78,7 @@ M563 P1 D1 H1 F0
 G10 P1 X0 Y0 Z0
 G10 P1 S0 R0
 
-M572 D0:1 S0.1:0.1                                      ; pressure advance for both tools
+M572 D0:1 S0.12:0.12                                    ; pressure advance for both tools
 
 ;Filament Runout Sensor
 M950 J0 C"!^e0Stop"                                     ; create switch pin
