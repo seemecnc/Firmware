@@ -8,6 +8,7 @@ G28                                         ; home
 M117 Heating Bed Please Wait                ; display message
 M190 S70                                    ; bed preheat temperature
 M104 S0                                     ; hotend off
+M140 S0                                     ; bed off
 M30 "/sys/config-override.g"                ; delete
 M30 "/sys/heightmap.csv"                    ; delete
 M561                                        ; clear any bed transform

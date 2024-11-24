@@ -1,6 +1,7 @@
 ; SeeMeCNC 3D Printers
 ; General preferences RepRapFirmware v3.4.4
 ; July 2023 update
+; June 2024 update M307 values
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
 
@@ -53,14 +54,14 @@ M557 R130 S30                                           ; define mesh grid
 ; Bed Heater
 M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
 M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-M307 H0 R0.245 C774.3 D25.92 S1.00 V12.9                ; Bed Heater Process Parameters
+M307 H0 R0.125 K0.170:0.000 D35.00 E1.35 S1.00 B0       ; Bed Heater Process Parameters Tuning M303 H0 P1 S80
 M140 H0                                                 ; map heated bed to heater 0
-M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
+M143 H0 S120
 
 ; Hotend Heater
-M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp
+M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old value June2024-OCT2024 B3950)
 M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-M307 H1 R2.800 C109.1 D5.12 S1.00 V13.0                 ; Hotend Heater Process Parameters
+M307 H1 R3.500 K0.650:0.300 D10.00 E1.35 S1.00 B0 V13.0  ; Example Heater Tuning Command  M303 H1 P1 S250
 M143 H1 S280                                            ; Hotend Max Temp
 
 ; Fans
@@ -91,4 +92,4 @@ M575 P1 S1 B57600                                       ; enable support for Pan
 M501                                                    ; load saved parameters from non-volatile memory
 T0                                                      ; select Tool 0
 M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
-M579 X1.0000 Y1.0000 Z1.0000                            ; scale axis all three must be equal - default is turned off
+M579 X1.0000 Y1.0000 Z1.0000                            ; scale X and Y axis - z is usually not scaled

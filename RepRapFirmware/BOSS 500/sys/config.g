@@ -2,7 +2,9 @@
 ; by SeeMeCNC
 ; July 2023 update config.g & bed.goes
 ; June 2024 update M307 values
+; Nov adjust bed and hotend parameters
 
+; General Preferences
 M111 S0                                 ; debug off
 M550 P"BOSSdelta 500"                   ; Printer name
 ;M929 P"eventlog.txt" S1                 ; event logging start
@@ -53,18 +55,16 @@ G31 P500 X0 Y0 Z-0.4                                    ; set Z probe trigger va
 M557 R245 S30                                           ; define mesh grid
 
 ; Bed Heater
-M308 S0 P"bedtemp" Y"thermistor" T100000 B3950 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp (old B4725)
+M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
 M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-;M307 H0 R0.245 C774.3 D25.92 S1.00                      ; Bed Heater Process Parameters (original old thermistor values)
-M307 H0 R0.22 K0.17:0.000 D33.8 E1.35 S1.00 B0          ; Bed Heater Parameters for B3950 thermistors 
+M307 H0 R0.220 K0.170:0.000 D35.00 E1.35 S1.00 B0       ; Bed Heater Process Parameters
 M140 H0                                                 ; map heated bed to heater 0
 M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
 
 ; Hotend Heater
-M308 S1 P"e0temp" Y"thermistor" T100000 B3950 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old B4725)
+M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old value June2024-OCT2024 B3950)
 M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-;M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; OLD Hotend Heater Process Parameters for B4725 thermistor
-M307 H1 R5.1 K0.950:0.000 D4.9 E1.35 S1.00 B0           ; Hotend Heater B3950 PID TUNING:  M303 H1 S210 
+M307 H1 R3.500 K0.650:0.300 D8.00 E1.35 S1.00 B0 V13.0  ; Example Heater Tuning Command  M303 H1 P1 S250
 M143 H1 S280                                            ; Hotend Max Temp
 
 ; Fans

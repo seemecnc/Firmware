@@ -1,8 +1,10 @@
 ; SeeMeCNC 3D Printers config for RRFv3.4.4
-; General preferences 
 ; July 18 2023 update
 ; June 2024 adjust bed & hotend M307 values tuned for powersupply setting of 13vdc +/-0.1vdc tolerance
 ; Oct 2024 adjust speeds and accelerations
+; Nov 2024 adjust hotend and bed values
+
+; General preferences 
 G90                                                     ; absolute coordinates
 M83                                                     ; relative extruder moves
 
@@ -32,9 +34,9 @@ M569 P4 S1                                              ; physical drive 4
 M584 X0 Y1 Z2 E3:4                                      ; set drive mapping
 M350 X16 Y16 Z16 E16:16 I1                              ; configure micro stepping with interpolation
 M92 X200.00 Y200.00 Z200.00 E182.00:182.00              ; set steps per mm 
-M566 X2500.00 Y2500.00 Z2500.00 E5000.00:5000.00        ; set maximum instantaneous speed changes (mm/min)
-M203 X15000.00 Y15000.00 Z15000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
-M201 X1000.00 Y1000.00 Z1000.00 E5000.00:5000.00        ; set accelerations (mm/s^2)
+M566 X2000.00 Y2000.00 Z2000.00 E3000.00:3000.00        ; set maximum instantaneous speed changes (mm/min)
+M203 X12000.00 Y12000.00 Z12000.00 E9000.00:9000.00     ; set maximum speeds (mm/min)
+M201 X600.00 Y600.00 Z600.00 E5000.00:5000.00           ; set accelerations (mm/s^2)
 M906 X1500 Y1500 Z1500 E1400:1400 I40                   ; set motor currents (mA) and motor idle factor in per cent
 M84 S30                                                 ; Set idle timeout
 
@@ -52,18 +54,17 @@ G31 P500 X0 Y0 Z-0.3                                    ; set Z probe trigger va
 M557 R140 S30                                           ; define mesh grid
 
 ; Bed Heater
-M308 S0 P"bedtemp" Y"thermistor" T100000 B3950 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp (old B4725)
+M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp
 M950 H0 C"bedheat" T0                                   ; create bed heater output on bed heat and map it to sensor 0
-;M307 H0 R0.245 C774.3 D25.92 S1.00                      ; Bed Heater Process Parameters (original old thermistor values)
-M307 H0 R0.22 K0.17:0.000 D33.8 E1.35 S1.00 B0          ; Bed Heater Parameters for B3950 thermistors 
+;M307 H0 R0.240 K0.200:0.000 D25.00 E1.35 S1.00 B0       ; Bed Heater Process Parameters OLD before NOV 2024
+M307 H0 R0.125 K0.170:0.000 D35.00 E1.35 S1.00 B0       ; Bed Heater Process Parameters Tuning M303 H0 P1 S80
 M140 H0                                                 ; map heated bed to heater 0
 M143 H0 S120                                            ; set temperature limit for heater 0 to 120C
 
 ; Hotend Heater
-M308 S1 P"e0temp" Y"thermistor" T100000 B3950 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old B4725)
+M308 S1 P"e0temp" Y"thermistor" T100000 B4725 C7.06e-8  ; configure sensor 1 as thermistor on pin e0temp (old value June2024-OCT2024 B3950)
 M950 H1 C"e0heat" T1                                    ; create nozzle heater output on e0heat and map it to sensor 1
-;M307 H1 R3.300 C110.0115.0 D7.00 S1.00 V13.0            ; OLD Hotend Heater Process Parameters for B4725 thermistor
-M307 H1 R5.1 K0.950:0.000 D4.9 E1.35 S1.00 B0           ; Hotend Heater B3950 PID TUNING:  M303 H1 S210 
+M307 H1 R3.500 K0.650:0.300 D8.00 E1.35 S1.00 B0 V13.0  ; Example Heater Tuning Command  M303 H1 P1 S250
 M143 H1 S280                                            ; Hotend Max Temp
 
 ; Fans
@@ -82,7 +83,7 @@ M563 P1 D1 H1 F0
 G10 P1 X0 Y0 Z0
 G10 P1 S0 R0
 
-M572 D0:1 S0.12:0.12                                    ; pressure advance for both tools
+M572 D0:1 S0.1:0.1                                      ; pressure advance for both tools
 
 ;Filament Runout Sensor
 M950 J0 C"!^e0Stop"                                     ; create switch pin
@@ -93,5 +94,5 @@ M581 P0:1 T2 S1 R1                                      ; run trigger2.g to paus
 M575 P1 S1 B57600                                       ; enable support for PanelDue
 M501                                                    ; load saved parameters from non-volatile memory
 T0                                                      ; select Tool 0
-M911 S10.5 R11.2 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
+M911 S11.0 R15.0 P"M913 X0 Y0 G91 M83 G1 Z3 E-5 F1000"  ; set voltage thresholds and actions to run on power loss
 M579 X1.0000 Y1.0000 Z1.0000                            ; scale X and Y axis - z is usually not scaled
