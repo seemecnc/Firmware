@@ -1,0 +1,4 @@
+; reset heater fault condition all heaters
+M562 P0
+M562 P1
+M562 P2
