@@ -49,9 +49,11 @@ M574 Y2 S1 P"ystop"                                     ; configure active-high 
 M574 Z2 S1 P"zstop"                                     ; configure active-high endstop for high end on Z via pin zstop
 
 ; Z-Probe
-M558 P5 I0 A4 R0.4 C"zprobe.in" H20 F2500 T6000         ; HOTEND PROBEset Z probe type to switch and the dive height + speeds
+M558 P5 I0 A4 R0.4 C"zprobe.in" H20 F2500 T6000         ; HOTEND SE300 PROBE set Z probe type to switch and the dive height + speeds
 G31 P500 X0 Y0 Z-0.3                                    ; set Z probe trigger value, offset and trigger height
-M557 R140 S30                                           ; define mesh grid
+;M558 P5 I1 A4 R0.4 C"!^zprobe.in" H20 F250 T6000        ; FSR PROBE set Z probe type to switch and the dive height + speeds
+;G31 P500 X0 Y0 Z-0.25                                   ; set Z probe trigger value, offset and trigger height
+M557 R140 S30                                           ; define mesh grid (SeeMeCNC no longers uses mesh grid)
 
 ; Bed Heater
 M308 S0 P"bedtemp" Y"thermistor" T100000 B4725 C7.06e-8 ; configure sensor 0 as thermistor on pin bed temp

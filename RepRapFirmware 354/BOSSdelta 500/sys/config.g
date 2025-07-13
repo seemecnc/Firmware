@@ -1,5 +1,5 @@
  ; SeeMeCNC 3D Printers Config 
-; MAY 2025
+; JULY 2025
 ; Configured for RepRapFirmware v3.5.4+ 
 ; This release is tailored for Orca Slicer Software. 
 ; ***important*** Line M92 Steps/mm on all axis must be calibrated manually.
@@ -25,6 +25,7 @@ global homedHeight = 1110           ; Homed height (H) Model 0505=600 0510=1100 
 M665 R{global.deltaRadius} L{global.armLength} B{global.bedRadius} H{global.homedHeight}  ; Delta Parameters
 M666 X0 Y0 Z0 A0 B0                 ; endstop adjustment (this is set by autocalibration leveling)
 M208 Z0 S1                          ; set Z axis minimum limit
+M208 Z{global.homedHeight} S1                           ; set maximums
 
 ; Network & Comms
 M540 PF0:E1:D2:C3:11:11	                                ; Set the printers MAC Address (make different for each SeeMeCNC printer you own)
