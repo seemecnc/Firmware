@@ -1,0 +1,24 @@
+; bed.g
+; called by G32 to perform auto calibration
+;
+G28                                         ; home
+M291 P"FIRST PROBE Auto-Deletes heightmap.csv and config-override.g?  Continue Click OK" R"RESET BED LEVEL & CALIBRATION" S3
+M30 "/sys/config-override.g"                ; delete
+M30 "/sys/heightmap.csv"                    ; delete
+M561                                        ; clear any bed transform
+M117 Files Deleted. Heating Bed, please wait...
+M190 S70                                    ; bed heat
+M104 S0                                     ; hotend off
+M140 S0                                     ; bed off
+M117 Bed Mapping
+M558 P5 I0 A1 S0.05 R0.4 H30 F2500
+M117 Heating Bed Please Wait
+M190 S70
+M140 S0
+M117 Running Probe Autolevel
+G29
+M500
+G28
+M84
+M375
+M117 End BOSSdelta Probe Autolevel Calibration
