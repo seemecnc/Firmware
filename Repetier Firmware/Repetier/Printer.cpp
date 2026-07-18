@@ -859,9 +859,12 @@ void Printer::setup()
     Extruder::initExtruder();
     // sets autoleveling in eeprom init
     EEPROM::init(); // Read settings from eeprom if wanted
-    for(uint8_t i = 0; i < E_AXIS_ARRAY; i++)
+    for(uint8_t i = 0; i < sizeof(currentPositionSteps)/sizeof(currentPositionSteps[0]); i++)
     {
         currentPositionSteps[i] = 0;
+    }
+    for(uint8_t i = 0; i < sizeof(currentPosition)/sizeof(currentPosition[0]); i++)
+    {
         currentPosition[i] = 0.0;
     }
 //setAutolevelActive(false); // fixme delete me

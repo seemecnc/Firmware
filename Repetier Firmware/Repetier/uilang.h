@@ -16,6 +16,12 @@
 
 */
 
+#ifndef UI_LANG_H
+#define UI_LANG_H
+
+// Include Configuration.h in order to load the correct language.
+#include "Configuration.h"
+
 #if !defined(UI_DISPLAY_CHARSET) || UI_DISPLAY_CHARSET>3
 #define UI_DISPLAY_CHARSET 1
 #endif
@@ -1796,5 +1802,7 @@
 #define UI_TEXT_CALIBRATING_HEIGHT       "Calibrating","Printer Z Height","","Please Wait"
 #define UI_TEXT_CALIBRATING_RADIUS       "Calibrating","Horizontal Radius","","Please Wait"
 #define UI_TEXT_CALIBRATING_BED       "Calibrating","Bed Level Matrix","","Please Wait"
+
+#endif
 
 #endif
